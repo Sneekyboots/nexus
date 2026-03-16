@@ -31,11 +31,16 @@ devnet-*.json
 *.swp
 *.swo
 
-# SIX Financial Certificates & Files (DO NOT COMMIT)
+# SIX FINANCIAL - NEVER COMMIT SECRETS
+# Do not add any files from these directories
+sixapi/
+docs/six-files/
 services/six-oracle/certs/
 services/six-oracle/.env
-docs/six-files/
-sixapi/
+
+# Certificate and Password Files
 *.pem
 *.p12
+*.key
 *password*
+*.pfx
