@@ -439,6 +439,7 @@ name = "compliance-hook"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "entity-registry",
 ]
 
 [[package]]
