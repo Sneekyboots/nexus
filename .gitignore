@@ -30,3 +30,7 @@ devnet-*.json
 .idea/
 *.swp
 *.swo
+
+# SIX Financial Certificates (DO NOT COMMIT)
+services/six-oracle/certs/
+services/six-oracle/.env
