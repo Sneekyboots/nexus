@@ -1,0 +1,20 @@
+[package]
+name = "fx-netting"
+version = "0.1.0"
+description = "NEXUS FX Netting - Layer 4 - Cross-Currency Offsets"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "fx_netting"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.31.1"

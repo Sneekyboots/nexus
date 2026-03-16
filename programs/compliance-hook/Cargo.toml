@@ -1,0 +1,20 @@
+[package]
+name = "compliance-hook"
+version = "0.1.0"
+description = "NEXUS Compliance Hook - Layer 3 - Transfer Hook Gates"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "compliance_hook"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "0.31.1"
