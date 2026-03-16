@@ -5,7 +5,7 @@
 All secret files have been removed from git and workspace:
 
 - ✅ **sixapi/** directory - REMOVED
-- ✅ **docs/six-files/** directory - REMOVED  
+- ✅ **docs/six-files/** directory - REMOVED
 - ✅ All `.pem` files - REMOVED from git
 - ✅ All `.p12` files - REMOVED from git
 - ✅ All `password.txt` files - REMOVED from git
@@ -33,6 +33,7 @@ services/six-oracle/.env          ← Environment config (local only)
 ### For SIX Oracle Certificates:
 
 1. **Store locally in workspace** (not in git):
+
    ```
    services/six-oracle/certs/
    ├── private-key.pem
@@ -41,6 +42,7 @@ services/six-oracle/.env          ← Environment config (local only)
    ```
 
 2. **Create .env file locally**:
+
    ```bash
    cp services/six-oracle/.env.example services/six-oracle/.env
    # Edit .env with your SIX credentials (NOT committed)
@@ -66,6 +68,7 @@ Secret files in workspace: 0 ✅
 ## 🚀 For Judges/Reviewers
 
 Your code can be safely shared because:
+
 - ✅ No certificates in git
 - ✅ No API keys in code
 - ✅ No password files in repository
