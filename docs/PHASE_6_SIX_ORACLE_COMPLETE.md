@@ -8,20 +8,20 @@ The **SIX Oracle Service is now fully implemented** with real API integration. T
 
 ## 📊 Implementation Summary
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| **API Endpoint Extracted** | ✅ | Base URL: `https://api.six-group.com/web/v2` |
-| **Endpoint Path** | ✅ | `/listings/marketData/intradaySnapshot` |
-| **Authentication** | ✅ | mTLS (signed-certificate.pem + private-key.pem) |
-| **FX Pair Identifiers** | ✅ | All 5 pairs: EUR/USD, GBP/USD, CHF/USD, USD/AED, USD/HKD |
-| **VALOR_BC Codes** | ✅ | Extracted from Cross Currency identifiers Excel |
-| **mTLS Client** | ✅ | Axios + https.Agent with certificate authentication |
-| **Rate Parsing** | ✅ | Handles bid/ask/mid prices with fallback logic |
-| **Polling Logic** | ✅ | 30-second intervals with stale rate detection |
-| **Error Handling** | ✅ | Graceful fallback to last known rates |
-| **Service Startup** | ✅ | Ready to run with `npm start` |
-| **Documentation** | ✅ | IMPLEMENTATION.md with complete API reference |
-| **Git Committed** | ✅ | All changes committed with descriptive message |
+| Component                  | Status | Details                                                  |
+| -------------------------- | ------ | -------------------------------------------------------- |
+| **API Endpoint Extracted** | ✅     | Base URL: `https://api.six-group.com/web/v2`             |
+| **Endpoint Path**          | ✅     | `/listings/marketData/intradaySnapshot`                  |
+| **Authentication**         | ✅     | mTLS (signed-certificate.pem + private-key.pem)          |
+| **FX Pair Identifiers**    | ✅     | All 5 pairs: EUR/USD, GBP/USD, CHF/USD, USD/AED, USD/HKD |
+| **VALOR_BC Codes**         | ✅     | Extracted from Cross Currency identifiers Excel          |
+| **mTLS Client**            | ✅     | Axios + https.Agent with certificate authentication      |
+| **Rate Parsing**           | ✅     | Handles bid/ask/mid prices with fallback logic           |
+| **Polling Logic**          | ✅     | 30-second intervals with stale rate detection            |
+| **Error Handling**         | ✅     | Graceful fallback to last known rates                    |
+| **Service Startup**        | ✅     | Ready to run with `npm start`                            |
+| **Documentation**          | ✅     | IMPLEMENTATION.md with complete API reference            |
+| **Git Committed**          | ✅     | All changes committed with descriptive message           |
 
 ---
 
@@ -30,6 +30,7 @@ The **SIX Oracle Service is now fully implemented** with real API integration. T
 **From:** `sixapi/Hackathon Documentation 2026.pdf` (3 pages)
 
 ### Base Configuration
+
 ```
 Base URL: https://api.six-group.com/web/v2
 Authentication: MTLS (Mutual TLS certificates)
@@ -39,8 +40,8 @@ Scheme: VALOR_BC (valor ID + '_' + BC code)
 
 ### FX Pairs (From Cross Currency Identifiers Excel)
 
-| Pair | VALOR | BC | VALOR_BC |
-|------|-------|----|-----------| 
+| Pair    | VALOR  | BC  | VALOR_BC   |
+| ------- | ------ | --- | ---------- |
 | EUR/USD | 946681 | 148 | 946681_148 |
 | GBP/USD | 275017 | 148 | 275017_148 |
 | CHF/USD | 275164 | 148 | 275164_148 |
@@ -48,6 +49,7 @@ Scheme: VALOR_BC (valor ID + '_' + BC code)
 | USD/HKD | 275126 | 148 | 275126_148 |
 
 ### API Request Example
+
 ```http
 GET https://api.six-group.com/web/v2/listings/marketData/intradaySnapshot?
     scheme=VALOR_BC&
@@ -56,6 +58,7 @@ GET https://api.six-group.com/web/v2/listings/marketData/intradaySnapshot?
 ```
 
 With mTLS:
+
 ```
 Client Certificate: ./certs/signed-certificate.pem
 Private Key: ./certs/private-key.pem
@@ -95,12 +98,14 @@ services/six-oracle/
 ## 🚀 How to Run
 
 ### Step 1: Create Configuration
+
 ```bash
 cd services/six-oracle
 cp .env.example .env
 ```
 
 The `.env` file already has the correct values:
+
 ```env
 SIX_API_URL=https://api.six-group.com/web/v2
 SIX_POLL_INTERVAL_MS=30000
@@ -108,16 +113,19 @@ SIX_POLL_INTERVAL_MS=30000
 ```
 
 ### Step 2: Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### Step 3: Build TypeScript
+
 ```bash
 npm run build
 ```
 
 ### Step 4: Run the Service
+
 ```bash
 # Production
 npm start
@@ -127,6 +135,7 @@ npm run dev
 ```
 
 ### Expected Output
+
 ```
 ╔════════════════════════════════════════════════╗
 ║      SIX Financial Information Oracle           ║
@@ -168,29 +177,34 @@ Configuration:
 ## 💡 Key Features
 
 ### 1. **Real API Integration**
+
 - Connects directly to SIX's official API
 - Uses actual VALOR_BC identifiers
 - Parses real SIX response format
 
 ### 2. **Robust Error Handling**
+
 - Certificate validation at startup
 - HTTP error handling with logging
 - Fallback to last known rates on failure
 - Stale rate detection (1 hour threshold)
 
 ### 3. **Flexible Rate Pricing**
+
 - Prioritizes mid price
 - Falls back to bid/ask calculation
 - Falls back to last price
 - Skips pairs with no valid price
 
 ### 4. **Security**
+
 - mTLS encryption for all requests
 - Certificates in secure directory (600 perms)
 - No secrets hardcoded
 - Graceful shutdown handling
 
 ### 5. **Monitoring**
+
 - Poll counter tracking
 - Error streak monitoring
 - Timestamp for each rate update
@@ -222,6 +236,7 @@ if (snap.mid !== null) {
 The oracle service is now ready to feed rates on-chain. To complete the integration:
 
 ### Step 1: Deploy Programs to Devnet
+
 ```bash
 # Build all programs
 cargo build --lib --all
@@ -231,13 +246,16 @@ solana program deploy programs/fx-netting/target/deploy/fx_netting.so
 ```
 
 ### Step 2: Update Anchor.toml
+
 ```toml
 [programs.devnet]
 fx_netting = "YOUR_DEVNET_PROGRAM_ID"
 ```
 
 ### Step 3: Implement `submitRatesOnChain()`
+
 In `services/six-oracle/src/index.ts`, add:
+
 ```typescript
 async submitRatesOnChain(rates: FxRate[]): Promise<void> {
   // Call fx-netting program's set_fx_rate instruction
@@ -246,6 +264,7 @@ async submitRatesOnChain(rates: FxRate[]): Promise<void> {
 ```
 
 ### Step 4: Connect Oracle Authority
+
 ```env
 ORACLE_AUTHORITY_KEYPAIR=../../solana-keypairs/oracle-authority.json
 FX_NETTING_PROGRAM_ID=<devnet_program_id>
@@ -262,6 +281,7 @@ FX_NETTING_PROGRAM_ID=<devnet_program_id>
 5. **Monitoring** - Complete logging for compliance audits
 
 When regulators audit AMINA's protocol, they'll see:
+
 - ✅ Real SIX rates (not mocked data)
 - ✅ Authentic mTLS connections (encrypted, authenticated)
 - ✅ Complete rate history (on-chain audit trail)
