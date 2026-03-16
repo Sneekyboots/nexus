@@ -8,18 +8,18 @@ You just set up **institutional-grade regulated FX rate infrastructure** for the
 
 ## 📊 Summary
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| **SIX Certificates** | ✅ Secured | 3 certificate files (private-key.pem, signed-certificate.pem, certificate.p12) |
-| **Certificate Location** | ✅ Secured | `/services/six-oracle/certs/` (permissions: 600, gitignored) |
-| **Certificate Password** | ✅ Stored | `sixhackathon2026` |
-| **Team ID** | ✅ Configured | `CH56655` |
-| **Required FX Pairs** | ✅ Verified | EUR/USD ✓, GBP/USD ✓, CHF/USD ✓, USD/AED ✓, USD/HKD ✓ |
-| **Total Instruments** | ✅ Available | 882 currency pairs + precious metals |
-| **mTLS Client** | ✅ Built | Node.js service with axios + https.Agent |
-| **Service Framework** | ✅ Scaffolded | 30-second polling interval, rate validation, audit logging |
-| **Documentation** | ✅ Complete | SIX_INTEGRATION.md + service README.md |
-| **Git Integration** | ✅ Committed | 36 files committed, clean .gitignore |
+| Component                | Status        | Details                                                                        |
+| ------------------------ | ------------- | ------------------------------------------------------------------------------ |
+| **SIX Certificates**     | ✅ Secured    | 3 certificate files (private-key.pem, signed-certificate.pem, certificate.p12) |
+| **Certificate Location** | ✅ Secured    | `/services/six-oracle/certs/` (permissions: 600, gitignored)                   |
+| **Certificate Password** | ✅ Stored     | `sixhackathon2026`                                                             |
+| **Team ID**              | ✅ Configured | `CH56655`                                                                      |
+| **Required FX Pairs**    | ✅ Verified   | EUR/USD ✓, GBP/USD ✓, CHF/USD ✓, USD/AED ✓, USD/HKD ✓                          |
+| **Total Instruments**    | ✅ Available  | 882 currency pairs + precious metals                                           |
+| **mTLS Client**          | ✅ Built      | Node.js service with axios + https.Agent                                       |
+| **Service Framework**    | ✅ Scaffolded | 30-second polling interval, rate validation, audit logging                     |
+| **Documentation**        | ✅ Complete   | SIX_INTEGRATION.md + service README.md                                         |
+| **Git Integration**      | ✅ Committed  | 36 files committed, clean .gitignore                                           |
 
 ---
 
@@ -132,6 +132,7 @@ You just set up **institutional-grade regulated FX rate infrastructure** for the
 ## 🔐 Security Implementation
 
 ### Certificate Protection
+
 ```bash
 # Certificates secured with restricted permissions
 chmod 600 services/six-oracle/certs/*
@@ -143,11 +144,13 @@ chmod 600 services/six-oracle/certs/*
 ```
 
 ### Encryption
+
 - **mTLS (mutual TLS)** - Both client and server authenticated
 - **Encrypted channel** - All communication is encrypted
 - **Certificate pinning** - Client certificate verifies identity
 
 ### On-Chain Audit Trail
+
 - Every rate update is **timestamped** and **immutable**
 - Every rate is **signed** by oracle authority keypair
 - Regulators can verify the complete history
@@ -163,20 +166,25 @@ The Hackathon Documentation 2026.pdf contains the key information needed to comp
 #### What to Find in the PDF:
 
 1. **Base API URL** (e.g., `https://api.six-group.com/v1`)
+
    - Add to `.env`: `SIX_API_URL=<url>`
 
 2. **Endpoint Path** (e.g., `/quotation` or `/rates`)
+
    - Update in `src/index.ts` line 77: `const endpoint = '...'`
 
 3. **Query Parameter Format**:
+
    - How to specify which currency pairs to fetch
    - Update the `params` object in `src/index.ts` line 81
 
 4. **Response Format** (JSON structure):
+
    - What does the rate response look like?
    - Update the `parseRates()` method in `src/index.ts` line 102
 
 5. **Rate Limits**:
+
    - How often can we poll?
    - Update `SIX_POLL_INTERVAL_MS` in `.env`
 
@@ -190,12 +198,14 @@ The Hackathon Documentation 2026.pdf contains the key information needed to comp
 ## 📝 Quick Start Guide
 
 ### 1. Read the PDF and Extract Details
+
 ```bash
 # Open and read: sixapi/Hackathon Documentation 2026.pdf
 # Document the 6 items above ☝️
 ```
 
 ### 2. Update Configuration
+
 ```bash
 cd /home/sriranjini/nexus/services/six-oracle
 cp .env.example .env
@@ -207,6 +217,7 @@ cp .env.example .env
 ```
 
 ### 3. Update Implementation
+
 ```bash
 # Edit src/index.ts:
 # Line 77: Update endpoint path
@@ -215,6 +226,7 @@ cp .env.example .env
 ```
 
 ### 4. Build and Test
+
 ```bash
 npm install
 npm run build
@@ -224,6 +236,7 @@ npm run dev
 ```
 
 ### 5. Deploy Service
+
 ```bash
 # Once devnet programs are deployed:
 # Update .env with FX_NETTING_PROGRAM_ID
@@ -252,6 +265,7 @@ When judges see that every OffsetEvent has a timestamp + SIX-sourced FX rate, th
 ## 📋 Checklist
 
 ### Completed ✅
+
 - [x] Extract SIX certificate bundle
 - [x] Verify all 5 required FX pairs available in SIX data
 - [x] Create secure certificate storage
@@ -261,6 +275,7 @@ When judges see that every OffsetEvent has a timestamp + SIX-sourced FX rate, th
 - [x] Commit to git (36 files)
 
 ### Next Steps 🔄
+
 - [ ] Read Hackathon Documentation 2026.pdf
 - [ ] Extract API endpoint URL
 - [ ] Extract API response format
@@ -271,6 +286,7 @@ When judges see that every OffsetEvent has a timestamp + SIX-sourced FX rate, th
 - [ ] Test oracle service
 
 ### Final Integration 🚀
+
 - [ ] Deploy all 5 programs to devnet
 - [ ] Get FX_NETTING_PROGRAM_ID
 - [ ] Connect oracle service to on-chain program
@@ -283,6 +299,7 @@ When judges see that every OffsetEvent has a timestamp + SIX-sourced FX rate, th
 ## 📞 Support
 
 If you need help:
+
 1. Check `/docs/SIX_INTEGRATION.md` for detailed reference
 2. Check `/services/six-oracle/README.md` for service docs
 3. Review `/services/six-oracle/src/index.ts` for implementation skeleton
