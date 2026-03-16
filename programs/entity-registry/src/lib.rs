@@ -1,12 +1,12 @@
 use anchor_lang::prelude::*;
 
-pub mod state;
-pub mod instructions;
 pub mod errors;
+pub mod instructions;
+pub mod state;
 
 use instructions::*;
 
-declare_id!("11111111111111111111111111111111");
+declare_id!("6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh");
 
 #[program]
 pub mod entity_registry {
@@ -19,7 +19,13 @@ pub mod entity_registry {
         jurisdiction: u8,
         mandate_limits: state::MandateLimits,
     ) -> Result<()> {
-        instructions::register_entity::handler(ctx, entity_id, legal_name, jurisdiction, mandate_limits)
+        instructions::register_entity::handler(
+            ctx,
+            entity_id,
+            legal_name,
+            jurisdiction,
+            mandate_limits,
+        )
     }
 
     pub fn verify_entity(

@@ -7,7 +7,7 @@ pub mod state;
 use errors::*;
 use instructions::*;
 
-declare_id!("11111111111111111111111111111111");
+declare_id!("4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq");
 
 #[program]
 pub mod sweep_trigger {

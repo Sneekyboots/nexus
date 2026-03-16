@@ -1,12 +1,12 @@
 use anchor_lang::prelude::*;
 
-pub mod state;
-pub mod instructions;
 pub mod errors;
+pub mod instructions;
+pub mod state;
 
 use instructions::*;
 
-declare_id!("11111111111111111111111111111111");
+declare_id!("5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS");
 
 #[program]
 pub mod compliance_hook {

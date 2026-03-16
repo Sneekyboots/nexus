@@ -6,18 +6,18 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-entity-registry = "11111111111111111111111111111111"
-pooling-engine = "11111111111111111111111111111111"
-compliance-hook = "11111111111111111111111111111111"
-fx-netting = "11111111111111111111111111111111"
-sweep-trigger = "11111111111111111111111111111111"
+entity-registry = "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh"
+pooling-engine = "Cot9BDy1Aos6fga3D7ZcaYmzdXxqAJ4jHFGMHDdbq8Sz"
+compliance-hook = "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS"
+fx-netting = "2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7"
+sweep-trigger = "4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq"
 
 [programs.localnet]
-entity-registry = "11111111111111111111111111111111"
-pooling-engine = "11111111111111111111111111111111"
-compliance-hook = "11111111111111111111111111111111"
-fx-netting = "11111111111111111111111111111111"
-sweep-trigger = "11111111111111111111111111111111"
+entity-registry = "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh"
+pooling-engine = "Cot9BDy1Aos6fga3D7ZcaYmzdXxqAJ4jHFGMHDdbq8Sz"
+compliance-hook = "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS"
+fx-netting = "2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7"
+sweep-trigger = "4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq"
 
 [registry]
 url = "https://api.apr.dev"
