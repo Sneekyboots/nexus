@@ -1,59 +1,54 @@
 use crate::errors::ComplianceError;
-use crate::state::*;
 use anchor_lang::prelude::*;
+use entity_registry::state::EntityRecord;
 
 #[derive(Accounts)]
 pub struct TransferHook<'info> {
-    pub sender: UncheckedAccount<'info>,
-    pub sender_token_account: UncheckedAccount<'info>,
-    pub receiver_token_account: UncheckedAccount<'info>,
+    /// Sender's token account
+    pub source_token_account: UncheckedAccount<'info>,
+
+    /// Receiver's token account
+    pub destination_token_account: UncheckedAccount<'info>,
+
+    /// The entity record for sender (from Layer 1)
+    pub sender_entity: Account<'info, EntityRecord>,
 }
 
 pub fn handler(ctx: Context<TransferHook>, amount: u64) -> Result<()> {
-    // MVP Implementation: stub compliance checks
-    // In production, this would implement all 6 gates:
-    // 1. KYC GATE
-    // 2. MANDATE CHECK
-    // 3. AML SANCTIONS SCREEN
-    // 4. TRAVEL RULE
-    // 5. KYT BEHAVIOURAL CHECK
-    // 6. WRITE COMPLIANCE CERT
+    let now = Clock::get()?.unix_timestamp;
+    let entity = &ctx.accounts.sender_entity;
 
-    msg!("Transfer Hook called with amount: {}", amount);
+    // STAGE 1: Check if entity is KYC verified and active
+    require!(
+        entity.is_active(now),
+        ComplianceError::KycVerificationFailed
+    );
 
-    emit!(TransferHookExecuted {
-        sender: ctx.accounts.sender.key(),
+    // STAGE 2: Check single transfer limit
+    require!(
+        !entity.exceeds_single_transfer_limit(amount),
+        ComplianceError::SingleTransferExceedsLimit
+    );
+
+    // STAGE 3: Check daily aggregate limit
+    require!(
+        !entity.would_exceed_daily_limit(amount, now),
+        ComplianceError::DailyAggregateExceedsLimit
+    );
+
+    // All checks passed - emit compliance certificate
+    emit!(TransferApproved {
+        entity_id: entity.entity_id,
         amount,
-        timestamp: Clock::get()?.unix_timestamp,
+        timestamp: now,
     });
 
     Ok(())
 }
 
 #[event]
-pub struct TransferHookExecuted {
-    pub sender: Pubkey,
+pub struct TransferApproved {
+    pub entity_id: [u8; 32],
     pub amount: u64,
-    pub timestamp: i64,
-}
-
-#[event]
-pub struct KycVerificationEvent {
-    pub sender: Pubkey,
-    pub receiver: Pubkey,
-    pub status: bool,
-    pub timestamp: i64,
-}
-
-#[event]
-pub struct SanctionsAlert {
-    pub flagged_address: Pubkey,
-    pub timestamp: i64,
-}
-
-#[event]
-pub struct KytAlert {
-    pub entity_id: Pubkey,
-    pub alert_type: String,
     pub timestamp: i64,
 }
