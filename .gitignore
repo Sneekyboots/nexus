@@ -5,3 +5,28 @@ target
 node_modules
 test-ledger
 .yarn
+
+# Environment & Credentials
+.env
+.env.local
+.env.*.local
+.pem
+.key
+*.cert
+*.crt
+credentials/
+secrets/
+
+# Tenity API Certificates
+tenity-cert.pem
+tenity-key.pem
+
+# Solana Keys
+solana-keypairs/
+devnet-*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
