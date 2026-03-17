@@ -303,8 +303,9 @@ export class FXNettingClient {
    * Convert amount from one currency to another
    */
   convert(amount: number, fromCurrency: string, toCurrency: string): number {
-    const fromRate = this.fxRates[fromCurrency] || 1.0;
-    const toRate = this.fxRates[toCurrency] || 1.0;
+    const fromRate =
+      this.fxRates[fromCurrency as keyof typeof this.fxRates] || 1.0;
+    const toRate = this.fxRates[toCurrency as keyof typeof this.fxRates] || 1.0;
     return (amount / fromRate) * toRate;
   }
 
