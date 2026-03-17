@@ -2,6 +2,20 @@
 
 Production-ready Solana protocol for institutional cash management across multiple jurisdictions with real-time FX rates from SIX Financial Information.
 
+## 🚀 Status: LIVE ON DEVNET
+
+**All 5 programs successfully deployed to Solana Devnet** (March 17, 2026)
+
+| Layer | Program         | Devnet Address                                 |
+| ----- | --------------- | ---------------------------------------------- |
+| 1     | entity-registry | `4eb3xfVvFtKnzDYrcaMjjZ5MESpmfyyfXVgUR2kkGjPa` |
+| 2     | pooling-engine  | `67LiTobujmghnHLR812SUUD4juuA37j7ENsSMaZGjNCb` |
+| 3     | compliance-hook | `FMjNbWedkgYovqpqHS2PojwFeVma2zVAup32j9VGVbpo` |
+| 4     | fx-netting      | `6EU43gqjMV4WRjwwGYaxBAHcMUxUPTKUoK5wkBbb1Ayy` |
+| 5     | sweep-trigger   | `81CJwxHEpWiY8j9c8qfLoru3edWKF2AjVZ3cUrHYU6CZ` |
+
+See [`DEVNET_DEPLOYMENT_COMPLETE.md`](./DEVNET_DEPLOYMENT_COMPLETE.md) for full deployment details.
+
 ## Quick Overview
 
 NEXUS is a **5-layer protocol** enabling:
@@ -26,7 +40,7 @@ Layer 5: Sweep Trigger       → Intercompany loan settlement
 
 ### Prerequisites
 
-- Solana CLI 2.3.8+
+- Solana CLI 3.1.11+
 - Rust 1.94.0+
 - Node.js 18+
 - Anchor 0.31.1
@@ -37,7 +51,7 @@ Layer 5: Sweep Trigger       → Intercompany loan settlement
 # Build all programs
 cargo build --lib --all
 
-# Run all tests
+# Run all tests (58/58 passing)
 cargo test --lib --all
 
 # Build oracle service
@@ -48,7 +62,7 @@ npm install && npm run build
 **Test Status:** ✅ 58/58 tests passing
 
 - Entity Registry: 10 tests
-- Pooling Engine: 3 tests
+- Pooling Engine: 3 tests + 5 CPI integration tests
 - Compliance Hook: 15 tests
 - FX Netting: 15 tests
 - Sweep Trigger: 15 tests
