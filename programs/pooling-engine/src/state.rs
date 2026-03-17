@@ -5,7 +5,7 @@ pub struct PoolState {
     pub pool_id: [u8; 32],
     pub pool_admin: Pubkey,
     pub member_count: u16,
-    pub supported_currencies: Vec<CurrencyPair>,
+    pub supported_currencies: [CurrencyPair; 6], // Max 6 currencies
     pub net_position_usd: i128,
     pub last_netting_timestamp: i64,
     pub netting_frequency: NettingFrequency,
@@ -48,19 +48,19 @@ pub struct OffsetEvent {
 #[account]
 pub struct SixOracleState {
     pub authority: Pubkey,
-    pub rates: Vec<FxRate>,
+    pub rates: [FxRate; 6], // Max 6 currency pairs
     pub last_updated: i64,
     pub bump: u8,
 }
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy)]
 pub struct FxRate {
     pub currency_pair: [u8; 6],
     pub rate: u64,
     pub timestamp: i64,
 }
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy)]
 pub struct CurrencyPair {
     pub code: [u8; 3],
     pub mint: Pubkey,

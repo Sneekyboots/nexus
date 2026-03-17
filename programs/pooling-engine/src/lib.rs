@@ -46,7 +46,16 @@ pub mod pooling_engine {
         ctx: Context<UpdateSixOracle>,
         rates: Vec<state::FxRate>,
     ) -> Result<()> {
-        instructions::update_six_oracle::handler(ctx, rates)
+        // Convert Vec to fixed array, padding with zeros if needed
+        let mut rate_array: [state::FxRate; 6] = [state::FxRate {
+            currency_pair: [0; 6],
+            rate: 0,
+            timestamp: 0,
+        }; 6];
+        for (i, rate) in rates.iter().enumerate().take(6) {
+            rate_array[i] = *rate;
+        }
+        instructions::update_six_oracle::handler(ctx, rate_array)
     }
 
     pub fn run_netting_cycle(ctx: Context<RunNettingCycle>) -> Result<()> {

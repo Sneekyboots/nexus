@@ -127,39 +127,39 @@ fn create_dummy_positions() -> Vec<PositionSnapshot> {
     vec![
         // Singapore: +800,000 USDC (surplus)
         PositionSnapshot {
-            entity_id: Pubkey::new_unique(),
+            entity_id: Pubkey::from([1u8; 32]),
             real_balance: 800_000_000_000, // 800k tokens with 6 decimals
             virtual_offset: 0,
             effective_position: 800_000_000_000 as i128,
             currency_code: *b"USD",
-            mint: Pubkey::new_unique(),
+            mint: Pubkey::from([2u8; 32]),
         },
         // UAE: -300,000 USDC (deficit)
         PositionSnapshot {
-            entity_id: Pubkey::new_unique(),
+            entity_id: Pubkey::from([3u8; 32]),
             real_balance: 0,
             virtual_offset: -300_000_000_000i128,
             effective_position: -300_000_000_000i128,
             currency_code: *b"USD",
-            mint: Pubkey::new_unique(),
+            mint: Pubkey::from([4u8; 32]),
         },
         // UK: +200,000 GBPC (surplus)
         PositionSnapshot {
-            entity_id: Pubkey::new_unique(),
+            entity_id: Pubkey::from([5u8; 32]),
             real_balance: 200_000_000_000,
             virtual_offset: 0,
             effective_position: 200_000_000_000 as i128,
             currency_code: *b"GBP",
-            mint: Pubkey::new_unique(),
+            mint: Pubkey::from([6u8; 32]),
         },
         // Germany: -400,000 EURC (deficit)
         PositionSnapshot {
-            entity_id: Pubkey::new_unique(),
+            entity_id: Pubkey::from([7u8; 32]),
             real_balance: 0,
             virtual_offset: -400_000_000_000i128,
             effective_position: -400_000_000_000i128,
             currency_code: *b"EUR",
-            mint: Pubkey::new_unique(),
+            mint: Pubkey::from([8u8; 32]),
         },
     ]
 }

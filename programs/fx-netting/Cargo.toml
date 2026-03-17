@@ -19,3 +19,4 @@ init-if-needed = []
 
 [dependencies]
 anchor-lang = { version = "0.31.1", features = ["init-if-needed"] }
+constant_time_eq = "=0.3.0"

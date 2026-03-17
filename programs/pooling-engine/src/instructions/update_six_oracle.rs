@@ -15,7 +15,7 @@ pub struct UpdateSixOracle<'info> {
     pub oracle_state: Account<'info, SixOracleState>,
 }
 
-pub fn handler(ctx: Context<UpdateSixOracle>, rates: Vec<FxRate>) -> Result<()> {
+pub fn handler(ctx: Context<UpdateSixOracle>, rates: [FxRate; 6]) -> Result<()> {
     let oracle = &mut ctx.accounts.oracle_state;
     let now = Clock::get()?.unix_timestamp;
 
@@ -25,7 +25,7 @@ pub fn handler(ctx: Context<UpdateSixOracle>, rates: Vec<FxRate>) -> Result<()> 
 
     emit!(OracleUpdated {
         timestamp: now,
-        rate_count: oracle.rates.len() as u32,
+        rate_count: 6, // Fixed size array
     });
 
     Ok(())

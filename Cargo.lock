@@ -409,7 +409,7 @@ dependencies = [
  "arrayvec",
  "cc",
  "cfg-if",
- "constant_time_eq",
+ "constant_time_eq 0.4.2",
  "cpufeatures",
  "digest 0.10.7",
 ]
@@ -449,7 +449,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "115e54d64eb62cdebad391c19efc9dce4981c690c85a33a12199d99bb9546fee"
 dependencies = [
  "borsh-derive 0.10.4",
- "hashbrown 0.13.2",
+ "hashbrown 0.11.2",
 ]
 
 [[package]]
@@ -641,6 +641,7 @@ name = "compliance-hook"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "constant_time_eq 0.3.0",
  "entity-registry",
 ]
 
@@ -663,6 +664,12 @@ dependencies = [
  "log",
  "web-sys",
 ]
+
+[[package]]
+name = "constant_time_eq"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f7144d30dcf0fafbce74250a3963025d8d52177934239851c917d29f1df280c2"
 
 [[package]]
 name = "constant_time_eq"
@@ -814,6 +821,7 @@ name = "entity-registry"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "constant_time_eq 0.3.0",
 ]
 
 [[package]]
@@ -869,6 +877,7 @@ name = "fx-netting"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "constant_time_eq 0.3.0",
 ]
 
 [[package]]
@@ -1249,6 +1258,7 @@ name = "pooling-engine"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "constant_time_eq 0.3.0",
 ]
 
 [[package]]
@@ -2501,6 +2511,7 @@ name = "sweep-trigger"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "constant_time_eq 0.3.0",
  "solana-program 1.18.26",
 ]
 

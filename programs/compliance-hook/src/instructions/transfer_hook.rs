@@ -4,10 +4,10 @@ use entity_registry::state::EntityRecord;
 
 #[derive(Accounts)]
 pub struct TransferHook<'info> {
-    /// Sender's token account
+    /// CHECK: Source token account is validated by compliance engine
     pub source_token_account: UncheckedAccount<'info>,
 
-    /// Receiver's token account
+    /// CHECK: Destination token account is validated by compliance engine
     pub destination_token_account: UncheckedAccount<'info>,
 
     /// The entity record for sender (from Layer 1)

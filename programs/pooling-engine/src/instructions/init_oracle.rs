@@ -23,7 +23,11 @@ pub fn handler(ctx: Context<InitOracle>) -> Result<()> {
     let now = Clock::get()?.unix_timestamp;
 
     oracle.authority = ctx.accounts.payer.key();
-    oracle.rates = Vec::new();
+    oracle.rates = [FxRate {
+        currency_pair: [0; 6],
+        rate: 0,
+        timestamp: 0,
+    }; 6];
     oracle.last_updated = now;
     oracle.bump = ctx.bumps.oracle_state;
 

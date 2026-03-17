@@ -32,7 +32,10 @@ pub fn handler(
     pool.pool_id = pool_id;
     pool.pool_admin = ctx.accounts.pool_admin.key();
     pool.member_count = 0;
-    pool.supported_currencies = Vec::new();
+    pool.supported_currencies = [CurrencyPair {
+        code: [0; 3],
+        mint: Default::default(),
+    }; 6];
     pool.net_position_usd = 0;
     pool.last_netting_timestamp = now;
     pool.netting_frequency = match netting_frequency {
