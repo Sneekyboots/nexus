@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/CompanyDashboard.css";
+import { NexusDevnetClient } from "../services/solanaClient";
 
 interface Transaction {
   id: string;
@@ -28,6 +29,8 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = ({
   onDisconnect,
   onSwitchToBank,
 }) => {
+  const client = new NexusDevnetClient();
+
   const [transactions, setTransactions] = useState<Transaction[]>([
     {
       id: "txn-001",
@@ -48,6 +51,21 @@ const CompanyDashboard: React.FC<CompanyDashboardProps> = ({
       timestamp: "2026-03-17 10:32 AM",
     },
   ]);
+
+  // Load real pool statistics from Devnet
+  useEffect(() => {
+    const loadPoolStats = async () => {
+      try {
+        const stats = await client.getPoolStatistics();
+        console.log("Pool Statistics:", stats);
+        // Stats are loaded but UI uses state transactions for demo
+      } catch (error) {
+        console.log("Using demo data - Devnet may be unavailable");
+      }
+    };
+
+    loadPoolStats();
+  }, []);
 
   const [complianceChecks, setComplianceChecks] = useState<ComplianceCheck[]>([
     {

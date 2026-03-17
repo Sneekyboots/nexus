@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/BankDashboard.css";
+import { NexusDevnetClient } from "../services/solanaClient";
 
 interface Subsidiary {
   id: string;
@@ -21,6 +22,8 @@ const BankDashboard: React.FC<BankDashboardProps> = ({
   onDisconnect,
   onSwitchToCompany,
 }) => {
+  const client = new NexusDevnetClient();
+
   const [subsidiaries, setSubsidiaries] = useState<Subsidiary[]>([
     {
       id: "sub-sg",
@@ -47,6 +50,30 @@ const BankDashboard: React.FC<BankDashboardProps> = ({
       status: "active",
     },
   ]);
+
+  // Load real entities from Devnet
+  useEffect(() => {
+    const loadEntities = async () => {
+      try {
+        const entities = await client.getEntities();
+        if (entities.length > 0) {
+          const subs: Subsidiary[] = entities.map((entity) => ({
+            id: entity.id,
+            name: entity.name,
+            jurisdiction: entity.jurisdiction,
+            balance: entity.balance,
+            currency: entity.currency,
+            status: entity.status === "kyc_verified" ? "active" : "pending",
+          }));
+          setSubsidiaries(subs);
+        }
+      } catch (error) {
+        console.log("Using demo data - Devnet may be unavailable");
+      }
+    };
+
+    loadEntities();
+  }, []);
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formData, setFormData] = useState({
