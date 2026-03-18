@@ -12,8 +12,8 @@ You just set up **institutional-grade regulated FX rate infrastructure** for the
 | ------------------------ | ------------- | ------------------------------------------------------------------------------ |
 | **SIX Certificates**     | ✅ Secured    | 3 certificate files (private-key.pem, signed-certificate.pem, certificate.p12) |
 | **Certificate Location** | ✅ Secured    | `/services/six-oracle/certs/` (permissions: 600, gitignored)                   |
-| **Certificate Password** | ✅ Stored     | `sixhackathon2026`                                                             |
-| **Team ID**              | ✅ Configured | `CH56655`                                                                      |
+| **Certificate Password** | ✅ Secured    | Set via `SIX_CERT_PASSWORD` env var — never committed                          |
+| **Team ID**              | ✅ Configured | Set via `SIX_TEAM_ID` env var — never committed                                |
 | **Required FX Pairs**    | ✅ Verified   | EUR/USD ✓, GBP/USD ✓, CHF/USD ✓, USD/AED ✓, USD/HKD ✓                          |
 | **Total Instruments**    | ✅ Available  | 882 currency pairs + precious metals                                           |
 | **mTLS Client**          | ✅ Built      | Node.js service with axios + https.Agent                                       |
@@ -107,12 +107,12 @@ You just set up **institutional-grade regulated FX rate infrastructure** for the
 ├── docs/
 │   ├── SIX_INTEGRATION.md                # ✅ Complete integration guide
 │   └── six-files/                        # ✅ SIX documentation & data
-│       ├── CH56655-api2026hack13/        # ✅ Extracted certificates
+│       ├── <your-team-id>-api2026hack13/  # ✅ Extracted certificates
 │       ├── currencies.xlsx               # ✅ 882 currency pairs
 │       └── six-api-docs.pdf              # ✅ API documentation
 │
 ├── sixapi/                               # ✅ Raw SIX files from email
-│   ├── CH56655-api2026hack13.zip
+│   ├── <your-team-id>-api2026hack13.zip
 │   ├── Cross Currency...xlsx
 │   ├── Hackathon Documentation 2026.pdf
 │   └── img-be44fb31... (architecture diagram)

@@ -1,17 +1,17 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 
-// Devnet program addresses (from DEVNET_DEPLOYMENT_COMPLETE.md)
+// Devnet program addresses — from declare_id! in each program's src/lib.rs
 const PROGRAM_IDS = {
   ENTITY_REGISTRY: new PublicKey(
-    "4eb3xfVvFtKnzDYrcaMjjZ5MESpmfyyfXVgUR2kkGjPa"
+    "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh"
   ),
-  POOLING_ENGINE: new PublicKey("67LiTobujmghnHLR812SUUD4juuA37j7ENsSMaZGjNCb"),
+  POOLING_ENGINE: new PublicKey("Cot9BDy1Aos6fga3D7ZcaYmzdXxqAJ4jHFGMHDdbq8Sz"),
   COMPLIANCE_HOOK: new PublicKey(
-    "FMjNbWedkgYovqpqHS2PojwFeVma2zVAup32j9VGVbpo"
+    "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS"
   ),
-  FX_NETTING: new PublicKey("6EU43gqjMV4WRjwwGYaxBAHcMUxUPTKUoK5wkBbb1Ayy"),
-  SWEEP_TRIGGER: new PublicKey("81CJwxHEpWiY8j9c8qfLoru3edWKF2AjVZ3cUrHYU6CZ"),
+  FX_NETTING: new PublicKey("2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7"),
+  SWEEP_TRIGGER: new PublicKey("4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq"),
 };
 
 // Devnet connection
@@ -82,49 +82,8 @@ export class NexusDevnetClient {
    * For now, we return sample data to demonstrate the flow
    */
   async getEntities(): Promise<Entity[]> {
-    // Mock data representing entities registered on-chain
-    return [
-      {
-        id: "sg-001",
-        name: "Singapore Hub",
-        jurisdiction: "SG",
-        balance: 800000,
-        currency: "USD",
-        status: "kyc_verified",
-      },
-      {
-        id: "ae-001",
-        name: "UAE Operations",
-        jurisdiction: "AE",
-        balance: -300000,
-        currency: "USD",
-        status: "kyc_verified",
-      },
-      {
-        id: "uk-001",
-        name: "UK Treasury",
-        jurisdiction: "UK",
-        balance: 200000,
-        currency: "GBP",
-        status: "kyc_verified",
-      },
-      {
-        id: "de-001",
-        name: "Germany HQ",
-        jurisdiction: "DE",
-        balance: -150000,
-        currency: "EUR",
-        status: "kyc_verified",
-      },
-      {
-        id: "ch-001",
-        name: "Switzerland Branch",
-        jurisdiction: "CH",
-        balance: 450000,
-        currency: "CHF",
-        status: "pending",
-      },
-    ];
+    // Start with empty - users register their first company
+    return [];
   }
 
   /**

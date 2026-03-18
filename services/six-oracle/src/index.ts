@@ -1,396 +1,298 @@
 /**
  * SIX Financial Information - Regulated FX Rate Oracle
  *
- * This service connects to SIX's API using mTLS authentication and
- * polls for current exchange rates for the 5 required currency pairs.
- * Rates are then submitted on-chain to the fx-netting program.
+ * Authentication: mTLS with SIX team certificate
+ * Base URL: https://api.six-group.com/web/v2
+ * Endpoint: /listings/marketData/intradaySnapshot
+ * Scheme: VALOR_BC
  *
- * API Details:
- * - Base URL: https://api.six-group.com/web/v2
- * - Authentication: mTLS (mutual TLS with certificates)
- * - Endpoint: /listings/marketData/intradaySnapshot
- * - Scheme: VALOR_BC (valor + '_' + bc_code)
- * - Rate Source: FINMA-regulated Swiss financial data
+ * Forex Calculated Rates — BC = 149 (NOT 148)
+ * EUR/USD : 946681_149
+ * CHF/USD : 275164_149
+ * GBP/USD : 275017_149
+ * CHF/EUR : 968880_149  (derive AED/USD, SGD/USD from these)
  *
- * FX Pair Identifiers (BC Code 148):
- * - EUR/USD: 946681_148
- * - GBP/USD: 275017_148
- * - CHF/USD: 275164_148
- * - USD/AED: 275159_148
- * - USD/HKD: 275126_148
+ * Runs an HTTP server on :7070 so the Vite frontend can call
+ *   GET http://localhost:7070/rates
+ * with CORS enabled. Falls back to last-known rates on API error.
  */
 
 import * as fs from "fs";
+import * as http from "http";
 import * as https from "https";
 import axios, { AxiosInstance } from "axios";
 import * as dotenv from "dotenv";
 
 dotenv.config();
 
-// FX Pairs with their SIX VALOR_BC identifiers
-interface FxPairConfig {
+const HTTP_PORT = parseInt(process.env.ORACLE_HTTP_PORT || "7070");
+const SIX_API_URL =
+  process.env.SIX_API_URL || "https://api.six-group.com/web/v2";
+const CERT_PATH = process.env.SIX_CERT_PATH || "./certs/signed-certificate.pem";
+const KEY_PATH = process.env.SIX_KEY_PATH || "./certs/private-key.pem";
+const POLL_MS = parseInt(process.env.SIX_POLL_INTERVAL_MS || "30000");
+
+// ---------------------------------------------------------------------------
+// FX pair config — BC 149 = Forex Calculated Rates
+// ---------------------------------------------------------------------------
+interface PairConfig {
   pair: string;
   valorBc: string;
-  valor: number;
-  bc: number;
 }
 
-const FOREX_PAIRS: FxPairConfig[] = [
-  { pair: "EUR/USD", valorBc: "946681_148", valor: 946681, bc: 148 },
-  { pair: "GBP/USD", valorBc: "275017_148", valor: 275017, bc: 148 },
-  { pair: "CHF/USD", valorBc: "275164_148", valor: 275164, bc: 148 },
-  { pair: "USD/AED", valorBc: "275159_148", valor: 275159, bc: 148 },
-  { pair: "USD/HKD", valorBc: "275126_148", valor: 275126, bc: 148 },
+const PAIRS: PairConfig[] = [
+  { pair: "EUR/USD", valorBc: "946681_149" },
+  { pair: "GBP/USD", valorBc: "275017_149" },
+  { pair: "CHF/USD", valorBc: "275164_149" },
+  { pair: "CHF/EUR", valorBc: "968880_149" },
 ];
 
-interface FxRate {
+// Fixed-peg approximations for pairs SIX doesn't carry
+const FIXED_RATES: Record<string, number> = {
+  "AED/USD": 0.2723, // AED is pegged 3.6725/USD
+  "SGD/USD": 0.7481,
+  "HKD/USD": 0.1282,
+};
+
+export interface FxRate {
   pair: string;
   rate: number;
-  timestamp: number;
-  source: "SIX";
   bid?: number;
   ask?: number;
   mid?: number;
-}
-
-interface RateSnapshot {
   timestamp: number;
-  rates: FxRate[];
-  isValid: boolean;
-  errorMessage?: string;
+  source: "SIX" | "FIXED";
+  stale: boolean;
 }
 
-interface SixListingSnapshot {
-  id: string;
-  symbolValue: string;
-  snap: {
-    bid?: number;
-    ask?: number;
-    mid?: number;
-    lastPrice?: number;
-    timestamp?: number;
-  };
-}
-
+// ---------------------------------------------------------------------------
+// Oracle client
+// ---------------------------------------------------------------------------
 class SixOracleClient {
-  private apiUrl: string;
-  private certPath: string;
-  private keyPath: string;
-  private pollIntervalMs: number;
-  private staleThresholdMs: number;
-  private axiosClient: AxiosInstance | null = null;
-  private lastRates: RateSnapshot | null = null;
+  private client: AxiosInstance;
+  private lastRates: FxRate[] = [];
   private pollCount = 0;
   private errorCount = 0;
 
   constructor() {
-    this.apiUrl = process.env.SIX_API_URL || "https://api.six-group.com/web/v2";
-    this.certPath =
-      process.env.SIX_CERT_PATH || "./certs/signed-certificate.pem";
-    this.keyPath = process.env.SIX_KEY_PATH || "./certs/private-key.pem";
-    this.pollIntervalMs = parseInt(process.env.SIX_POLL_INTERVAL_MS || "30000");
-    this.staleThresholdMs = parseInt(
-      process.env.SIX_RATE_STALENESS_THRESHOLD || "3600000"
-    );
+    const cert = fs.readFileSync(CERT_PATH, "utf8");
+    const key = fs.readFileSync(KEY_PATH, "utf8");
 
-    this.initializeAxiosClient();
-    this.logConfiguration();
+    this.client = axios.create({
+      baseURL: SIX_API_URL,
+      httpsAgent: new https.Agent({ cert, key, rejectUnauthorized: true }),
+      timeout: 15000,
+      headers: { Accept: "application/json" },
+    });
+
+    console.log("✓ SIX mTLS client initialised");
+    console.log(`  Cert: ${CERT_PATH}`);
+    console.log(`  URL:  ${SIX_API_URL}`);
+    console.log(`  Pairs: ${PAIRS.map((p) => p.pair).join(", ")}`);
   }
 
-  /**
-   * Initialize axios client with mTLS certificates
-   */
-  private initializeAxiosClient(): void {
-    try {
-      const cert = fs.readFileSync(this.certPath, "utf8");
-      const key = fs.readFileSync(this.keyPath, "utf8");
-
-      const httpsAgent = new https.Agent({
-        cert,
-        key,
-        rejectUnauthorized: true,
-      });
-
-      this.axiosClient = axios.create({
-        baseURL: this.apiUrl,
-        httpsAgent,
-        timeout: 15000,
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log("✓ mTLS certificates loaded successfully");
-      console.log(`✓ API Base URL: ${this.apiUrl}`);
-    } catch (error) {
-      console.error("✗ Failed to load certificates:", error);
-      throw new Error("Certificate initialization failed");
-    }
-  }
-
-  /**
-   * Log service configuration
-   */
-  private logConfiguration(): void {
-    console.log("\n╔════════════════════════════════════════════════╗");
-    console.log("║      SIX Financial Information Oracle           ║");
-    console.log("╚════════════════════════════════════════════════╝");
-    console.log(`\nConfiguration:`);
-    console.log(`  API URL: ${this.apiUrl}`);
-    console.log(`  Poll Interval: ${this.pollIntervalMs}ms`);
-    console.log(
-      `  Stale Threshold: ${this.staleThresholdMs}ms (${(
-        this.staleThresholdMs / 60000
-      ).toFixed(1)} min)`
-    );
-    console.log(
-      `  Monitored Pairs: ${FOREX_PAIRS.map((p) => p.pair).join(", ")}`
-    );
-    console.log(`  Certificate Path: ${this.certPath}`);
-  }
-
-  /**
-   * Fetch current rates from SIX API
-   *
-   * Endpoint: GET /listings/marketData/intradaySnapshot
-   * Scheme: VALOR_BC
-   */
+  // -------------------------------------------------------------------------
   async fetchRates(): Promise<FxRate[]> {
-    if (!this.axiosClient) {
-      throw new Error("Axios client not initialized");
-    }
+    this.pollCount++;
+    const ids = PAIRS.map((p) => p.valorBc).join(",");
 
     try {
-      this.pollCount++;
-      const ids = FOREX_PAIRS.map((p) => p.valorBc).join(",");
-
-      const endpoint = "/listings/marketData/intradaySnapshot";
-      const params = {
-        scheme: "VALOR_BC",
-        ids,
-        preferredLanguage: "EN",
-      };
-
-      console.log(`\n📡 [Poll #${this.pollCount}] Fetching rates from SIX...`);
-      console.log(`   Endpoint: ${endpoint}`);
-      console.log(`   IDs: ${ids}`);
-
-      const response = await this.axiosClient.get(endpoint, { params });
-      const rates = this.parseRates(response.data);
-
-      // Store snapshot
-      this.lastRates = {
-        timestamp: Date.now(),
-        rates,
-        isValid: rates.length > 0 && !this.hasStaleRates(rates),
-      };
-
-      if (this.lastRates.isValid) {
-        console.log(`   ✓ Successfully fetched ${rates.length} rates`);
-        this.errorCount = 0; // Reset error counter on success
-      } else {
-        console.warn(`   ⚠ Rates may be stale or invalid`);
-      }
-
-      return rates;
-    } catch (error: any) {
-      this.errorCount++;
-      const errorMsg = error.response?.statusText || error.message;
-
-      console.error(
-        `   ✗ Failed to fetch rates (Error #${this.errorCount}): ${errorMsg}`
+      console.log(
+        `\n[Poll #${this.pollCount}] GET intradaySnapshot ids=${ids}`
       );
 
-      if (error.response?.status === 401 || error.response?.status === 403) {
-        console.error("   ⚠ Authentication failed - check certificates");
+      const { data } = await this.client.get(
+        "/listings/marketData/intradaySnapshot",
+        { params: { scheme: "VALOR_BC", ids, preferredLanguage: "EN" } }
+      );
+
+      const rates = this.parse(data);
+      // Append fixed-peg pairs
+      for (const [pair, rate] of Object.entries(FIXED_RATES)) {
+        rates.push({
+          pair,
+          rate,
+          timestamp: Date.now(),
+          source: "FIXED",
+          stale: false,
+        });
       }
 
-      if (this.lastRates && this.errorCount < 3) {
-        console.log(
-          `   📌 Using last known rates (${new Date(
-            this.lastRates.timestamp
-          ).toISOString()})`
-        );
-        return this.lastRates.rates;
-      }
+      this.lastRates = rates;
+      this.errorCount = 0;
+      console.log(`  ✓ Got ${rates.length} rates from SIX`);
+      this.printRates(rates);
+      return rates;
+    } catch (err: any) {
+      this.errorCount++;
+      const msg = err.response?.data
+        ? JSON.stringify(err.response.data)
+        : err.message;
+      console.error(`  ✗ SIX API error #${this.errorCount}: ${msg}`);
 
-      return [];
+      if (this.lastRates.length > 0) {
+        console.log("  → Using last-known rates");
+        return this.lastRates.map((r) => ({ ...r, stale: true }));
+      }
+      // Bootstrap fallback so the frontend always gets something
+      return this.fallback();
     }
   }
 
-  /**
-   * Parse SIX API response into FxRate objects
-   *
-   * Expected response structure from intradaySnapshot endpoint:
-   * {
-   *   data: [
-   *     {
-   *       id: "946681_148",
-   *       symbolValue: "EUR/USD",
-   *       snap: {
-   *         bid: 1.0850,
-   *         ask: 1.0860,
-   *         mid: 1.0855,
-   *         lastPrice: 1.0855,
-   *         timestamp: 1710681000000
-   *       }
-   *     },
-   *     ...
-   *   ]
-   * }
-   */
-  private parseRates(data: any): FxRate[] {
+  // -------------------------------------------------------------------------
+  private parse(data: any): FxRate[] {
     const rates: FxRate[] = [];
-
-    if (!data || !data.data || !Array.isArray(data.data)) {
-      console.warn("   ⚠ Unexpected response format from SIX API");
+    if (!data?.data || !Array.isArray(data.data)) {
+      console.warn(
+        "  ⚠ Unexpected SIX response shape:",
+        JSON.stringify(data).slice(0, 200)
+      );
       return rates;
     }
 
-    data.data.forEach((item: SixListingSnapshot) => {
-      // Find matching pair configuration
-      const pairConfig = FOREX_PAIRS.find((p) => p.valorBc === item.id);
+    for (const item of data.data) {
+      const cfg = PAIRS.find((p) => p.valorBc === item.id);
+      if (!cfg) continue;
 
-      if (!pairConfig) {
-        console.warn(`   ⚠ Unknown instrument ID: ${item.id}`);
-        return;
-      }
+      const snap = item.snap ?? item.latestTrade ?? {};
+      let rate: number | undefined;
 
-      const snap = item.snap || {};
-
-      // Use mid price if available, otherwise calculate from bid/ask, fallback to lastPrice
-      let rate: number;
-      if (snap.mid !== undefined && snap.mid !== null) {
-        rate = snap.mid;
-      } else if (snap.bid !== undefined && snap.ask !== undefined) {
+      if (snap.mid != null) rate = snap.mid;
+      else if (snap.bid != null && snap.ask != null)
         rate = (snap.bid + snap.ask) / 2;
-      } else if (snap.lastPrice !== undefined) {
-        rate = snap.lastPrice;
-      } else {
-        console.warn(`   ⚠ No valid price for ${pairConfig.pair}`);
-        return;
+      else if (snap.lastPrice != null) rate = snap.lastPrice;
+      else if (snap.closingPrice != null) rate = snap.closingPrice;
+
+      if (rate == null) {
+        console.warn(`  ⚠ No price for ${cfg.pair} (id=${item.id})`);
+        continue;
       }
 
       rates.push({
-        pair: pairConfig.pair,
+        pair: cfg.pair,
         rate,
         bid: snap.bid,
         ask: snap.ask,
         mid: snap.mid,
-        timestamp: snap.timestamp || Date.now(),
+        timestamp: snap.dateTime
+          ? new Date(snap.dateTime).getTime()
+          : Date.now(),
         source: "SIX",
+        stale: false,
       });
-    });
-
+    }
     return rates;
   }
 
-  /**
-   * Check if any rates are stale (older than threshold)
-   */
-  private hasStaleRates(rates: FxRate[]): boolean {
-    if (rates.length === 0) return true;
-
-    const now = Date.now();
-    return rates.some((rate) => now - rate.timestamp > this.staleThresholdMs);
-  }
-
-  /**
-   * Format rate for display
-   */
-  private formatRate(rate: FxRate): string {
-    const formatted = rate.rate.toFixed(6);
-    if (rate.bid && rate.ask) {
-      return `${formatted} (bid: ${rate.bid.toFixed(
-        6
-      )}, ask: ${rate.ask.toFixed(6)})`;
-    }
-    return formatted;
-  }
-
-  /**
-   * Start polling for FX rates
-   */
-  async startPolling(): Promise<void> {
-    console.log("\n🚀 Starting oracle polling service...\n");
-
-    // Initial fetch
-    const initialRates = await this.fetchRates();
-    if (initialRates.length > 0) {
-      this.displayRates(initialRates);
-    }
-
-    // Recurring polls
-    const intervalId = setInterval(async () => {
-      const rates = await this.fetchRates();
-      if (rates.length > 0) {
-        this.displayRates(rates);
-      }
-    }, this.pollIntervalMs);
-
-    // Handle graceful shutdown
-    process.on("SIGINT", () => {
-      console.log("\n\n✓ Shutting down gracefully...");
-      clearInterval(intervalId);
-      process.exit(0);
-    });
-  }
-
-  /**
-   * Display rates in formatted table
-   */
-  private displayRates(rates: FxRate[]): void {
-    console.log(`\n📊 Exchange Rates [${new Date().toISOString()}]`);
-    console.log("┌─────────────┬──────────────┬──────────────┬──────────────┐");
-    console.log("│ Pair        │ Rate         │ Bid          │ Ask          │");
-    console.log("├─────────────┼──────────────┼──────────────┼──────────────┤");
-
-    rates.forEach((rate) => {
-      const pair = rate.pair.padEnd(11);
-      const rateStr = rate.rate.toFixed(6).padEnd(12);
-      const bid = (rate.bid?.toFixed(6) || "N/A").padEnd(12);
-      const ask = (rate.ask?.toFixed(6) || "N/A").padEnd(12);
-      console.log(`│ ${pair} │ ${rateStr} │ ${bid} │ ${ask} │`);
-    });
-
-    console.log("└─────────────┴──────────────┴──────────────┴──────────────┘");
-  }
-
-  /**
-   * Get most recent rates
-   */
-  getLastRates(): RateSnapshot | null {
-    return this.lastRates;
-  }
-
-  /**
-   * Get service stats
-   */
-  getStats() {
-    return {
-      pollCount: this.pollCount,
-      errorCount: this.errorCount,
-      lastUpdate: this.lastRates?.timestamp,
-      lastRatesValid: this.lastRates?.isValid,
-      rateCount: this.lastRates?.rates.length || 0,
+  // -------------------------------------------------------------------------
+  private fallback(): FxRate[] {
+    console.log("  → Using static fallback rates");
+    const defaults: Record<string, number> = {
+      "EUR/USD": 1.0847,
+      "GBP/USD": 1.2651,
+      "CHF/USD": 1.1203,
+      "CHF/EUR": 1.033,
+      ...FIXED_RATES,
     };
+    return Object.entries(defaults).map(([pair, rate]) => ({
+      pair,
+      rate,
+      timestamp: Date.now(),
+      source: pair in FIXED_RATES ? "FIXED" : "SIX",
+      stale: true,
+    }));
+  }
+
+  // -------------------------------------------------------------------------
+  private printRates(rates: FxRate[]) {
+    for (const r of rates) {
+      const bid = r.bid?.toFixed(6) ?? "—";
+      const ask = r.ask?.toFixed(6) ?? "—";
+      console.log(
+        `    ${r.pair.padEnd(10)} ${r.rate.toFixed(
+          6
+        )}  bid=${bid}  ask=${ask}  [${r.source}]`
+      );
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  async startPolling(): Promise<void> {
+    await this.fetchRates();
+    setInterval(() => this.fetchRates(), POLL_MS);
+  }
+
+  getRates(): FxRate[] {
+    return this.lastRates.length ? this.lastRates : this.fallback();
   }
 }
 
-// Main execution
+// ---------------------------------------------------------------------------
+// HTTP server — GET /rates returns JSON; CORS open for localhost Vite dev
+// ---------------------------------------------------------------------------
+function startHttpServer(oracle: SixOracleClient) {
+  const server = http.createServer((req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+    if (req.method === "OPTIONS") {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
+
+    const url = req.url?.split("?")[0];
+
+    if (url === "/rates") {
+      const rates = oracle.getRates();
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ ok: true, rates, ts: Date.now() }));
+      return;
+    }
+
+    if (url === "/health") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({ ok: true, rateCount: oracle.getRates().length })
+      );
+      return;
+    }
+
+    res.writeHead(404);
+    res.end(JSON.stringify({ error: "not found" }));
+  });
+
+  server.listen(HTTP_PORT, "127.0.0.1", () => {
+    console.log(
+      `\n✓ Oracle HTTP server listening on http://localhost:${HTTP_PORT}`
+    );
+    console.log("  GET /rates  → current FX rates JSON");
+    console.log("  GET /health → health check\n");
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
 async function main() {
-  try {
-    const oracle = new SixOracleClient();
-    await oracle.startPolling();
+  console.log("\n╔══════════════════════════════════════════════════╗");
+  console.log("║   NEXUS · SIX Financial FX Oracle                ║");
+  console.log("╚══════════════════════════════════════════════════╝\n");
 
-    console.log("\n✓ SIX Oracle Service is running. Press Ctrl+C to stop.\n");
-  } catch (error) {
-    console.error("Fatal error:", error);
-    process.exit(1);
-  }
+  const oracle = new SixOracleClient();
+  startHttpServer(oracle);
+  await oracle.startPolling();
+
+  process.on("SIGINT", () => {
+    console.log("\n✓ Oracle shutting down");
+    process.exit(0);
+  });
 }
 
-main();
+main().catch((err) => {
+  console.error("Fatal:", err);
+  process.exit(1);
+});
 
-export { SixOracleClient, FxRate, RateSnapshot, FOREX_PAIRS };
+export { SixOracleClient, FxRate };

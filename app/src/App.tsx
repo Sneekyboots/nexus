@@ -1,49 +1,65 @@
-import React, { useState } from "react";
-import "./App.css";
-import LandingPage from "./pages/LandingPage";
-import BankDashboard from "./pages/BankDashboard";
-import CompanyDashboard from "./pages/CompanyDashboard";
+/* ============================================================
+   App.tsx — React Router routes
+   ============================================================ */
 
-type AppMode = "landing" | "bank" | "company";
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./hooks/useAuth";
+import AppLayout from "./layouts/AppLayout";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+import AllEntities from "./pages/entities/AllEntities";
+import RegisterEntity from "./pages/entities/RegisterEntity";
+import KycManagement from "./pages/entities/KycManagement";
+import MandateControls from "./pages/entities/MandateControls";
+import PoolOverview from "./pages/pools/PoolOverview";
+import RunCycle from "./pages/netting/RunCycle";
+import CycleHistory from "./pages/netting/CycleHistory";
+import InitiateTransfer from "./pages/transfers/InitiateTransfer";
+import LiveEventFeed from "./pages/compliance/LiveEventFeed";
+import KytAlerts from "./pages/compliance/KytAlerts";
+import FxRates from "./pages/fx/FxRates";
+import ActiveLoans from "./pages/loans/ActiveLoans";
+import AuditExport from "./pages/reports/AuditExport";
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { isLoggedIn } = useAuth();
+  if (!isLoggedIn) return <Navigate to="/login" replace />;
+  return <>{children}</>;
+};
 
 const App: React.FC = () => {
-  const [mode, setMode] = useState<AppMode>("landing");
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState<string | null>(null);
-
-  const handleConnectWallet = () => {
-    // Simulate wallet connection
-    const mockAddress =
-      "0x" + Math.random().toString(16).slice(2, 10).toUpperCase();
-    setWalletConnected(true);
-    setWalletAddress(mockAddress);
-    setMode("bank");
-  };
-
-  const handleDisconnect = () => {
-    setWalletConnected(false);
-    setWalletAddress(null);
-    setMode("landing");
-  };
-
   return (
-    <div className="app">
-      {mode === "landing" && <LandingPage onConnect={handleConnectWallet} />}
-      {mode === "bank" && (
-        <BankDashboard
-          walletAddress={walletAddress}
-          onDisconnect={handleDisconnect}
-          onSwitchToCompany={() => setMode("company")}
-        />
-      )}
-      {mode === "company" && (
-        <CompanyDashboard
-          walletAddress={walletAddress}
-          onDisconnect={handleDisconnect}
-          onSwitchToBank={() => setMode("bank")}
-        />
-      )}
-    </div>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        element={
+          <ProtectedRoute>
+            <AppLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="/" element={<HomePage />} />
+        <Route path="/entities" element={<AllEntities />} />
+        <Route path="/entities/register" element={<RegisterEntity />} />
+        <Route path="/entities/kyc" element={<KycManagement />} />
+        <Route path="/entities/mandates" element={<MandateControls />} />
+        <Route path="/pools" element={<PoolOverview />} />
+        <Route path="/netting" element={<RunCycle />} />
+        <Route path="/netting/run" element={<RunCycle />} />
+        <Route path="/netting/history" element={<CycleHistory />} />
+        <Route path="/transfers" element={<InitiateTransfer />} />
+        <Route path="/compliance" element={<LiveEventFeed />} />
+        <Route path="/compliance/kyt" element={<KytAlerts />} />
+        <Route path="/fx" element={<FxRates />} />
+        <Route path="/fx-rates" element={<FxRates />} />
+        <Route path="/loans" element={<ActiveLoans />} />
+        <Route path="/reports" element={<AuditExport />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 };
 

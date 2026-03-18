@@ -44,3 +44,7 @@ services/six-oracle/.env
 *.key
 *password*
 *.pfx
+
+# Build output
+app/dist/
+dist/

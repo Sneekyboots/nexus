@@ -102,8 +102,8 @@ Location: services/six-oracle/certs/
 ├── signed-certificate.pem (client certificate)
 └── certificate.p12 (PKCS#12 format)
 
-Team ID: CH56655
-Certificate Password: sixhackathon2026
+Team ID: your_six_team_id_here
+Certificate Password: (set via SIX_CERT_PASSWORD env var — never committed)
 ```
 
 **Real API Implementation Code:**

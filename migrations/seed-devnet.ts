@@ -34,61 +34,8 @@ interface TestEntity {
   vaultKeypair: Keypair;
 }
 
-// Test entities matching Phase 1 algorithm tests
-const TEST_ENTITIES: TestEntity[] = [
-  {
-    name: "Singapore",
-    jurisdiction: 0, // FINMA
-    currency: "USDC",
-    initialBalance: BigInt(800_000_000_000), // 800 billion (positive = surplus)
-    maxSingleTransfer: BigInt(100_000_000_000),
-    maxDailyAggregate: BigInt(500_000_000_000),
-    entityId: Buffer.from([
-      1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0,
-    ]),
-    vaultKeypair: Keypair.generate(),
-  },
-  {
-    name: "UAE",
-    jurisdiction: 4, // ADGM
-    currency: "USDC",
-    initialBalance: BigInt(0), // 0 real, will have -300B virtual offset (deficit)
-    maxSingleTransfer: BigInt(100_000_000_000),
-    maxDailyAggregate: BigInt(500_000_000_000),
-    entityId: Buffer.from([
-      2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0,
-    ]),
-    vaultKeypair: Keypair.generate(),
-  },
-  {
-    name: "UK",
-    jurisdiction: 3, // FCA
-    currency: "GBP",
-    initialBalance: BigInt(200_000_000_000), // 200 billion (positive = surplus)
-    maxSingleTransfer: BigInt(100_000_000_000),
-    maxDailyAggregate: BigInt(500_000_000_000),
-    entityId: Buffer.from([
-      3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0,
-    ]),
-    vaultKeypair: Keypair.generate(),
-  },
-  {
-    name: "Germany",
-    jurisdiction: 1, // MICA
-    currency: "EUR",
-    initialBalance: BigInt(0), // 0 real, will have -400B virtual offset (deficit)
-    maxSingleTransfer: BigInt(100_000_000_000),
-    maxDailyAggregate: BigInt(500_000_000_000),
-    entityId: Buffer.from([
-      4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0,
-    ]),
-    vaultKeypair: Keypair.generate(),
-  },
-];
+// Start with empty - users register their first company through the UI
+const TEST_ENTITIES: TestEntity[] = [];
 
 const JURISDICTION_NAMES: Record<number, string> = {
   0: "FINMA (Switzerland)",

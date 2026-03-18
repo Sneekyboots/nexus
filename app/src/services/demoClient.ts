@@ -14,17 +14,17 @@
 import * as anchor from "@coral-xyz/anchor";
 import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 
-// Devnet program addresses
+// Devnet program addresses — from declare_id! in each program's src/lib.rs
 const PROGRAM_IDS = {
   ENTITY_REGISTRY: new PublicKey(
-    "4eb3xfVvFtKnzDYrcaMjjZ5MESpmfyyfXVgUR2kkGjPa"
+    "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh"
   ),
-  POOLING_ENGINE: new PublicKey("67LiTobujmghnHLR812SUUD4juuA37j7ENsSMaZGjNCb"),
+  POOLING_ENGINE: new PublicKey("Cot9BDy1Aos6fga3D7ZcaYmzdXxqAJ4jHFGMHDdbq8Sz"),
   COMPLIANCE_HOOK: new PublicKey(
-    "FMjNbWedkgYovqpqHS2PojwFeVma2zVAup32j9VGVbpo"
+    "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS"
   ),
-  FX_NETTING: new PublicKey("6EU43gqjMV4WRjwwGYaxBAHcMUxUPTKUoK5wkBbb1Ayy"),
-  SWEEP_TRIGGER: new PublicKey("81CJwxHEpWiY8j9c8qfLoru3edWKF2AjVZ3cUrHYU6CZ"),
+  FX_NETTING: new PublicKey("2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7"),
+  SWEEP_TRIGGER: new PublicKey("4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq"),
 };
 
 const DEVNET_RPC = "https://api.devnet.solana.com";
@@ -49,30 +49,8 @@ export class EntityRegistryClient {
       mandate_limit: number;
     }>
   > {
-    // Mock data - in production, would query RPC for EntityAccount PDAs
-    return [
-      {
-        id: "sg-001",
-        name: "Singapore Hub",
-        jurisdiction: "SG",
-        kyc_status: "verified",
-        mandate_limit: 1000000,
-      },
-      {
-        id: "ae-001",
-        name: "UAE Operations",
-        jurisdiction: "AE",
-        kyc_status: "verified",
-        mandate_limit: 500000,
-      },
-      {
-        id: "uk-001",
-        name: "UK Treasury",
-        jurisdiction: "UK",
-        kyc_status: "verified",
-        mandate_limit: 750000,
-      },
-    ];
+    // Start with empty - users register their first company
+    return [];
   }
 
   /**
