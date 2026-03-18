@@ -58,7 +58,9 @@ pub mod pooling_engine {
         instructions::update_six_oracle::handler(ctx, rate_array)
     }
 
-    pub fn run_netting_cycle(ctx: Context<RunNettingCycle>) -> Result<()> {
+    pub fn run_netting_cycle<'info>(
+        ctx: Context<'_, '_, '_, 'info, RunNettingCycle<'info>>,
+    ) -> Result<()> {
         instructions::run_netting_cycle::handler(ctx)
     }
 }

@@ -1,5 +1,4 @@
 use crate::state::*;
-use crate::state::*;
 use anchor_lang::prelude::*;
 
 /// Position snapshot for a single entity
@@ -11,6 +10,7 @@ pub struct PositionSnapshot {
     pub effective_position: i128,
     pub currency_code: [u8; 3],
     pub mint: Pubkey,
+    pub last_updated: i64,
 }
 
 /// Offset match result
@@ -370,8 +370,11 @@ impl NettingAlgorithm {
 
 impl PositionSnapshot {
     pub fn last_updated_timestamp(&self) -> Option<i64> {
-        // Would be stored in the actual PDA
-        None
+        if self.last_updated > 0 {
+            Some(self.last_updated)
+        } else {
+            None
+        }
     }
 }
 

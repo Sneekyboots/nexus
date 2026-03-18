@@ -13,6 +13,22 @@ declare_id!("4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq");
 pub mod sweep_trigger {
     use super::*;
 
+    pub fn init_sweep_config(
+        ctx: Context<InitSweepConfig>,
+        pool_id: [u8; 32],
+        sweep_threshold_usd: u64,
+        max_intercompany_loan_usd: u64,
+        base_interest_rate_bps: u32,
+    ) -> Result<()> {
+        instructions::init_sweep_config::handler(
+            ctx,
+            pool_id,
+            sweep_threshold_usd,
+            max_intercompany_loan_usd,
+            base_interest_rate_bps,
+        )
+    }
+
     pub fn detect_sweep_trigger(
         ctx: Context<DetectSweepTrigger>,
         pool_id: [u8; 32],

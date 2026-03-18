@@ -1,12 +1,11 @@
 use crate::errors::*;
-use crate::errors::*;
 use crate::state::*;
 use anchor_lang::prelude::*;
 
 /// ExecuteSweep instruction
 /// Creates intercompany loans to settle outstanding imbalances
 #[derive(Accounts)]
-#[instruction(pool_id: [u8; 32])]
+#[instruction(pool_id: [u8; 32], sweep_id: [u8; 32])]
 pub struct ExecuteSweep<'info> {
     #[account(mut)]
     pub pool_admin: Signer<'info>,
@@ -17,6 +16,16 @@ pub struct ExecuteSweep<'info> {
         bump = sweep_config.bump
     )]
     pub sweep_config: Account<'info, SweepConfig>,
+
+    /// The IntercompanyLoan PDA — created here, persisted on-chain
+    #[account(
+        init,
+        payer = pool_admin,
+        space = 8 + 32 + 32 + 32 + 32 + 8 + 3 + 4 + 8 + 8 + 8 + 8 + 8 + 1 + 32 + 1,
+        seeds = [b"loan", sweep_id.as_ref()],
+        bump
+    )]
+    pub loan: Account<'info, IntercompanyLoan>,
 
     pub system_program: Program<'info, System>,
 }
@@ -31,6 +40,7 @@ pub fn handler(
     loan_term_days: u32,
 ) -> Result<()> {
     let config = &mut ctx.accounts.sweep_config;
+    let loan = &mut ctx.accounts.loan;
     let now = Clock::get()?.unix_timestamp;
 
     // Validate inputs
@@ -46,26 +56,24 @@ pub fn handler(
 
     let maturity_timestamp = now + (loan_term_days as i64 * 86400);
 
-    // Create loan record (would be PDA in real implementation)
-    let loan = IntercompanyLoan {
-        loan_id: sweep_id,
-        sweep_id,
-        lender_entity,
-        borrower_entity,
-        principal: loan_amount_usd,
-        currency_code: *b"USD",
-        interest_rate_bps: config.base_interest_rate_bps,
-        origination_timestamp: now,
-        maturity_timestamp,
-        outstanding_balance: loan_amount_usd,
-        accrued_interest: 0,
-        paid_back: 0,
-        status: LoanStatus::Active,
-        compliance_cert: Pubkey::default(), // Would be set by compliance layer
-        bump: 0,
-    };
+    // Persist loan record to PDA on-chain
+    loan.loan_id = sweep_id;
+    loan.sweep_id = sweep_id;
+    loan.lender_entity = lender_entity;
+    loan.borrower_entity = borrower_entity;
+    loan.principal = loan_amount_usd;
+    loan.currency_code = *b"USD";
+    loan.interest_rate_bps = config.base_interest_rate_bps;
+    loan.origination_timestamp = now;
+    loan.maturity_timestamp = maturity_timestamp;
+    loan.outstanding_balance = loan_amount_usd;
+    loan.accrued_interest = 0;
+    loan.paid_back = 0;
+    loan.status = LoanStatus::Active;
+    loan.compliance_cert = Pubkey::default();
+    loan.bump = ctx.bumps.loan;
 
-    // Update configuration
+    // Update sweep config totals
     config.total_loans_issued = config.total_loans_issued.saturating_add(loan_amount_usd);
     config.last_sweep_timestamp = now;
 

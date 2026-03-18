@@ -1258,7 +1258,11 @@ name = "pooling-engine"
 version = "0.1.0"
 dependencies = [
  "anchor-lang",
+ "compliance-hook",
  "constant_time_eq 0.3.0",
+ "entity-registry",
+ "fx-netting",
+ "sweep-trigger",
 ]
 
 [[package]]
