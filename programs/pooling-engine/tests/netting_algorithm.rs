@@ -23,6 +23,7 @@ mod netting_algorithm_tests {
                 effective_position: 800_000_000_000 as i128,
                 currency_code: *b"USD",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
             PositionSnapshot {
                 entity_id: Pubkey::new_unique(), // UAE
@@ -31,6 +32,7 @@ mod netting_algorithm_tests {
                 effective_position: -300_000_000_000i128,
                 currency_code: *b"USD",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
             PositionSnapshot {
                 entity_id: Pubkey::new_unique(), // UK
@@ -39,6 +41,7 @@ mod netting_algorithm_tests {
                 effective_position: 200_000_000_000 as i128,
                 currency_code: *b"GBP",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
             PositionSnapshot {
                 entity_id: Pubkey::new_unique(), // Germany
@@ -47,6 +50,7 @@ mod netting_algorithm_tests {
                 effective_position: -400_000_000_000i128,
                 currency_code: *b"EUR",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
         ];
 
@@ -130,6 +134,7 @@ mod netting_algorithm_tests {
                 effective_position: 1000,
                 currency_code: *b"USD",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
             PositionSnapshot {
                 entity_id: Pubkey::new_unique(),
@@ -138,6 +143,7 @@ mod netting_algorithm_tests {
                 effective_position: 500,
                 currency_code: *b"USD",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
             PositionSnapshot {
                 entity_id: Pubkey::new_unique(),
@@ -146,6 +152,7 @@ mod netting_algorithm_tests {
                 effective_position: -600,
                 currency_code: *b"USD",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
             PositionSnapshot {
                 entity_id: Pubkey::new_unique(),
@@ -154,6 +161,7 @@ mod netting_algorithm_tests {
                 effective_position: -400,
                 currency_code: *b"USD",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
         ];
 
@@ -205,6 +213,7 @@ mod netting_algorithm_tests {
                 effective_position: 800_000_000_000 as i128,
                 currency_code: *b"USD",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
             PositionSnapshot {
                 entity_id: uae_id,
@@ -213,6 +222,7 @@ mod netting_algorithm_tests {
                 effective_position: -300_000_000_000i128,
                 currency_code: *b"USD",
                 mint: Pubkey::new_unique(),
+                last_updated: 0,
             },
         ];
 
