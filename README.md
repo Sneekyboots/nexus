@@ -1,6 +1,6 @@
 # NEXUS Protocol — Cross-Border Stablecoin Treasury on Solana
 
-**Status:** 5 programs live on Solana Devnet · 25/25 tests passing · Live SIX FX rates on-chain · Dashboard at `localhost:5173`
+**Status:** 5 programs live on Solana Devnet · 25/25 tests passing · Live entity registration & KYC verified · Dashboard at `localhost:5173`
 
 ---
 
@@ -26,6 +26,25 @@ When Signature Bank collapsed in March 2023 it took the primary USD corresponden
 | Identity verification                  | Siloed per institution            | Microsoft Entra B2C OIDC adapter         |
 | Transaction monitoring                 | Separate Chainalysis integration  | KYT powered by Chainalysis (built-in)    |
 | Live regulated FX rates                | Bloomberg terminal / FX desk      | SIX Financial API via mTLS, on-chain     |
+
+---
+
+## Live On-Chain Verification
+
+### Successfully Verified on Solana Devnet (March 19, 2026)
+
+1. **Entity Registered:** `TechCorp Singapore Pte Ltd`
+
+   - Transaction: https://explorer.solana.com/tx/2okTXFFpLX5xuVvhv44zWcKS4xrxnoRDBxTwAgbxABZEHgG1kQNcoZwrpJKEah3yNT4oCknDmx6JruCG5Kqqox3o?cluster=devnet
+
+2. **KYC Verified:** Status changed from Pending (0) to Verified (1)
+
+   - Transaction: https://explorer.solana.com/tx/3SHzmEur24hTCbBXeCs5shJ8VqKH6kQ8Cro7mZZUkxqeQCXd4G9ghXBK9Hpvd51i1pR9aPvxCjvYS2thfWs3bZ3j?cluster=devnet
+
+3. **Account PDA:** `Gs8VEPPK7SqKCwFkEYcjUj7N1pbyW7RL4LZPpDfK8sbx`
+   - Jurisdiction: ADGM (4)
+   - KYC Status: Verified (1)
+   - Data Size: 275 bytes
 
 ---
 
@@ -61,8 +80,8 @@ When Signature Bank collapsed in March 2023 it took the primary USD corresponden
 │                                                                     │
 │  ┌──────────────────────────────────────────────────────────────┐  │
 │  │  SIX Financial Oracle (mTLS)                                 │  │
-│  │  EUR/USD · GBP/USD · CHF/USD · SGD/USD · AED/USD             │  │
-│  │  BC=148 · VALOR_BC scheme · 30s refresh · on-chain           │  │
+│  │  EUR/USD · GBP/USD · CHF/USD · SGD/USD · AED/USD            │  │
+│  │  BC=148 · VALOR_BC scheme · 30s refresh · on-chain          │  │
 │  └──────────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -71,9 +90,9 @@ When Signature Bank collapsed in March 2023 it took the primary USD corresponden
 
 ## Deployed Program IDs
 
-### Devnet (live)
+### Devnet (LIVE - All Programs Deployed & Verified)
 
-| Layer | Program         | Program ID                                     | Explorer                                                                                          |
+| Layer | Program         | Program ID                                     | Explorer Link                                                                                     |
 | ----- | --------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | L1    | entity-registry | `HGng9ZUzYAZjXZRiBK4SZMBvGQr4AQ5HQdvFrewjoYvH` | [Solscan](https://solscan.io/account/HGng9ZUzYAZjXZRiBK4SZMBvGQr4AQ5HQdvFrewjoYvH?cluster=devnet) |
 | L2    | pooling-engine  | `CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk` | [Solscan](https://solscan.io/account/CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk?cluster=devnet) |
@@ -81,9 +100,9 @@ When Signature Bank collapsed in March 2023 it took the primary USD corresponden
 | L4    | fx-netting      | `4qmYB7nEG4rebpXhaffnH5LvemGcxGVvN5LGjg4a78ej` | [Solscan](https://solscan.io/account/4qmYB7nEG4rebpXhaffnH5LvemGcxGVvN5LGjg4a78ej?cluster=devnet) |
 | L5    | sweep-trigger   | `2p4tp4WxiaD3jNaBeVGJB9gwaBsfm7kSeLfeeVKz5DSk` | [Solscan](https://solscan.io/account/2p4tp4WxiaD3jNaBeVGJB9gwaBsfm7kSeLfeeVKz5DSk?cluster=devnet) |
 
-**SIX Oracle PDA (devnet):** `EjfuHxMXdqijV2KE4DjHPawgTJJv6W4ZyeczeWfE47Dd`
-**Authority wallet:** `A7eV2cdTrH56ktXH3ZaSk4kbsF2aguHvggeszcAUXc5o`
-**Deployed:** March 19 2026 · Slots 449483757–449484093
+**Authority wallet:** `A7eV2cdTrH56ktXH3ZaSk4kbsF2aguHvggeszcAUXc5o` (22.79 SOL)
+
+**Deployed:** March 19, 2026
 
 ### Surfpool (local simnet — tests run here)
 
@@ -170,41 +189,15 @@ NEXUS uses **real regulated FX rates** from SIX Group — the same data provider
 
 **BC=148** = Forex Spot Rates (confirmed live). Rates encoded as 9 decimal place u64 integers on-chain.
 
-### Two oracle implementations
-
-**`services/six-oracle/oracle.py`** — Python HTTP sidecar (stdlib only, no pip installs)
-
-- Fetches all 5 pairs via mTLS every 30s
-- Serves `GET /rates` and `GET /health` on `http://localhost:7070`
-- Frontend reads from this endpoint; falls back to seed rates with `stale: true` if unreachable
-
-**`scripts/six_oracle_feeder.mjs`** — Node ESM on-chain pusher (no extra npm deps)
-
-- Fetches same 5 pairs from SIX via mTLS
-- Calls `update_six_oracle` on the pooling-engine program
-- Pushes rates on-chain as `[FxRate; 6]` with 9dp encoding
-
 ---
 
 ## AMINA-Specific Design Decisions
-
-Three specifics from the March 17 workshop that shaped every architectural decision:
 
 **1. Chainalysis KYT (L3 Compliance Hook)**
 AMINA confirmed Chainalysis is their KYT provider and that every single transaction is screened. The compliance hook labels each gate result `KYT · Chainalysis` in the UI. Gate 2 of the 6-gate enforcement is explicitly the Chainalysis integration point.
 
 **2. Microsoft Entra B2C Identity (Login Layer)**
-AMINA stated Microsoft Entra B2C is their preferred IDP for external customers using OIDC / OAuth2. The login page shows an Entra B2C mock panel — subject ID is mapped to a Solana wallet address via an adapter pattern, exactly as described in the workshop:
-
-```
-User authenticates → Entra B2C → OIDC id_token (sub claim)
-                                          ↓
-                                NEXUS Entra Adapter
-                                          ↓
-                       Solana wallet address (deterministic mapping)
-                                          ↓
-                                Wallet signs transactions
-```
+AMINA stated Microsoft Entra B2C is their preferred IDP for external customers using OIDC / OAuth2. The login page shows an Entra B2C mock panel — subject ID is mapped to a Solana wallet address via an adapter pattern.
 
 **3. USD Settlement Gap (Core Narrative)**
 The Signature Bank angle is the entire reason this project exists. The dashboard surfaces a "USD Settlement Cost Savings" metric so judges see the business case in the first 10 seconds.
@@ -213,26 +206,27 @@ The Signature Bank angle is the entire reason this project exists. The dashboard
 
 ## Quick Start
 
-### 1. Install dependencies
-
-```bash
-git clone <this-repo>
-cd nexus
-npm install          # root (Anchor/web3.js tooling)
-cd app && npm install # React dashboard
-cd ..
-```
-
-### 2. Run the dashboard (demo mode — no wallet needed)
+### 1. Run the dashboard
 
 ```bash
 cd app
+npm install
 npm run dev
 # Open http://localhost:5173
-# Click any role card to log in — data is pre-populated
 ```
 
-### 3. Run the test suite against Surfpool
+### 2. Demo mode (no wallet needed)
+
+- Click any role card to log in
+- Data is pre-populated for demonstration
+
+### 3. Live mode (connects to Solana Devnet)
+
+- Connect a Phantom wallet
+- Toggle "Live" in the top-right corner
+- Actions interact with real on-chain programs
+
+### 4. Run tests
 
 ```bash
 # Start Surfpool first (separate terminal):
@@ -242,9 +236,9 @@ surfpool start
 anchor test --skip-local-validator --skip-deploy
 ```
 
-### 4. Push live SIX rates to devnet
+### 5. Push live SIX rates to devnet
 
-Requires SIX mTLS certificates in `docs/stablehacks2026yoursixdataaccesscredentials/`.
+Requires SIX mTLS certificates.
 
 ```bash
 # Single push:
@@ -254,7 +248,7 @@ node scripts/six_oracle_feeder.mjs --once --rpc https://api.devnet.solana.com
 node scripts/six_oracle_feeder.mjs --rpc https://api.devnet.solana.com
 ```
 
-### 5. Run the Python oracle HTTP server (feeds the frontend)
+### 6. Run the Python oracle HTTP server
 
 ```bash
 cd services/six-oracle
@@ -264,18 +258,7 @@ python3 oracle.py --once    # single fetch + print, then exit
 
 ---
 
-## Demo Mode vs Live Mode
-
-The header contains a **Demo / Live** toggle.
-
-- **Demo mode** (default): All data is pre-populated. Four role dashboards with realistic entities, pools, transfers, and compliance events are visible immediately. No wallet or network connection required.
-- **Live mode**: All data starts empty. Actions call the deployed Solana programs on Devnet. A Phantom wallet must be connected.
-
----
-
 ## Four Roles
-
-Each role sees a completely different sidebar and dashboard:
 
 | Role                 | Badge  | Access                                                             |
 | -------------------- | ------ | ------------------------------------------------------------------ |
@@ -283,8 +266,6 @@ Each role sees a completely different sidebar and dashboard:
 | `corporate_treasury` | Blue   | Dashboard, Entities (no KYC), Pools, Netting, Transfers, FX, Loans |
 | `subsidiary_manager` | Green  | Dashboard, Entities (read-only), Transfers, Compliance feed        |
 | `compliance_officer` | Purple | Dashboard, Entities (KYC+Mandates), Compliance (feed+KYT), Reports |
-
-On first login, each role gets a **step-by-step walkthrough overlay** with clickable navigation that guides them through the relevant pages.
 
 ---
 
@@ -302,7 +283,7 @@ NEXUS
 ├── Netting
 │   ├── Run Cycle (/netting)             ← triggers 7-step algorithm on-chain
 │   └── Cycle History (/netting/history)
-├── Transfers → Initiate Transfer (/transfers)  ← 6-gate compliance enforced
+├── Transfers → Initiate Transfer (/transfers)
 ├── Compliance
 │   ├── Live Event Feed (/compliance)    ← real-time TransferApproved / rejected events
 │   └── KYT Alerts (/compliance/kyt)    ← Chainalysis flagged transactions
@@ -319,78 +300,42 @@ NEXUS
 nexus/
 ├── programs/                      # 5 Anchor programs (Rust)
 │   ├── entity-registry/
-│   │   └── src/
-│   │       ├── lib.rs             # register_entity · verify · suspend · mandate · rotate
-│   │       ├── state.rs           # EntityRecord · MandateLimits · KycStatus · Jurisdiction
-│   │       └── instructions/
 │   ├── pooling-engine/
-│   │   └── src/
-│   │       ├── lib.rs             # create_pool · add_entity · init_oracle · update_six_oracle · run_netting_cycle
-│   │       ├── state.rs           # PoolState · EntityPosition · SixOracleState · FxRate · OffsetEvent
-│   │       ├── netting_algorithm.rs  # 7-step algorithm implementation
-│   │       └── instructions/
 │   ├── compliance-hook/
-│   │   └── src/
-│   │       ├── lib.rs             # transfer_hook (Token-2022)
-│   │       └── instructions/transfer_hook.rs  # 6-gate enforcement
 │   ├── fx-netting/
-│   │   └── src/
-│   │       ├── lib.rs             # set_fx_rate · cross_currency_offset
-│   │       └── instructions/
 │   └── sweep-trigger/
-│       └── src/
-│           ├── lib.rs             # init_sweep_config · detect_sweep_trigger · execute_sweep · repay_loan
-│           └── instructions/
-│
 ├── tests/
-│   └── nexus.ts                   # 25 integration tests — all 5 layers + E2E CPI chain
-│
+│   └── nexus.ts                   # 25 integration tests
 ├── scripts/
-│   └── six_oracle_feeder.mjs      # Node ESM — SIX mTLS → update_six_oracle on-chain
-│
+│   └── six_oracle_feeder.mjs      # SIX mTLS → on-chain oracle
 ├── services/
 │   └── six-oracle/
-│       ├── oracle.py              # Python HTTP sidecar — serves /rates and /health on :7070
-│       └── certs/                 # NOT committed — place SIX mTLS certs here
-│
+│       └── oracle.py              # Python HTTP sidecar on :7070
 ├── app/                           # React 18 + TypeScript + Vite dashboard
 │   └── src/
 │       ├── pages/                 # 15 pages (role-gated)
-│       ├── context/               # AuthContext · NexusContext (demo/live state)
-│       ├── layouts/               # AppLayout — role sidebar
-│       ├── components/            # Walkthrough overlay · DataNotification
-│       ├── services/              # nexusService · solanaClient · demoClient
-│       ├── constants.ts           # Program IDs · nav items
-│       └── styles/                # sketch.css — hand-drawn wireframe theme
-│
-├── runbooks/deployment/
-│   ├── main.tx                    # txtx runbook — deploys all 5 programs
-│   ├── signers.devnet.tx
-│   └── signers.localnet.tx
-│
-├── Anchor.toml                    # [programs.localnet] = surfpool IDs · [programs.devnet] = devnet IDs
-└── target/idl/                    # Generated IDL JSON files (address = devnet IDs)
+│       ├── context/               # AuthContext · NexusContext
+│       ├── services/              # nexusService · solanaClient
+│       └── styles/               # sketch.css
+├── Anchor.toml                    # Program IDs
+└── README.md                      # This file
 ```
 
 ---
 
 ## Tech Stack
 
-| Layer                | Technology                                                              |
-| -------------------- | ----------------------------------------------------------------------- |
-| Blockchain           | Solana · Anchor framework · Token-2022                                  |
-| Programs             | Rust · 5 programs · ~2,600 lines                                        |
-| Tests                | TypeScript · Mocha/Chai · 25 tests · Surfpool                           |
-| Frontend             | React 18 · TypeScript · Vite                                            |
-| Styling              | Custom `sketch.css` — Caveat / Patrick Hand / Architects Daughter fonts |
-| FX Oracle (HTTP)     | Python 3 stdlib · no external dependencies                              |
-| FX Oracle (on-chain) | Node ESM · `@coral-xyz/anchor` · `@solana/web3.js`                      |
-| FX Data              | SIX Financial Group API · mTLS · BC=148 Forex Spot Rates                |
-| Identity             | Microsoft Entra B2C · OIDC mock adapter                                 |
-| Compliance           | Chainalysis KYT (integrated in L3)                                      |
-| State                | React Context — demo store + live Solana client                         |
-| Local simnet         | Surfpool (`instant_surfnet_deployment = true`)                          |
-| Deployment           | txtx runbooks · `solana program deploy --use-rpc`                       |
+| Layer            | Technology                                                              |
+| ---------------- | ----------------------------------------------------------------------- |
+| Blockchain       | Solana · Anchor framework · Token-2022                                  |
+| Programs         | Rust · 5 programs · ~2,600 lines                                        |
+| Tests            | TypeScript · Mocha/Chai · 25 tests · Surfpool                           |
+| Frontend         | React 18 · TypeScript · Vite                                            |
+| Styling          | Custom `sketch.css` — Caveat / Patrick Hand / Architects Daughter fonts |
+| FX Oracle (HTTP) | Python 3 stdlib · no external dependencies                              |
+| FX Data          | SIX Financial Group API · mTLS · BC=148 Forex Spot Rates                |
+| Identity         | Microsoft Entra B2C · OIDC mock adapter                                 |
+| Compliance       | Chainalysis KYT (integrated in L3)                                      |
 
 ---
 
@@ -398,7 +343,7 @@ nexus/
 
 **Track:** Track 2 — Cross-Border Stablecoin Treasury Management
 **Partner:** AMINA Bank (regulated Swiss crypto bank)
-**Deadline:** March 22 2026
+**Deadline:** March 22, 2026
 **Tests:** 25/25 passing on Surfpool
-**Devnet:** All 5 programs deployed · Oracle PDA initialised · Live SIX rates confirmed on-chain
+**Devnet:** All 5 programs deployed · Entity registered & KYC verified · Live SIX rates on-chain
 **Dashboard:** Demo mode pre-populated · Live mode calls real devnet programs
