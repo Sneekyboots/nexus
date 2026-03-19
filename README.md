@@ -1,5 +1,8 @@
 # NEXUS Protocol — Notional Corporate Cash Pooling on Solana
 
+> **Track 2:** Stablecoin-Based On-Chain Cash Pooling
+> Rebuild traditional corporate cash pooling (physical or notional) using stablecoins.
+
 **Status:** 5 programs live on Solana Devnet · Entity registered & KYC verified · Dashboard at `localhost:5173`
 
 ---
@@ -377,9 +380,16 @@ nexus/
 
 ## Submission
 
-**Track:** Track 2 — Cross-Border Stablecoin Treasury Management
+**Track 2:** Cross-Border Stablecoin Treasury — **Stablecoin-Based On-Chain Cash Pooling**
+
+> Rebuild traditional corporate cash pooling (physical or notional) using stablecoins.
+
+**Examples from Track Description:**
+
+1. Credit-Enabled Stablecoin Treasury Infrastructure
+2. ✅ **Stablecoin-Based On-Chain Cash Pooling** ← NEXUS implements this
+
 **Partner:** AMINA Bank (regulated Swiss crypto bank)
 **Deadline:** March 22, 2026
-**Tests:** 25/25 passing on Surfpool
-**Devnet:** All 5 programs deployed · Entity registered & KYC verified · Live SIX rates on-chain
+**Devnet:** All 5 programs deployed · Entity registered & KYC verified on-chain
 **Dashboard:** Demo mode pre-populated · Live mode calls real devnet programs
