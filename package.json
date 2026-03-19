@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@coral-xyz/anchor": "^0.31.1",
+    "circomlib": "^2.0.5",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

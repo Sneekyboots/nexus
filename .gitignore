@@ -49,3 +49,24 @@ services/six-oracle/.env
 # Build output
 app/dist/
 dist/
+
+# ZK-SNARK - NEVER COMMIT CEREMONY SECRETS
+# Powers of Tau ceremony files (contain toxic waste - NEVER commit)
+circuits/*.ptau
+
+# Proving keys (contain ceremony secrets - NEVER commit)
+**/*.zkey
+
+# ZK build output (generated during compilation)
+circuits/*_js/
+
+# ZK public artifacts - must be added explicitly
+# These files are safe to commit:
+#   app/public/zk/verification_key.json
+#   app/public/zk/kyc_verification.wasm
+# DO NOT add any .zkey files from app/public/zk/
+
+# ZK source files (safe to commit)
+circuits/kyc_verification.circom
+circuits/kyc_verification.r1cs
+circuits/kyc_verification.sym

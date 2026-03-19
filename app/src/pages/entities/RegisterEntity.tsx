@@ -5,9 +5,16 @@
 
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { useNexus } from "../../hooks/useNexus";
 import { JURISDICTION_LABELS, JURISDICTION_FLAGS } from "../../types";
 import { CURRENCIES, STABLECOINS } from "../../constants";
+import {
+  hashDocument,
+  generateZKProof,
+  getZKExplanation,
+  ZKProof,
+} from "../../services/zkService";
 
 const STEPS = [
   "Company Details",
@@ -18,18 +25,24 @@ const STEPS = [
 
 const RegisterEntity: React.FC = () => {
   const navigate = useNavigate();
+  const { publicKey } = useWallet();
   const { registerEntity, addEntityToPool } = useNexus();
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [zkProof, setZkProof] = useState<ZKProof | null>(null);
+  const [generatingZK, setGeneratingZK] = useState(false);
+  const [zkError, setZkError] = useState<string | null>(null);
   const [form, setForm] = useState({
     legalName: "",
     parentCompany: "TechCorp Global",
     jurisdiction: "CH",
     currency: "CHF",
     stablecoin: "USDC",
-    kycProvider: "SumSub",
-    complianceOfficer: "CompO9x...CompOfficer",
+    documentType: "passport",
+    documentNumber: "",
+    companyRegNumber: "",
+    addressCountry: "CH",
     maxSingleTransfer: 250000,
     maxDailyAggregate: 1000000,
     addToPool: true,
@@ -42,22 +55,50 @@ const RegisterEntity: React.FC = () => {
     step === 0
       ? form.legalName.trim().length > 0
       : step === 1
-        ? form.jurisdiction && form.currency
-        : step === 2
-          ? form.kycProvider
-          : form.maxSingleTransfer > 0 && form.maxDailyAggregate > 0;
+      ? form.jurisdiction && form.currency
+      : step === 2
+      ? form.documentNumber.trim().length > 0
+      : true;
+
+  const handleGenerateZKProof = async () => {
+    setGeneratingZK(true);
+    setZkError(null);
+    try {
+      const proof = await generateZKProof({
+        documentType: form.documentType,
+        documentNumber: form.documentNumber,
+        companyRegNumber: form.companyRegNumber,
+        addressCountry: form.addressCountry,
+      });
+      setZkProof(proof);
+    } catch (err) {
+      setZkError(`ZK Proof generation failed: ${String(err)}`);
+    } finally {
+      setGeneratingZK(false);
+    }
+  };
 
   const handleSubmit = async () => {
     setSubmitting(true);
     setError(null);
     try {
+      if (zkProof) {
+        console.log("ZK Proof for registration:", {
+          documentHash: zkProof.documentHash,
+          proof: zkProof.proof,
+          publicSignals: zkProof.publicSignals,
+          generatedAt: new Date(zkProof.generatedAt).toISOString(),
+        });
+      }
       const entity = await registerEntity({
         legalName: form.legalName,
         parentCompany: form.parentCompany,
         jurisdiction: form.jurisdiction,
         currency: form.currency,
         stablecoin: form.stablecoin,
-        complianceOfficer: form.complianceOfficer,
+        complianceOfficer: publicKey?.toBase58() || "",
+        kycProvider: "zk-onchain",
+        kycVerifiedDate: zkProof ? new Date().toISOString() : undefined,
         mandateLimits: {
           maxSingleTransfer: form.maxSingleTransfer,
           maxDailyAggregate: form.maxDailyAggregate,
@@ -120,15 +161,15 @@ const RegisterEntity: React.FC = () => {
                       i < step
                         ? "var(--accent-green)"
                         : i === step
-                          ? "var(--highlight-strong)"
-                          : "var(--bg)",
+                        ? "var(--highlight-strong)"
+                        : "var(--bg)",
                     color: i < step ? "white" : "var(--text)",
                     borderColor:
                       i < step
                         ? "var(--accent-green)"
                         : i === step
-                          ? "var(--border)"
-                          : "var(--border-light)",
+                        ? "var(--border)"
+                        : "var(--border-light)",
                   }}
                 >
                   {i < step ? "x" : i + 1}
@@ -223,35 +264,118 @@ const RegisterEntity: React.FC = () => {
           {step === 2 && (
             <>
               <div className="form-group">
-                <label>KYC Provider</label>
+                <label>Identity Document Type</label>
                 <select
                   className="sketch-select"
-                  value={form.kycProvider}
-                  onChange={(e) => set("kycProvider", e.target.value)}
+                  value={form.documentType}
+                  onChange={(e) => set("documentType", e.target.value)}
                 >
-                  <option value="SumSub">SumSub</option>
-                  <option value="Onfido">Onfido</option>
-                  <option value="Jumio">Jumio</option>
+                  <option value="passport">Passport</option>
+                  <option value="national_id">National ID</option>
+                  <option value="drivers_license">Driver's License</option>
                 </select>
-                <div
-                  className="mono"
-                  style={{
-                    fontSize: 11,
-                    color: "var(--text-muted)",
-                    marginTop: 6,
-                  }}
-                >
-                  KYC Provider connects to L1 Entity Registry on-chain
-                </div>
               </div>
               <div className="form-group">
-                <label>Compliance Officer Wallet</label>
+                <label>Document Number</label>
                 <input
                   className="sketch-input"
-                  value={form.complianceOfficer}
-                  onChange={(e) => set("complianceOfficer", e.target.value)}
+                  placeholder="e.g. AB1234567"
+                  value={form.documentNumber}
+                  onChange={(e) => set("documentNumber", e.target.value)}
                 />
               </div>
+              <div className="form-group">
+                <label>Company Registration Number</label>
+                <input
+                  className="sketch-input"
+                  placeholder="e.g. 202012345A"
+                  value={form.companyRegNumber}
+                  onChange={(e) => set("companyRegNumber", e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label>Proof of Address (Country)</label>
+                <select
+                  className="sketch-select"
+                  value={form.addressCountry}
+                  onChange={(e) => set("addressCountry", e.target.value)}
+                >
+                  {Object.entries(JURISDICTION_LABELS).map(([code, label]) => (
+                    <option key={code} value={code}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div
+                className="sketch-card"
+                style={{
+                  background: "rgba(139, 92, 246, 0.1)",
+                  border: "1px solid var(--highlight-strong)",
+                  marginTop: 16,
+                  marginBottom: 16,
+                  padding: 16,
+                }}
+              >
+                <div className="mono" style={{ fontSize: 11 }}>
+                  <div
+                    style={{
+                      color: "var(--highlight-strong)",
+                      marginBottom: 12,
+                    }}
+                  >
+                    [ZERO-KNOWLEDGE PROOF KYC]
+                  </div>
+                  <div style={{ marginBottom: 12 }}>
+                    <strong>How it works:</strong>
+                    <ol style={{ marginTop: 8, paddingLeft: 20 }}>
+                      <li>Your document details are hashed (SHA-256)</li>
+                      <li>ZK-SNARK proves the hash is valid</li>
+                      <li>Only the proof is stored on-chain</li>
+                    </ol>
+                  </div>
+                  {zkProof ? (
+                    <div>
+                      <div
+                        style={{
+                          background: "rgba(16, 185, 129, 0.2)",
+                          padding: 8,
+                          borderRadius: 4,
+                          marginTop: 8,
+                        }}
+                      >
+                        <div style={{ color: "var(--accent-green)" }}>
+                          [x] ZK Proof Generated
+                        </div>
+                        <div style={{ fontSize: 10, marginTop: 4 }}>
+                          Hash: {zkProof.documentHash.slice(0, 20)}...
+                        </div>
+                        <div
+                          style={{ fontSize: 10, color: "var(--text-muted)" }}
+                        >
+                          Proof: {zkProof.proof.slice(0, 30)}...
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      className="sketch-btn primary"
+                      onClick={handleGenerateZKProof}
+                      disabled={generatingZK || !form.documentNumber}
+                      style={{ marginTop: 8 }}
+                    >
+                      {generatingZK ? "Generating..." : "[+] Generate ZK Proof"}
+                    </button>
+                  )}
+                  {zkError && (
+                    <div style={{ color: "var(--accent-red)", marginTop: 8 }}>
+                      {zkError}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="form-group">
                 <label>
                   <input

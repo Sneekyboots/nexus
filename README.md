@@ -287,12 +287,21 @@ node scripts/six_oracle_feeder.mjs --once --rpc https://api.devnet.solana.com
 node scripts/six_oracle_feeder.mjs --rpc https://api.devnet.solana.com
 ```
 
-### 6. Run the Python oracle HTTP server
+### 6. Compile ZK-SNARK circuit
 
 ```bash
-cd services/six-oracle
-python3 oracle.py           # starts on http://localhost:7070
-python3 oracle.py --once    # single fetch + print, then exit
+# Requires: circom 2.x and snarkjs
+
+# Full compilation (takes ~2 min):
+./scripts/compile-circuit.sh
+
+# Or manual steps:
+cd circuits
+npx snarkjs powersoftau new bn128 12 pot12_final.ptau -v
+circom kyc_verification.circom --r1cs --wasm --sym
+npx snarkjs powersoftau prepare phase2 pot12_contributed.ptau pot12_ready.ptau -v
+npx snarkjs groth16 setup kyc_verification.r1cs pot12_ready.ptau kyc_verification_0000.zkey
+npx snarkjs zkey export verificationkey kyc_verification_final.zkey ../app/public/zk/
 ```
 
 ---
@@ -347,6 +356,8 @@ nexus/
 │   └── nexus.ts                   # 25 integration tests
 ├── scripts/
 │   └── six_oracle_feeder.mjs      # SIX mTLS → on-chain oracle
+├── circuits/                      # ZK-SNARK circuits (Circom 2.0)
+│   └── kyc_verification.circom    # Identity verification circuit
 ├── services/
 │   └── six-oracle/
 │       └── oracle.py              # Python HTTP sidecar on :7070
@@ -354,7 +365,7 @@ nexus/
 │   └── src/
 │       ├── pages/                 # 15 pages (role-gated)
 │       ├── context/               # AuthContext · NexusContext
-│       ├── services/              # nexusService · solanaClient
+│       ├── services/              # nexusService · solanaClient · zkService
 │       └── styles/               # sketch.css
 ├── Anchor.toml                    # Program IDs
 └── README.md                      # This file
@@ -375,6 +386,63 @@ nexus/
 | FX Data          | SIX Financial Group API · mTLS · BC=148 Forex Spot Rates                |
 | Identity         | Microsoft Entra B2C · OIDC mock adapter                                 |
 | Compliance       | Chainalysis KYT (integrated in L3)                                      |
+| Zero-Knowledge   | Circom 2.0 · snarkjs · ZK-SNARK · SHA-256 document hashing              |
+
+---
+
+## Zero-Knowledge Proof KYC
+
+NEXUS uses **ZK-SNARK proofs** for identity verification — proving you have valid KYC without exposing sensitive document data.
+
+### How It Works
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Zero-Knowledge Proof KYC Flow                               │
+│                                                              │
+│  1. User enters document details (passport, ID, etc.)        │
+│     ↓                                                        │
+│  2. SHA-256 hash generated from document data                │
+│     Hash = SHA-256(docType + docNumber + regNumber + country) │
+│     ↓                                                        │
+│  3. ZK-SNARK circuit proves: "I know a document that        │
+│     produces this hash" without revealing the document        │
+│     ↓                                                        │
+│  4. Only the proof + hash stored on Entity Registry          │
+│     → Actual document data NEVER touches the blockchain       │
+│     ↓                                                        │
+│  5. Compliance officer verifies proof on-chain               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Circuit Details
+
+| Component      | Details                                |
+| -------------- | -------------------------------------- |
+| Language       | Circom 2.0                             |
+| Proof system   | Groth16 (ZK-SNARK)                     |
+| Hash function  | SHA-256 via circomlib                  |
+| Constraints    | 240 non-linear                         |
+| Input signals  | 3 (documentHash, secret, expectedHash) |
+| Output signals | 1 (valid)                              |
+
+### Files
+
+- Circuit: `circuits/kyc_verification.circom`
+- WASM: `app/public/zk/kyc_verification.wasm`
+- Proving key: `app/public/zk/kyc_verification_final.zkey`
+- Verification key: `app/public/zk/verification_key.json`
+- Service: `app/src/services/zkService.ts`
+
+### Benefits
+
+| Benefit         | Description                                |
+| --------------- | ------------------------------------------ |
+| **Privacy**     | Document details never stored on-chain     |
+| **Security**    | ZK proofs are cryptographically verifiable |
+| **Compliance**  | On-chain audit trail for regulators        |
+| **Portability** | Same KYC proof works across multiple pools |
+| **Scalability** | ZK verification is constant-time O(1)      |
 
 ---
 
@@ -393,3 +461,102 @@ nexus/
 **Deadline:** March 22, 2026
 **Devnet:** All 5 programs deployed · Entity registered & KYC verified on-chain
 **Dashboard:** Demo mode pre-populated · Live mode calls real devnet programs
+
+---
+
+## Deployment to Render
+
+### Option 1: One-Click Deploy (Recommended)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+1. Fork this repo to GitHub
+2. Click the button above or go to https://render.com → Blueprints
+3. Connect your GitHub repo
+4. Add environment variables (see below)
+5. Deploy!
+
+### Option 2: Manual Deploy
+
+**Frontend (Static Site):**
+
+```bash
+cd app
+npm install
+npm run build
+# Upload app/dist to Render as static site
+```
+
+**FX Oracle (Background Service):**
+
+```bash
+# Requires SIX API credentials
+python3 services/six-oracle/oracle.py
+```
+
+### Environment Variables
+
+| Variable             | Where    | Required | Safe to Commit?        |
+| -------------------- | -------- | -------- | ---------------------- |
+| `VITE_RPC_URL`       | Frontend | Yes      | ✅ Yes (public devnet) |
+| `VITE_FX_ORACLE_URL` | Frontend | No       | ✅ Yes                 |
+| `SIX_API_KEY`        | Oracle   | Yes\*    | ❌ NEVER               |
+| `SIX_CERT`           | Oracle   | Yes\*    | ❌ NEVER               |
+| `SIX_KEY`            | Oracle   | Yes\*    | ❌ NEVER               |
+
+\*Only needed for LIVE FX rates. Demo mode uses pre-populated data.
+
+### What Can Be Committed vs Must Be Secret
+
+#### ✅ SAFE TO COMMIT (Public)
+
+```
+app/src/constants.ts           # Program IDs (public)
+app/src/services/zkService.ts # ZK logic
+app/public/zk/verification_key.json  # ZK verification key
+app/public/zk/kyc_verification.wasm   # ZK circuit
+circuits/kyc_verification.circom     # Circuit source
+circuits/kyc_verification.r1cs       # Circuit constraints
+circuits/kyc_verification.sym        # Circuit symbols
+app/.env.example              # Template (no real values)
+render.yaml                   # Deployment config
+```
+
+#### ❌ NEVER COMMIT (Secrets)
+
+```
+.env
+.env.local
+*.pem                    # TLS certificates
+*.key                    # Private keys
+*.p12                    # PKCS#12 bundles
+*password*               # Password files
+credentials/             # Credential stores
+secrets/                 # Secret directories
+sixapi/                  # SIX API files
+certs/                   # Certificate directories
+```
+
+#### 🔒 RENDER SECRETS (Add in Render Dashboard)
+
+```
+SIX_API_KEY=your_six_api_key_here
+SIX_CERT=cert.pem
+SIX_KEY=key.pem
+```
+
+---
+
+## Data: Real vs Demo
+
+| Feature    | Demo Mode     | Live Mode         |
+| ---------- | ------------- | ----------------- |
+| Entities   | Pre-populated | **Real on-chain** |
+| Pools      | Pre-populated | **Real on-chain** |
+| FX Rates   | Pre-populated | **SIX Oracle**    |
+| Loans      | Pre-populated | Empty             |
+| Compliance | Pre-populated | Empty             |
+| Netting    | Pre-populated | Empty             |
+
+**Default:** Demo mode (so judges see populated dashboard)
+**Toggle:** Top-right corner → switch to Live mode

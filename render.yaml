@@ -1,0 +1,34 @@
+# Render Blueprint - NEXUS Protocol
+# Deploy with: render-blueprints render.yaml
+
+services:
+  # Frontend - Static Site
+  - type: web
+    name: nexus-frontend
+    env: static
+    buildCommand: cd app && npm install && npm run build
+    staticPublishPath: app/dist
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+    envVars:
+      - key: VITE_RPC_URL
+        value: https://api.devnet.solana.com
+      - key: VITE_FX_ORACLE_URL
+        value: https://your-nexus-oracle.onrender.com
+        sync: false
+
+  # FX Oracle - Background Service (optional - only needed for LIVE FX rates)
+  - type: background
+    name: nexus-oracle
+    env: python
+    buildCommand: pip install -r services/six-oracle/requirements.txt
+    startCommand: python3 services/six-oracle/oracle.py
+    envVars:
+      - key: SIX_API_KEY
+        sync: false
+      - key: SIX_CERT
+        sync: false
+      - key: SIX_KEY
+        sync: false
