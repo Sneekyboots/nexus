@@ -122,6 +122,233 @@ function deriveEntraSubjectId(walletAddress: string): string {
 }
 
 // ---------------------------------------------------------------------------
+// Hero section component
+// ---------------------------------------------------------------------------
+const HeroSection: React.FC = () => {
+  return (
+    <div className="hero-section">
+      {/* Track badge */}
+      <div className="track-badge">
+        <span className="track-badge-text">TRACK 2</span>
+        <span className="track-badge-desc">
+          Stablecoin-Based On-Chain Cash Pooling
+        </span>
+      </div>
+
+      {/* Main headline */}
+      <h1 className="hero-headline">
+        <span className="hero-logo">N</span>
+        <div className="hero-title-group">
+          <span className="hero-title">NEXUS</span>
+          <span className="hero-subtitle">Notional Corporate Cash Pooling</span>
+        </div>
+      </h1>
+
+      {/* The problem - pain point */}
+      <div className="pain-banner">
+        <div className="pain-icon">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </div>
+        <div className="pain-text">
+          <strong>The Problem:</strong> When Signature Bank collapsed in March
+          2023, it took the primary USD correspondent rail for crypto banks.
+          <span className="pain-highlight">
+            {" "}
+            3–5 business days. $8–15 per payment. 3–8× more expensive.
+          </span>
+        </div>
+      </div>
+
+      {/* Before/After comparison */}
+      <div className="comparison-grid">
+        <div className="comparison-card before">
+          <div className="comparison-label">TRADITIONAL</div>
+          <div className="comparison-stat">
+            <span className="stat-time">3-5</span>
+            <span className="stat-unit">days</span>
+          </div>
+          <div className="comparison-detail">
+            <div className="detail-row">
+              <span className="detail-icon">⏱</span>
+              <span>Settlement time</span>
+            </div>
+            <div className="detail-row">
+              <span className="detail-icon">💸</span>
+              <span>$8-15 per transfer</span>
+            </div>
+            <div className="detail-row">
+              <span className="detail-icon">🏦</span>
+              <span>Correspondent banks</span>
+            </div>
+            <div className="detail-row">
+              <span className="detail-icon">📄</span>
+              <span>Manual compliance</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="comparison-divider">
+          <div className="divider-arrow">→</div>
+          <div className="divider-text">NEXUS</div>
+        </div>
+
+        <div className="comparison-card after">
+          <div className="comparison-label">NEXUS</div>
+          <div className="comparison-stat">
+            <span className="stat-time">&lt;5</span>
+            <span className="stat-unit">seconds</span>
+          </div>
+          <div className="comparison-detail">
+            <div className="detail-row">
+              <span className="detail-icon">⚡</span>
+              <span>On-chain settlement</span>
+            </div>
+            <div className="detail-row">
+              <span className="detail-icon">🪙</span>
+              <span>~$0.001 per transfer</span>
+            </div>
+            <div className="detail-row">
+              <span className="detail-icon">🔗</span>
+              <span>No intermediaries</span>
+            </div>
+            <div className="detail-row">
+              <span className="detail-icon">✓</span>
+              <span>6-gate compliance</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* How it works */}
+      <div className="how-it-works">
+        <div className="how-title">How NEXUS Works</div>
+        <div className="flow-steps">
+          <div className="flow-step">
+            <div className="step-num">1</div>
+            <div className="step-content">
+              <div className="step-title">Pool</div>
+              <div className="step-desc">
+                Aggregate stablecoin balances across subsidiaries globally
+              </div>
+            </div>
+          </div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">
+            <div className="step-num">2</div>
+            <div className="step-content">
+              <div className="step-title">Net</div>
+              <div className="step-desc">
+                Offset surpluses vs deficits — <strong>no tokens move</strong>
+              </div>
+            </div>
+          </div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">
+            <div className="step-num">3</div>
+            <div className="step-content">
+              <div className="step-title">Convert</div>
+              <div className="step-desc">
+                Auto FX via SIX Financial rates (EUR, GBP, CHF...)
+              </div>
+            </div>
+          </div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">
+            <div className="step-num">4</div>
+            <div className="step-content">
+              <div className="step-title">Comply</div>
+              <div className="step-desc">
+                KYC · KYT · AML · Travel Rule at token level
+              </div>
+            </div>
+          </div>
+          <div className="flow-arrow">→</div>
+          <div className="flow-step">
+            <div className="step-num">5</div>
+            <div className="step-content">
+              <div className="step-title">Settle</div>
+              <div className="step-desc">
+                Physical sweep only when threshold exceeded
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Savings calculator teaser */}
+      <div className="savings-teaser">
+        <div className="savings-item">
+          <span className="savings-val">$2.4M</span>
+          <span className="savings-label">
+            saved per $1B transferred annually
+          </span>
+        </div>
+        <div className="savings-divider" />
+        <div className="savings-item">
+          <span className="savings-val">99.7%</span>
+          <span className="savings-label">reduction in settlement time</span>
+        </div>
+        <div className="savings-divider" />
+        <div className="savings-item">
+          <span className="savings-val">$0.001</span>
+          <span className="savings-label">cost per on-chain transfer</span>
+        </div>
+      </div>
+
+      {/* Trust signals */}
+      <div className="trust-signals">
+        <div className="trust-label">
+          Built with enterprise-grade infrastructure
+        </div>
+        <div className="trust-logos">
+          <div className="trust-item">
+            <span className="trust-name">Solana</span>
+            <span className="trust-desc">Blockchain</span>
+          </div>
+          <div className="trust-item">
+            <span className="trust-name">Chainalysis</span>
+            <span className="trust-desc">KYT Screening</span>
+          </div>
+          <div className="trust-item">
+            <span className="trust-name">SIX Financial</span>
+            <span className="trust-desc">FX Rates</span>
+          </div>
+          <div className="trust-item">
+            <span className="trust-name">Entra B2C</span>
+            <span className="trust-desc">Identity</span>
+          </div>
+          <div className="trust-item">
+            <span className="trust-name">AMINA Bank</span>
+            <span className="trust-desc">Partner</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Live status */}
+      <div className="live-status">
+        <div className="status-dot" />
+        <span className="status-text">5 programs live on Solana Devnet</span>
+        <span className="status-sep">·</span>
+        <span className="status-text">
+          Entity registered & KYC verified on-chain
+        </span>
+      </div>
+    </div>
+  );
+};
+
+// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 const LoginPage: React.FC = () => {
@@ -151,97 +378,7 @@ const LoginPage: React.FC = () => {
         {/* ── LEFT: hero panel ── */}
         <div className="login-hero">
           <div className="login-hero-inner">
-            {/* Logo + wordmark */}
-            <div className="login-hero-brand">
-              <div className="login-hero-logo-mark">N</div>
-              <div>
-                <div className="login-hero-title">NEXUS</div>
-                <div className="login-hero-sub">
-                  Notional Corporate Cash Pooling
-                </div>
-              </div>
-            </div>
-
-            <div className="login-hero-tagline">
-              Rebuild corporate cash pooling with stablecoins —<br />
-              <strong>no tokens move until you need them to.</strong>
-            </div>
-
-            {/* Core value prop */}
-            <div className="login-hero-features">
-              <div className="login-hero-feature">
-                <span className="feature-num">01</span>
-                <span className="feature-text">
-                  Pool stablecoin balances across subsidiaries globally
-                </span>
-              </div>
-              <div className="login-hero-feature">
-                <span className="feature-num">02</span>
-                <span className="feature-text">
-                  Net surpluses against deficits — no tokens move
-                </span>
-              </div>
-              <div className="login-hero-feature">
-                <span className="feature-num">03</span>
-                <span className="feature-text">
-                  Convert currencies automatically via live SIX FX rates
-                </span>
-              </div>
-              <div className="login-hero-feature">
-                <span className="feature-num">04</span>
-                <span className="feature-text">
-                  Enforce KYC · KYT · AML · Travel Rule at token level
-                </span>
-              </div>
-              <div className="login-hero-feature">
-                <span className="feature-num">05</span>
-                <span className="feature-text">
-                  Settle physically via on-chain stablecoin sweep when needed
-                </span>
-              </div>
-            </div>
-
-            {/* Stats row */}
-            <div className="login-hero-stats">
-              <div className="login-hero-stat">
-                <span className="login-hero-stat-val">5</span>
-                <span className="login-hero-stat-label">on-chain layers</span>
-              </div>
-              <div className="login-hero-stat">
-                <span className="login-hero-stat-val">7</span>
-                <span className="login-hero-stat-label">netting steps</span>
-              </div>
-              <div className="login-hero-stat">
-                <span className="login-hero-stat-val">6</span>
-                <span className="login-hero-stat-label">compliance gates</span>
-              </div>
-              <div className="login-hero-stat">
-                <span className="login-hero-stat-val">&lt;5s</span>
-                <span className="login-hero-stat-label">settlement</span>
-              </div>
-            </div>
-
-            {/* Feature pills */}
-            <div className="login-hero-pills">
-              <span className="login-hero-pill">Notional Pooling</span>
-              <span className="login-hero-pill">Chainalysis KYT</span>
-              <span className="login-hero-pill">SIX Financial FX</span>
-              <span className="login-hero-pill">Entra B2C</span>
-              <span className="login-hero-pill">Travel Rule</span>
-              <span className="login-hero-pill">Token-2022</span>
-            </div>
-
-            <div className="login-hero-network mono">
-              ● Solana Devnet · 5 programs deployed · Live entity on-chain
-            </div>
-
-            {/* AMINA attribution */}
-            <div className="login-hero-amina">
-              <div className="login-hero-amina-logo">AMINA</div>
-              <div className="login-hero-amina-text">
-                Built for AMINA Bank · StableHacks 2026 · Track 2
-              </div>
-            </div>
+            <HeroSection />
           </div>
         </div>
 
