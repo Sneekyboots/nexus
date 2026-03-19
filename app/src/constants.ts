@@ -8,11 +8,11 @@ import type { NavItem } from "./types";
 // Deployed program IDs on Solana devnet
 // Source of truth: declare_id! in each program's src/lib.rs
 export const PROGRAM_IDS = {
-  entityRegistry: "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh",
-  poolingEngine: "Cot9BDy1Aos6fga3D7ZcaYmzdXxqAJ4jHFGMHDdbq8Sz",
-  complianceHook: "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS",
-  fxNetting: "2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7",
-  sweepTrigger: "4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq",
+  entityRegistry: "HGng9ZUzYAZjXZRiBK4SZMBvGQr4AQ5HQdvFrewjoYvH",
+  poolingEngine: "CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk",
+  complianceHook: "8pkK2b3z3snCMhPezxhBmzgrfTN3LoLqiseFxinCZzpM",
+  fxNetting: "4qmYB7nEG4rebpXhaffnH5LvemGcxGVvN5LGjg4a78ej",
+  sweepTrigger: "2p4tp4WxiaD3jNaBeVGJB9gwaBsfm7kSeLfeeVKz5DSk",
 } as const;
 
 export const SOLANA_RPC_URL = "https://api.devnet.solana.com";

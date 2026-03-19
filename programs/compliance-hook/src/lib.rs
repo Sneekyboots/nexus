@@ -6,7 +6,7 @@ pub mod state;
 
 use instructions::*;
 
-declare_id!("jmkdf4hD8WyYR4XBuzFKoFJeLXLzwpQS7Tr7fFz6R2t");
+declare_id!("8pkK2b3z3snCMhPezxhBmzgrfTN3LoLqiseFxinCZzpM");
 
 #[program]
 pub mod compliance_hook {

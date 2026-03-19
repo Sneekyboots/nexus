@@ -4,14 +4,14 @@ import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 // CORRECT program IDs matching the deployed programs on devnet
 const PROGRAM_IDS = {
   ENTITY_REGISTRY: new PublicKey(
-    "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh",
+    "HGng9ZUzYAZjXZRiBK4SZMBvGQr4AQ5HQdvFrewjoYvH",
   ),
-  POOLING_ENGINE: new PublicKey("Cot9BDy1Aos6fga3D7ZcaYmzdXxqAJ4jHFGMHDdbq8Sz"),
+  POOLING_ENGINE: new PublicKey("CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk"),
   COMPLIANCE_HOOK: new PublicKey(
-    "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS",
+    "8pkK2b3z3snCMhPezxhBmzgrfTN3LoLqiseFxinCZzpM",
   ),
-  FX_NETTING: new PublicKey("2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7"),
-  SWEEP_TRIGGER: new PublicKey("4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq"),
+  FX_NETTING: new PublicKey("4qmYB7nEG4rebpXhaffnH5LvemGcxGVvN5LGjg4a78ej"),
+  SWEEP_TRIGGER: new PublicKey("2p4tp4WxiaD3jNaBeVGJB9gwaBsfm7kSeLfeeVKz5DSk"),
 };
 
 const DEVNET_RPC = "https://api.devnet.solana.com";

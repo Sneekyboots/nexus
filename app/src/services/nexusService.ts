@@ -826,6 +826,7 @@ class NexusService {
   // --- Entities ---
 
   async getEntities(): Promise<Entity[]> {
+    // LIVE MODE: Only return real on-chain data, never fake
     if (!this.demoMode) {
       try {
         const onChainEntities = await nexusClient.getEntities();
@@ -865,10 +866,14 @@ class NexusService {
             pdaAddress: e.publicKey,
           }));
         }
+        // No entities on-chain - return empty, don't fall back to demo data
+        return [];
       } catch {
-        // Blockchain fetch failed, return empty
+        // Blockchain fetch failed - return empty in live mode
+        return [];
       }
     }
+    // DEMO MODE: Return demo data
     return [...this.entities];
   }
 
@@ -994,29 +999,36 @@ class NexusService {
 
   // --- Pool ---
 
-  async getPool(): Promise<Pool> {
+  async getPool(): Promise<Pool | null> {
+    // LIVE MODE: Only return real on-chain data, never fake
     if (!this.demoMode) {
       try {
         const stats = await nexusClient.getPoolStatistics();
-        return {
-          id: "pool-alpha",
-          name: "TechCorp Global Pool",
-          admin: "On-chain admin",
-          memberCount: stats.active_entities,
-          entityIds: [],
-          netPositionUsd: stats.total_pool_value,
-          totalVirtualOffsets: stats.total_offset,
-          sweepThreshold: 1000000000,
-          interestRateApr: 1.5,
-          nettingFrequency: "Daily 18:00 UTC",
-          lastNettingTimestamp: new Date().toISOString(),
-          totalOffsetsToday: stats.total_offset,
-          activeLoans: 0,
-        };
+        if (stats.active_entities > 0) {
+          return {
+            id: "pool-alpha",
+            name: "TechCorp Global Pool",
+            admin: "On-chain admin",
+            memberCount: stats.active_entities,
+            entityIds: [],
+            netPositionUsd: stats.total_pool_value,
+            totalVirtualOffsets: stats.total_offset,
+            sweepThreshold: 1000000000,
+            interestRateApr: 1.5,
+            nettingFrequency: "Daily 18:00 UTC",
+            lastNettingTimestamp: new Date().toISOString(),
+            totalOffsetsToday: stats.total_offset,
+            activeLoans: 0,
+          };
+        }
+        // No pool data on-chain - return null, don't fall back to demo
+        return null;
       } catch {
-        // Fall through to demo data
+        // Blockchain fetch failed - return null in live mode
+        return null;
       }
     }
+    // DEMO MODE: Return demo data
     const pool = generatePool(this.entities);
     return { ...pool };
   }
@@ -1125,6 +1137,10 @@ class NexusService {
 
   async runNettingCycle(poolId: string): Promise<NettingCycle> {
     const pool = await this.getPool();
+    // In live mode with no pool, netting cannot run
+    if (!pool && !this.demoMode) {
+      throw new Error("No pool found on-chain. Register entities first.");
+    }
     const entities = this.entities.filter(
       (e) => e.poolId === poolId && e.kycStatus === "verified",
     );
@@ -1264,7 +1280,7 @@ class NexusService {
       offsetCount: offsets.length,
       totalOffsetUsd: totalOffset,
       interestAccrued: Math.round(interest * 100) / 100,
-      sweepRequired: totalOffset > pool.sweepThreshold,
+      sweepRequired: totalOffset > (pool?.sweepThreshold ?? 1000000000),
       steps,
       offsets,
       transactionHash: Math.random().toString(36).substr(2, 8) + "...cycleHash",

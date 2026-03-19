@@ -34,8 +34,49 @@ interface TestEntity {
   vaultKeypair: Keypair;
 }
 
-// Start with empty - users register their first company through the UI
-const TEST_ENTITIES: TestEntity[] = [];
+// Test entities - will be registered on-chain
+const TEST_ENTITIES: TestEntity[] = [
+  {
+    name: "TechCorp Singapore Pte Ltd",
+    jurisdiction: 4, // ADGM (using Singapore-like jurisdiction)
+    currency: "SGD",
+    initialBalance: BigInt(800000000000), // 800B (small for demo)
+    maxSingleTransfer: BigInt(500000000000),
+    maxDailyAggregate: BigInt(2000000000000),
+    entityId: Buffer.from("sg-001-singapore-techcorp".padEnd(32, "\0")),
+    vaultKeypair: Keypair.generate(),
+  },
+  {
+    name: "TechCorp UAE LLC",
+    jurisdiction: 4, // ADGM
+    currency: "AED",
+    initialBalance: BigInt(-300000000000), // -300B deficit
+    maxSingleTransfer: BigInt(300000000000),
+    maxDailyAggregate: BigInt(1000000000000),
+    entityId: Buffer.from("ae-001-uae-techcorp".padEnd(32, "\0")),
+    vaultKeypair: Keypair.generate(),
+  },
+  {
+    name: "TechCorp UK Ltd",
+    jurisdiction: 3, // FCA
+    currency: "GBP",
+    initialBalance: BigInt(200000000000), // +200B surplus
+    maxSingleTransfer: BigInt(400000000000),
+    maxDailyAggregate: BigInt(1500000000000),
+    entityId: Buffer.from("uk-001-uk-techcorp".padEnd(32, "\0")),
+    vaultKeypair: Keypair.generate(),
+  },
+  {
+    name: "TechCorp GmbH",
+    jurisdiction: 1, // MICA (EU)
+    currency: "EUR",
+    initialBalance: BigInt(-150000000000), // -150B deficit
+    maxSingleTransfer: BigInt(350000000000),
+    maxDailyAggregate: BigInt(1200000000000),
+    entityId: Buffer.from("de-001-germany-techcorp".padEnd(32, "\0")),
+    vaultKeypair: Keypair.generate(),
+  },
+];
 
 const JURISDICTION_NAMES: Record<number, string> = {
   0: "FINMA (Switzerland)",
@@ -101,7 +142,7 @@ async function registerEntity(
 
 async function main() {
   const connection = new Connection(
-    process.env.ANCHOR_PROVIDER_URL || "http://localhost:8899",
+    "https://api.devnet.solana.com",
     "confirmed"
   );
 
@@ -141,8 +182,7 @@ async function main() {
     const idl = JSON.parse(fs.readFileSync(idlPath, "utf-8"));
 
     const programId = new PublicKey(
-      process.env.ENTITY_REGISTRY_PROGRAM_ID ||
-        "11111111111111111111111111111111"
+      "HGng9ZUzYAZjXZRiBK4SZMBvGQr4AQ5HQdvFrewjoYvH"
     );
 
     const provider = new anchor.AnchorProvider(
