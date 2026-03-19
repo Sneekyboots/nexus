@@ -5,6 +5,7 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useNexus } from "../../hooks/useNexus";
+import { SOLANA_EXPLORER_URL } from "../../constants";
 import type { NettingCycle, NettingStep } from "../../types";
 
 const STEP_NAMES = [
@@ -203,7 +204,24 @@ const RunCycle: React.FC = () => {
                 </tr>
                 <tr>
                   <td>Transaction Hash</td>
-                  <td className="mono text-blue">{result.transactionHash}</td>
+                  <td className="mono" style={{ fontSize: 11 }}>
+                    {result.transactionHash ? (
+                      <a
+                        href={`${SOLANA_EXPLORER_URL}/tx/${result.transactionHash}?cluster=devnet`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: "var(--accent-blue)",
+                          wordBreak: "break-all",
+                        }}
+                      >
+                        {result.transactionHash.slice(0, 20)}…
+                        {result.transactionHash.slice(-8)} ↗
+                      </a>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
                 </tr>
               </tbody>
             </table>

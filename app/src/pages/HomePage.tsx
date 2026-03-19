@@ -4,17 +4,159 @@
    Each has its own stats, framing, and step-by-step action guide.
    ============================================================ */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNexus } from "../hooks/useNexus";
 import { Link, useNavigate } from "react-router-dom";
-import { SOLANA_EXPLORER_URL } from "../constants";
+import { SOLANA_EXPLORER_URL, SOLANA_RPC_URL } from "../constants";
 import { JURISDICTION_FLAGS } from "../types";
 import type { UserRole } from "../types";
 
 // ---------------------------------------------------------------------------
-// Shared: Step-by-step action guide
+// Live On-Chain Transaction Feed
+// Fetches recent confirmed signatures for the pooling-engine program
+// directly from devnet RPC — no API key, fully public.
 // ---------------------------------------------------------------------------
+
+const POOLING_ENGINE_ID = "CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk";
+
+interface SigEntry {
+  signature: string;
+  slot: number;
+  blockTime: number | null;
+  err: unknown;
+}
+
+const OnChainTxFeed: React.FC = () => {
+  const [sigs, setSigs] = useState<SigEntry[]>([]);
+  const [fetching, setFetching] = useState(false);
+  const [lastFetched, setLastFetched] = useState<Date | null>(null);
+
+  const fetchSigs = async () => {
+    setFetching(true);
+    try {
+      const res = await fetch(SOLANA_RPC_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: 1,
+          method: "getSignaturesForAddress",
+          params: [POOLING_ENGINE_ID, { limit: 8, commitment: "confirmed" }],
+        }),
+      });
+      const json = await res.json();
+      if (json.result) {
+        setSigs(json.result);
+        setLastFetched(new Date());
+      }
+    } catch {
+      // silently fail — devnet can be flaky
+    } finally {
+      setFetching(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSigs();
+    const interval = setInterval(fetchSigs, 15000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="sketch-card">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 12,
+        }}
+      >
+        <h3 style={{ margin: 0 }}>Live On-Chain Transactions</h3>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {lastFetched && (
+            <span
+              className="mono"
+              style={{ fontSize: 10, color: "var(--text-muted)" }}
+            >
+              updated {lastFetched.toLocaleTimeString()}
+            </span>
+          )}
+          <button
+            className="sketch-btn small"
+            onClick={fetchSigs}
+            disabled={fetching}
+          >
+            {fetching ? "…" : "Refresh"}
+          </button>
+        </div>
+      </div>
+      <div
+        className="mono"
+        style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 10 }}
+      >
+        Pooling Engine · {POOLING_ENGINE_ID.slice(0, 8)}… · Solana Devnet ·
+        auto-refreshes every 15s
+      </div>
+      {sigs.length === 0 ? (
+        <div className="empty-state mono" style={{ fontSize: 12 }}>
+          {fetching
+            ? "Fetching from devnet…"
+            : "No confirmed transactions found yet."}
+        </div>
+      ) : (
+        <table className="sketch-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Signature</th>
+              <th>Slot</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Verify</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sigs.map((s, i) => (
+              <tr key={s.signature}>
+                <td className="mono text-muted" style={{ fontSize: 11 }}>
+                  {i + 1}
+                </td>
+                <td className="mono" style={{ fontSize: 10 }}>
+                  {s.signature.slice(0, 16)}…{s.signature.slice(-8)}
+                </td>
+                <td className="mono" style={{ fontSize: 11 }}>
+                  {s.slot.toLocaleString()}
+                </td>
+                <td className="mono" style={{ fontSize: 11 }}>
+                  {s.blockTime
+                    ? new Date(s.blockTime * 1000).toLocaleTimeString()
+                    : "—"}
+                </td>
+                <td>
+                  <span className={`badge ${s.err ? "blocked" : "live"}`}>
+                    {s.err ? "failed" : "ok"}
+                  </span>
+                </td>
+                <td>
+                  <a
+                    href={`${SOLANA_EXPLORER_URL}/tx/${s.signature}?cluster=devnet`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "var(--accent-blue)", fontSize: 12 }}
+                  >
+                    ↗ Explorer
+                  </a>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+};
 
 interface GuideStep {
   num: number;
@@ -260,8 +402,58 @@ const AminaAdminDashboard: React.FC = () => {
                 </div>
               ))}
             </div>
+
+            {/* On-chain proof */}
+            <h4 style={{ marginTop: 20 }}>On-Chain Proof</h4>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+              {[
+                {
+                  label: "SIX Oracle PDA",
+                  addr: "EjfuHxMXdqijV2KE4DjHPawgTJJv6W4ZyeczeWfE47Dd",
+                  type: "address",
+                },
+                {
+                  label: "Oracle init tx",
+                  addr: "3m94gXTJDyaWkrnERdeHU2CZBstSdax7Lb6SRPGw3fR57zgNyTWZsncrpRXRB93prtRkoE27Xsu8neG2RyjLpDjC",
+                  type: "tx",
+                },
+                {
+                  label: "First SIX rates tx",
+                  addr: "3sR4LogysZSaKd23gU4WZNaX8vGSSXUvrHcrnEDrfeANmEzwBqzAYR1iUmNNMkMwRfmguRYq77KWrRn84JKvPKSW",
+                  type: "tx",
+                },
+              ].map((item) => (
+                <div
+                  key={item.addr}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
+                    {item.label}
+                  </span>
+                  <a
+                    href={`${SOLANA_EXPLORER_URL}/${
+                      item.type === "tx" ? "tx" : "address"
+                    }/${item.addr}?cluster=devnet`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mono"
+                    style={{ fontSize: 10, color: "var(--accent-blue)" }}
+                  >
+                    {item.addr.slice(0, 12)}… ↗
+                  </a>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
+
+        {/* Live on-chain transaction feed — only shown to AMINA admin */}
+        <OnChainTxFeed />
 
         {/* Recent events + entity table */}
         <div className="grid grid-2">
@@ -542,6 +734,8 @@ const CorporateTreasuryDashboard: React.FC = () => {
             </div>
           </div>
         </div>
+
+        <OnChainTxFeed />
 
         {/* Netting history snippet */}
         {nettingHistory.length > 0 && (

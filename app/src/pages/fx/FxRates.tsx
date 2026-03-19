@@ -96,19 +96,101 @@ const FxRates: React.FC = () => {
           </table>
         </div>
 
-        <div className="sketch-card dashed">
-          <h3>FX Oracle (On-Chain)</h3>
+        {/* On-chain proof panel */}
+        <div className="sketch-card">
+          <h3>On-Chain Proof — Solana Devnet</h3>
+          <p
+            style={{
+              fontSize: 13,
+              color: "var(--text-muted)",
+              marginBottom: 16,
+            }}
+          >
+            These are real transactions on Solana Devnet. Click any link to
+            verify independently.
+          </p>
+          <table className="sketch-table">
+            <thead>
+              <tr>
+                <th>What</th>
+                <th>Address / Tx</th>
+                <th>Verify</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SIX Oracle PDA</td>
+                <td className="mono" style={{ fontSize: 11 }}>
+                  EjfuHxMXdqijV2KE4DjHPawgTJJv6W4ZyeczeWfE47Dd
+                </td>
+                <td>
+                  <a
+                    href="https://explorer.solana.com/address/EjfuHxMXdqijV2KE4DjHPawgTJJv6W4ZyeczeWfE47Dd?cluster=devnet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="sketch-btn small"
+                  >
+                    View on Explorer ↗
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>Oracle initialized</td>
+                <td className="mono" style={{ fontSize: 10 }}>
+                  3m94gXTJDyaWkrnERdeHU2CZBstSdax7Lb6SRPGw3fR5…
+                </td>
+                <td>
+                  <a
+                    href="https://explorer.solana.com/tx/3m94gXTJDyaWkrnERdeHU2CZBstSdax7Lb6SRPGw3fR57zgNyTWZsncrpRXRB93prtRkoE27Xsu8neG2RyjLpDjC?cluster=devnet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="sketch-btn small"
+                  >
+                    View on Explorer ↗
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>First live SIX push</td>
+                <td className="mono" style={{ fontSize: 10 }}>
+                  3sR4LogysZSaKd23gU4WZNaX8vGSSXUvrHcrnEDrfeAN…
+                </td>
+                <td>
+                  <a
+                    href="https://explorer.solana.com/tx/3sR4LogysZSaKd23gU4WZNaX8vGSSXUvrHcrnEDrfeANmEzwBqzAYR1iUmNNMkMwRfmguRYq77KWrRn84JKvPKSW?cluster=devnet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="sketch-btn small"
+                  >
+                    View on Explorer ↗
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>Pooling Engine program</td>
+                <td className="mono" style={{ fontSize: 11 }}>
+                  CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk
+                </td>
+                <td>
+                  <a
+                    href="https://explorer.solana.com/address/CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk?cluster=devnet"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="sketch-btn small"
+                  >
+                    View on Explorer ↗
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <div
             className="mono"
-            style={{ fontSize: 12, color: "var(--text-muted)" }}
+            style={{ fontSize: 11, marginTop: 12, color: "var(--text-muted)" }}
           >
-            FX rates are published to Solana devnet via the FX Netting program
-            (Layer 4). The on-chain oracle stores rates with 6-decimal
-            precision. Rates are sourced from SIX Financial Information AG and
-            updated before each netting cycle.
-          </div>
-          <div className="mono" style={{ fontSize: 11, marginTop: 8 }}>
-            PDA seeds: [b"fxrate", source_currency, target_currency]
+            Deployed March 19 2026 · Authority:
+            A7eV2cdTrH56ktXH3ZaSk4kbsF2aguHvggeszcAUXc5o · BC=148 Forex Spot
+            Rates
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNexus } from "../../hooks/useNexus";
+import { SOLANA_EXPLORER_URL } from "../../constants";
 import type { Transfer } from "../../types";
 
 const InitiateTransfer: React.FC = () => {
@@ -248,10 +249,27 @@ const InitiateTransfer: React.FC = () => {
 
                 {lastResult.transactionHash && (
                   <div
-                    className="mono text-muted"
-                    style={{ fontSize: 11, marginTop: 12 }}
+                    className="mono"
+                    style={{
+                      fontSize: 11,
+                      marginTop: 12,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
                   >
-                    Tx: {lastResult.transactionHash}
+                    <span style={{ color: "var(--text-muted)" }}>
+                      On-chain tx:
+                    </span>
+                    <a
+                      href={`${SOLANA_EXPLORER_URL}/tx/${lastResult.transactionHash}?cluster=devnet`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "var(--accent-blue)" }}
+                    >
+                      {lastResult.transactionHash.slice(0, 20)}…
+                      {lastResult.transactionHash.slice(-8)} ↗
+                    </a>
                   </div>
                 )}
               </div>
@@ -272,6 +290,7 @@ const InitiateTransfer: React.FC = () => {
                       <th className="text-right">Amount</th>
                       <th>Status</th>
                       <th>Time</th>
+                      <th>Tx</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -290,6 +309,24 @@ const InitiateTransfer: React.FC = () => {
                         </td>
                         <td className="mono" style={{ fontSize: 11 }}>
                           {new Date(t.timestamp).toLocaleTimeString()}
+                        </td>
+                        <td>
+                          {t.transactionHash ? (
+                            <a
+                              href={`${SOLANA_EXPLORER_URL}/tx/${t.transactionHash}?cluster=devnet`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="mono"
+                              style={{
+                                fontSize: 10,
+                                color: "var(--accent-blue)",
+                              }}
+                            >
+                              {t.transactionHash.slice(0, 8)}… ↗
+                            </a>
+                          ) : (
+                            "—"
+                          )}
                         </td>
                       </tr>
                     ))}
