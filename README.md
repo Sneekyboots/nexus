@@ -1,17 +1,53 @@
-# NEXUS Protocol — Cross-Border Stablecoin Treasury on Solana
+# NEXUS Protocol — Notional Corporate Cash Pooling on Solana
 
-**Status:** 5 programs live on Solana Devnet · 25/25 tests passing · Live entity registration & KYC verified · Dashboard at `localhost:5173`
+**Status:** 5 programs live on Solana Devnet · Entity registered & KYC verified · Dashboard at `localhost:5173`
+
+---
+
+## The Track: Notional Corporate Cash Pooling with Stablecoins
+
+This project addresses **Track 2: Cross-Border Stablecoin Treasury** by implementing **notional corporate cash pooling** — a smarter way for multi-entity groups to manage global cash positions.
+
+> _"Fiat settlements for US dollars became expensive and time-consuming after the Signature Bank failure in 2023."_ — AMINA Bank, March 2026
+
+### What Makes NEXUS Different
+
+| Traditional Cash Pooling            | NEXUS Notional Pooling                    |
+| ----------------------------------- | ----------------------------------------- |
+| Physical transfers between accounts | **No tokens move** until settlement       |
+| Multi-day correspondent bank delays | **Instant** on-chain netting              |
+| Manual FX conversions               | **Automated** via SIX Financial rates     |
+| Separate compliance checks          | **Integrated** KYC/KYT/AML at token level |
+| Fragmented audit trails             | **Immutable** on-chain records            |
+
+---
+
+## The 5 Core Principles
+
+```
+01  Pool stablecoin balances across subsidiaries globally
+    → USDC, EURC, GBPC held in entity vaults on Solana
+
+02  Net surpluses against deficits — no tokens move
+    → 7-step algorithm calculates offsets virtually
+
+03  Convert currencies automatically via live SIX FX rates
+    → Real-time EUR/USD, GBP/USD, CHF/USD rates on-chain
+
+04  Enforce KYC · KYT · AML · Travel Rule at token level
+    → 6-gate compliance hook blocks unauthorized transfers
+
+05  Settle physically via on-chain stablecoin sweep when needed
+    → Actual token movements only when threshold exceeded
+```
 
 ---
 
 ## The Problem AMINA Told Us About
 
-> _"Fiat settlements for US dollars became expensive and time-consuming after the Signature Bank failure in 2023. The pain is both the time it takes and the cost — and there is no efficient solution right now."_
-> — AMINA Bank, March 17 2026 Workshop
+When Signature Bank collapsed in March 2023 it took the primary USD correspondent rail for crypto-native banks with it. What used to take hours now takes **3–5 business days** and costs **3–8× more** in correspondent fees.
 
-When Signature Bank collapsed in March 2023 it took the primary USD correspondent rail for crypto-native banks with it. What used to take hours now takes **3–5 business days** and costs **3–8× more** in correspondent fees. AMINA Bank confirmed this is an active, unresolved pain point.
-
-**NEXUS fixes this for corporate treasury clients.** Multi-entity groups with subsidiaries across CHF, EUR, GBP, AED, SGD can settle intercompany USD obligations in **minutes**, on-chain, with full KYC/KYT/AML compliance enforced by smart contract — no correspondent bank required.
+**NEXUS fixes this.** Multi-entity groups with subsidiaries across CHF, EUR, GBP, AED, SGD can achieve the same cash pooling outcome — consolidated visibility, offset positions, reduced transfer costs — but using stablecoins and smart contracts instead of correspondent banking rails.
 
 ---
 
