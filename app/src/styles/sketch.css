@@ -1,18 +1,17 @@
 /* ============================================================
-   sketch.css — Modern Vibrant Dashboard Theme
-   Gradient backgrounds, smooth animations, vibrant colors
+   sketch.css — Modern Dashboard Theme
    ============================================================ */
 
 /* ---------- CSS Variables ---------- */
 :root {
   --bg: #f8f9fc;
   --bg-card: #ffffff;
-  --bg-sidebar: #1e1b2e;
-  --border: #2d2d3a;
-  --border-light: #e2e0eb;
-  --text: #1a1a2e;
-  --text-muted: #5a5875;
-  --text-light: #8886a0;
+  --bg-sidebar: #0f172a;
+  --border: #334155;
+  --border-light: #e2e8f0;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
   --highlight: #6366f1;
   --highlight-strong: #4f46e5;
   --accent-green: #10b981;
@@ -21,18 +20,26 @@
   --accent-blue: #3b82f6;
   --accent-purple: #8b5cf6;
   --accent-pink: #ec4899;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
-  --shadow-offset: 3px;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.1);
   --radius: 8px;
-  --font-hand: "Patrick Hand", "Caveat", cursive, sans-serif;
-  --font-sketch: "Architects Daughter", "Patrick Hand", cursive;
-  --font-mono: "Courier New", "Consolas", monospace;
-  --gap-xs: 4px;
-  --gap-sm: 8px;
-  --gap-md: 12px;
-  --gap-lg: 16px;
-  --gap-xl: 24px;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-hand: "Patrick Hand", cursive, sans-serif;
+  --font-sketch: "Architects Daughter", cursive;
+  --font-mono: "SF Mono", "Fira Code", Consolas, monospace;
+}
+
+/* ---------- Base ---------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
 }
 
 /* ---------- Layout ---------- */
@@ -42,10 +49,9 @@
 }
 
 .sidebar {
-  width: 260px;
+  width: 280px;
   min-height: 100vh;
   background: var(--bg-sidebar);
-  border-right: 1px solid #3d3a50;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -55,33 +61,32 @@
   bottom: 0;
   z-index: 100;
   overflow-y: auto;
-  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
 }
 
+/* Sidebar */
 .sidebar-logo {
   padding: 24px;
-  border-bottom: 1px solid #3d3a50;
+  border-bottom: 1px solid #334155;
   background: linear-gradient(
     135deg,
-    rgba(139, 92, 246, 0.15) 0%,
+    rgba(99, 102, 241, 0.2) 0%,
     transparent 100%
   );
 }
 
 .sidebar-logo h1 {
-  font-family: var(--font-sketch);
-  font-size: 26px;
+  font-family: var(--font-body);
+  font-size: 24px;
+  font-weight: 700;
   letter-spacing: 2px;
   color: #ffffff;
   margin: 0;
-  font-weight: 700;
 }
 
 .sidebar-logo .subtitle {
-  font-family: var(--font-hand);
-  font-size: 12px;
-  color: #9896b0;
-  margin-top: 2px;
+  font-size: 14px;
+  color: #94a3b8;
+  margin-top: 4px;
 }
 
 .sidebar-nav {
@@ -89,72 +94,46 @@
   padding: 12px 0;
 }
 
-/* ── Nav groups ───────────────────────────────────────────── */
-.nav-group {
-  margin-bottom: 2px;
-}
-
-/* Base nav item — applies to both links and group-toggle buttons */
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 16px;
-  font-family: var(--font-hand);
-  font-size: 14px;
-  color: #a8a5be;
+  gap: 12px;
+  padding: 14px 20px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  color: #cbd5e1;
   text-decoration: none;
   cursor: pointer;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease,
-    border-color 0.15s ease;
+  transition: all 0.15s ease;
   border: none;
   border-left: 3px solid transparent;
   background: none;
   width: 100%;
   text-align: left;
-  border-radius: 0 6px 6px 0;
-  margin-right: 8px;
-  line-height: 1.3;
 }
 
 .nav-item:hover {
-  background: rgba(139, 92, 246, 0.15);
+  background: rgba(99, 102, 241, 0.15);
   color: #ffffff;
-  border-left-color: #8b5cf6;
-}
-
-.nav-item.active {
-  background: rgba(139, 92, 246, 0.2);
-  color: #ffffff;
-  border-left-color: #a78bfa;
-  font-weight: 600;
-}
-
-.nav-item:hover {
-  background: rgba(99, 102, 241, 0.08);
-  color: var(--text);
   border-left-color: #6366f1;
 }
 
 .nav-item.active {
-  background: rgba(99, 102, 241, 0.12);
-  color: #4338ca;
-  border-left-color: #4338ca;
+  background: rgba(99, 102, 241, 0.25);
+  color: #ffffff;
+  border-left-color: #818cf8;
   font-weight: 600;
 }
 
-/* SVG icon wrapper — fixed size so text aligns */
 .nav-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
-  opacity: 0.7;
-  transition: opacity 0.15s;
+  opacity: 0.8;
 }
 
 .nav-item:hover .nav-icon,
@@ -186,8 +165,8 @@
 }
 
 .nav-child-item {
-  font-size: 13px;
-  padding: 7px 14px 7px 40px;
+  font-size: 15px;
+  padding: 8px 14px 8px 40px;
   color: #9896b0;
 }
 
@@ -229,8 +208,8 @@
 }
 
 .nav-child-item {
-  font-size: 13px;
-  padding: 7px 14px 7px 40px;
+  font-size: 15px;
+  padding: 8px 14px 8px 40px;
   color: var(--text-muted);
 }
 
@@ -252,7 +231,7 @@
 
 .sidebar-role-badge-label {
   font-family: var(--font-sketch);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -260,47 +239,47 @@
 
 .sidebar-role-badge-scope {
   font-family: var(--font-hand);
-  font-size: 11px;
+  font-size: 12px;
   opacity: 0.8;
 }
 
 /* ── Sidebar user section ────────────────────────────────── */
 .sidebar-user {
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-top: 1px dashed #3d3a50;
   font-family: var(--font-hand);
-  font-size: 13px;
+  font-size: 15px;
   color: #9896b0;
 }
 
 .sidebar-display-name {
   font-weight: 600;
   color: #ffffff;
-  font-size: 13px;
+  font-size: 15px;
   margin-bottom: 4px;
 }
 
 .sidebar-footer {
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-top: 1px solid #3d3a50;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   color: #6b6888;
 }
 
 .sidebar-display-name {
   font-weight: 600;
   color: var(--text);
-  font-size: 13px;
+  font-size: 15px;
   margin-bottom: 4px;
 }
 
 /* ── Sidebar footer ──────────────────────────────────────── */
 .sidebar-footer {
-  padding: 12px 16px;
+  padding: 14px 16px;
   border-top: 1px solid var(--border-light);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 
@@ -308,10 +287,10 @@
 .header-role-chip {
   display: inline-flex;
   align-items: center;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 12px;
   font-family: var(--font-sketch);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -326,7 +305,7 @@
 }
 
 .page-header {
-  padding: 28px 36px 20px;
+  padding: 32px 40px 24px;
   border-bottom: 1px solid var(--border-light);
   background: var(--bg-card);
   display: flex;
@@ -337,7 +316,7 @@
 
 .page-header h2 {
   font-family: var(--font-sketch);
-  font-size: 28px;
+  font-size: 32px;
   margin: 0 0 8px 0;
   color: var(--text);
   font-weight: 700;
@@ -346,7 +325,7 @@
 
 .page-header .breadcrumb {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
   margin-bottom: 4px;
 }
@@ -365,11 +344,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 32px;
+  padding: 14px 36px;
   background: var(--bg-card);
   border-bottom: 1px solid var(--border-light);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 
@@ -391,7 +370,7 @@
 }
 
 .page-body {
-  padding: 24px 32px;
+  padding: 28px 36px;
 }
 
 /* ---------- Cards ---------- */
@@ -400,8 +379,8 @@
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  padding: 24px;
-  margin-bottom: 20px;
+  padding: 28px;
+  margin-bottom: 24px;
   position: relative;
   transition: all 0.3s ease;
 }
@@ -432,10 +411,10 @@
 
 .sketch-card h3 {
   font-family: var(--font-sketch);
-  font-size: 20px;
+  font-size: 24px;
   margin: 0 0 18px 0;
   color: var(--text);
-  padding-bottom: 14px;
+  padding-bottom: 16px;
   border-bottom: 2px solid var(--border-light);
   letter-spacing: 0.5px;
   font-weight: 700;
@@ -443,7 +422,7 @@
 
 .sketch-card h4 {
   font-family: var(--font-hand);
-  font-size: 16px;
+  font-size: 18px;
   margin: 0 0 8px 0;
   color: var(--text);
   font-weight: 600;
@@ -480,12 +459,10 @@
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  padding: 20px 24px;
-  min-width: 200px;
+  padding: 24px 28px;
+  min-width: 220px;
   flex: 1;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .stat-box:hover {
@@ -495,38 +472,7 @@
 
 .stat-box .stat-label {
   font-family: var(--font-hand);
-  font-size: 14px;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-}
-
-.stat-box .stat-value {
-  font-family: var(--font-sketch);
-  font-size: 42px;
-  color: var(--text);
-  line-height: 1.1;
-  font-weight: bold;
-}
-
-.stat-box .stat-sub {
-  font-family: var(--font-hand);
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-top: 8px;
-  line-height: 1.5;
-}
-
-.stat-box:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 5px 5px 0 var(--border);
-}
-
-.stat-box .stat-label {
-  font-family: var(--font-hand);
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text-muted);
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -544,7 +490,38 @@
 
 .stat-box .stat-sub {
   font-family: var(--font-hand);
-  font-size: 14px;
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.stat-box:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--border);
+}
+
+.stat-box .stat-label {
+  font-family: var(--font-hand);
+  font-size: 16px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.stat-box .stat-value {
+  font-family: var(--font-sketch);
+  font-size: 52px;
+  color: var(--text);
+  line-height: 1.1;
+  font-weight: bold;
+}
+
+.stat-box .stat-sub {
+  font-family: var(--font-hand);
+  font-size: 16px;
   color: var(--text-muted);
   margin-top: 8px;
   line-height: 1.5;
@@ -611,16 +588,16 @@
   width: 100%;
   border-collapse: collapse;
   font-family: var(--font-hand);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 .sketch-table th {
   text-align: left;
-  padding: 12px 16px;
+  padding: 14px 18px;
   border-bottom: 2px solid var(--border-light);
   font-family: var(--font-sketch);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--text-muted);
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -628,10 +605,10 @@
 }
 
 .sketch-table td {
-  padding: 14px 16px;
+  padding: 16px 18px;
   border-bottom: 1px solid var(--border-light);
   color: var(--text);
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .sketch-table tr:hover td {
@@ -640,15 +617,15 @@
 
 .sketch-table .mono {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* ---------- Badges ---------- */
 .badge {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 13px;
-  padding: 6px 14px;
+  font-size: 14px;
+  padding: 7px 16px;
   border-radius: var(--radius);
   border: 2px solid;
   font-weight: 700;
@@ -722,9 +699,9 @@
 /* ---------- Buttons ---------- */
 .sketch-btn {
   font-family: var(--font-hand);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
-  padding: 12px 24px;
+  padding: 14px 28px;
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
@@ -776,8 +753,8 @@
 }
 
 .sketch-btn.small {
-  font-size: 13px;
-  padding: 8px 16px;
+  font-size: 15px;
+  padding: 10px 18px;
 }
 
 .sketch-btn:disabled {
@@ -790,7 +767,7 @@
 .sketch-input {
   font-family: var(--font-hand);
   font-size: 16px;
-  padding: 12px 16px;
+  padding: 14px 18px;
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
   background: var(--bg-card);
@@ -809,7 +786,7 @@
 .sketch-select {
   font-family: var(--font-hand);
   font-size: 16px;
-  padding: 12px 16px;
+  padding: 14px 18px;
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
   background: var(--bg-card);
@@ -832,7 +809,7 @@
 .form-group label {
   display: block;
   font-family: var(--font-hand);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text);
   margin-bottom: 8px;
@@ -851,7 +828,7 @@
 /* ---------- Monospace elements ---------- */
 .mono {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .arrow {
@@ -861,7 +838,7 @@
 
 .checkbox-mono {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 /* ---------- Highlighter ---------- */
@@ -891,7 +868,7 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 10px 0;
+  padding: 12px 0;
   border-bottom: 1px dashed var(--border-light);
   font-family: var(--font-hand);
 }
@@ -902,12 +879,12 @@
 
 .step-number {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
   background: var(--bg);
   border: 2px solid var(--border-light);
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -947,14 +924,14 @@
 }
 
 .step-name {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--text);
 }
 
 .step-details {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   margin-top: 6px;
 }
@@ -963,7 +940,7 @@
 .event-item {
   display: flex;
   gap: 12px;
-  padding: 12px 0;
+  padding: 14px 0;
   border-bottom: 1px dashed var(--border-light);
   font-family: var(--font-hand);
 }
@@ -1001,20 +978,20 @@
 }
 
 .event-title {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--text);
 }
 
 .event-detail {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text-muted);
   margin-top: 4px;
 }
 
 .event-time {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-light);
   margin-top: 4px;
 }
@@ -1030,15 +1007,15 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 0;
+  padding: 10px 0;
   font-family: var(--font-hand);
-  font-size: 15px;
+  font-size: 16px;
   border-bottom: 1px dotted var(--border-light);
 }
 
 .gate-check {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
   width: 24px;
 }
 
@@ -1059,8 +1036,8 @@
 
 .layer-pill {
   font-family: var(--font-mono);
-  font-size: 11px;
-  padding: 4px 10px;
+  font-size: 13px;
+  padding: 5px 12px;
   border: 1px solid var(--border-light);
   border-radius: 12px;
   background: var(--bg);
@@ -1163,7 +1140,7 @@
 
 .role-card .role-info p {
   font-family: var(--font-hand);
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   margin: 2px 0 0;
 }
@@ -1304,15 +1281,56 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .login-split {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+  .login-hero {
+    flex: none;
+    height: auto;
+    min-height: 50vh;
+    width: 100%;
+  }
+  .login-auth {
+    flex: none;
+    height: auto;
+    min-height: 50vh;
+    width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
-  .sidebar {
-    width: 200px;
+  .login-split {
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+  .login-hero {
+    padding: 24px 20px;
+    height: auto;
+    min-height: 45vh;
+    width: 100%;
+  }
+  .login-auth {
+    padding: 24px 20px;
+    height: auto;
+    width: 100%;
+    overflow: visible;
+  }
+  .login-auth-inner {
+    max-width: 100%;
+  }
+  .hero-content {
+    max-width: 100%;
   }
   .main-content {
-    margin-left: 200px;
+    margin-left: 0;
   }
-  .page-body {
-    padding: 16px;
+  .sidebar {
+    width: 0;
+    display: none;
   }
 }
 
@@ -1357,7 +1375,7 @@
 
 .wallet-connect-desc {
   font-family: var(--font-hand);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-muted);
   margin: 0 0 20px;
   line-height: 1.5;
@@ -1371,7 +1389,7 @@
 
 .wallet-connect-hint {
   margin-top: 16px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-light);
 }
 
@@ -1400,7 +1418,7 @@
 
 .wallet-connected-label {
   font-family: var(--font-hand);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--accent-green);
   margin-left: auto;
   font-weight: 600;
@@ -1421,7 +1439,7 @@
 }
 
 .sidebar-wallet-addr {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--text-muted);
   text-decoration: none;
 }
@@ -1478,19 +1496,19 @@
 
 .notification-content strong {
   display: block;
-  font-size: 14px;
+  font-size: 16px;
   margin-bottom: 2px;
 }
 
 .notification-content p {
   margin: 0;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.4;
 }
 
 .notification-time {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   opacity: 0.7;
   flex-shrink: 0;
 }
@@ -1547,9 +1565,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   }
   50% {
-    box-shadow:
-      0 2px 8px rgba(0, 0, 0, 0.06),
-      0 0 16px rgba(139, 92, 246, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 0 16px rgba(139, 92, 246, 0.2);
   }
 }
 
@@ -1567,8 +1583,8 @@
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
-  padding: 2px 10px;
-  font-size: 12px;
+  padding: 3px 12px;
+  font-size: 14px;
 }
 
 /* Override wallet-adapter-react-ui modal to match sketch theme */
@@ -1669,7 +1685,7 @@
 
 .walkthrough-skip {
   font-family: var(--font-hand);
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   background: none;
   border: none;
@@ -1684,7 +1700,7 @@
 
 .walkthrough-nav-btn {
   font-family: var(--font-hand) !important;
-  font-size: 15px !important;
+  font-size: 16px !important;
 }
 
 .walkthrough-highlight-box {
@@ -1694,7 +1710,7 @@
   padding: 16px;
   margin: 12px 0;
   font-family: var(--font-hand);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.7;
   color: #ffffff;
   box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
@@ -1705,7 +1721,7 @@
   font-weight: 700;
   display: block;
   margin-bottom: 8px;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 /* ============================================================
@@ -1732,7 +1748,7 @@
 
 .demo-toggle-label {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.1em;
   color: var(--text-muted);
   transition: color 0.2s;
@@ -1761,8 +1777,7 @@
 }
 
 .demo-toggle-track:hover {
-  box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.04),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04),
     0 0 8px rgba(139, 92, 246, 0.2);
 }
 
@@ -1838,8 +1853,7 @@
 }
 
 .demo-toggle-track:hover {
-  box-shadow:
-    inset 0 2px 4px rgba(0, 0, 0, 0.2),
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2),
     0 0 12px rgba(139, 92, 246, 0.3);
 }
 
@@ -1864,9 +1878,7 @@
   border-radius: 50%;
   border: 2px solid var(--border);
   background: var(--accent-purple);
-  transition:
-    left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.3s;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -1890,7 +1902,7 @@
   border-bottom: 1px solid rgba(139, 92, 246, 0.2);
   padding: 14px 28px;
   font-family: var(--font-hand);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text);
   display: flex;
   align-items: center;
@@ -1901,7 +1913,7 @@
 
 .demo-banner-link {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   background: none;
   border: none;
@@ -1921,7 +1933,7 @@
 /* Inline button inside the banner */
 .demo-banner-link {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   background: none;
   border: none;
@@ -1954,7 +1966,7 @@
 
 .walkthrough-checklist li {
   font-family: var(--font-hand);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.9;
   display: flex;
   align-items: flex-start;
@@ -1964,7 +1976,7 @@
 .walkthrough-checklist li::before {
   content: "○";
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 15px;
   color: var(--accent-purple);
   flex-shrink: 0;
   margin-top: 2px;
@@ -1974,11 +1986,11 @@
 .walkthrough-page-link {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 1px 8px;
+  padding: 2px 10px;
   margin: 2px 3px;
   box-shadow: 2px 2px 0 var(--border-light);
 }
@@ -2003,7 +2015,7 @@
 /* Step counter label ("Step 2 of 5") */
 .walkthrough-step-counter {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--accent-purple);
   text-align: center;
   margin-bottom: 14px;
@@ -2021,12 +2033,12 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-hand);
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius);
-  padding: 4px 12px;
+  padding: 5px 14px;
   margin-top: 6px;
   box-shadow: 2px 2px 0 var(--border-light);
 }
@@ -2058,7 +2070,7 @@
   padding: 18px 20px;
   margin-bottom: 20px;
   font-family: var(--font-hand);
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .entra-panel-header {
@@ -2070,7 +2082,7 @@
 
 .entra-panel-logo {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 13px;
   background: #0078d4;
   color: #fff;
   padding: 4px 8px;
@@ -2081,7 +2093,7 @@
 
 .entra-panel-title {
   font-family: var(--font-sketch);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--text);
 }
@@ -2093,7 +2105,7 @@
   gap: 10px;
   padding: 8px 0;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 16px;
   border-bottom: 1px dashed var(--border-light);
 }
 
@@ -2102,7 +2114,7 @@
 }
 
 .entra-panel-row .mono {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--accent-blue);
   font-weight: 600;
 }
@@ -2111,7 +2123,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--accent-green);
   font-family: var(--font-hand);
   font-weight: 600;
@@ -2129,11 +2141,11 @@
 .yield-pill {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   background: #e8f5e9;
   border: 1px solid #a5d6a7;
   border-radius: 3px;
-  padding: 1px 7px;
+  padding: 2px 9px;
   color: #2e7d32;
   margin-left: 6px;
 }
@@ -2144,8 +2156,9 @@
 
 .login-split {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   background: var(--bg);
+  overflow: hidden;
 }
 
 /* ── Hero (left) ─────────────────────────────────────────── */
@@ -2156,18 +2169,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 48px;
+  padding: 30px 32px;
   position: relative;
   overflow-y: auto;
-  max-height: 100vh;
+  height: 100vh;
+  width: 100%;
 }
 
 .login-hero::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    radial-gradient(
+  background-image: radial-gradient(
       circle at 10% 20%,
       rgba(139, 92, 246, 0.25) 0%,
       transparent 40%
@@ -2195,7 +2208,7 @@
 
 /* Hero content */
 .hero-content {
-  max-width: 480px;
+  max-width: 520px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -2207,7 +2220,7 @@
 /* Track badge */
 .hero-track {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: #a78bfa;
   letter-spacing: 2px;
@@ -2526,13 +2539,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 50px;
+  padding: 30px 36px;
   background: var(--bg);
   overflow-y: auto;
+  height: 100vh;
+  width: 100%;
 }
 
 .login-auth-inner {
-  max-width: 480px;
+  max-width: 520px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -2565,7 +2580,7 @@
   background: #faf5ff;
   border: 2px solid #e9d5ff;
   border-radius: 12px;
-  padding: 28px 24px;
+  padding: 32px 28px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -2585,7 +2600,7 @@
 
 .login-connect-heading {
   font-family: var(--font-sketch);
-  font-size: 22px;
+  font-size: 24px;
   margin: 0;
   font-weight: 700;
   color: var(--text);
@@ -2593,10 +2608,10 @@
 
 .login-connect-desc {
   font-family: var(--font-hand);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-muted);
   margin: 0;
-  max-width: 320px;
+  max-width: 340px;
   line-height: 1.7;
 }
 
@@ -2605,7 +2620,7 @@
 }
 
 .login-connect-hint {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-light);
   font-weight: 500;
 }
@@ -2617,7 +2632,7 @@
   gap: 12px;
   width: 100%;
   font-family: var(--font-hand);
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
 }
 
@@ -2641,13 +2656,13 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border: 1.5px solid;
   border-radius: 8px;
   background: transparent;
   cursor: pointer;
   font-family: var(--font-hand);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   text-align: left;
   transition: all 0.2s;
@@ -2672,7 +2687,7 @@
 /* Role prompt */
 .login-role-prompt {
   font-family: var(--font-hand);
-  font-size: 15px;
+  font-size: 17px;
   color: var(--text);
   margin: 4px 0 8px;
   font-weight: 600;
@@ -2690,7 +2705,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
-  padding: 16px 14px;
+  padding: 18px 16px;
   border: 2px solid;
   border-radius: 12px;
   cursor: pointer;
@@ -2732,14 +2747,14 @@
 
 .login-role-name {
   font-family: var(--font-sketch);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.3;
   font-weight: 700;
 }
 
 .login-role-desc {
   font-family: var(--font-hand);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-muted);
   line-height: 1.5;
   font-weight: 500;
@@ -2747,13 +2762,13 @@
 
 .login-role-enter {
   font-family: var(--font-hand);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   margin-top: 4px;
 }
 
 .login-footer {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-muted);
   text-align: center;
   padding-top: 12px;
@@ -2768,7 +2783,7 @@
 
 .page-subtitle {
   font-family: var(--font-hand);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-muted);
   margin: -8px 0 16px;
 }
