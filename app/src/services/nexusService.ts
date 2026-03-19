@@ -63,7 +63,7 @@ function generateEntities(): Entity[] {
       jurisdiction: "AE",
       kycStatus: "verified",
       kycExpiry: new Date(now.getTime() + 150 * 86400000).toISOString(),
-      kycProvider: "Onfido",
+      kycProvider: "SumSub",
       kycVerifiedDate: new Date(now.getTime() - 45 * 86400000).toISOString(),
       currency: "AED",
       stablecoin: "USDC",
@@ -115,7 +115,7 @@ function generateEntities(): Entity[] {
       jurisdiction: "DE",
       kycStatus: "verified",
       kycExpiry: new Date(now.getTime() + 120 * 86400000).toISOString(),
-      kycProvider: "Onfido",
+      kycProvider: "SumSub",
       kycVerifiedDate: new Date(now.getTime() - 60 * 86400000).toISOString(),
       currency: "EUR",
       stablecoin: "EURC",
@@ -826,6 +826,49 @@ class NexusService {
   // --- Entities ---
 
   async getEntities(): Promise<Entity[]> {
+    if (!this.demoMode) {
+      try {
+        const onChainEntities = await nexusClient.getEntities();
+        if (onChainEntities.length > 0) {
+          return onChainEntities.map((e) => ({
+            id: e.id.slice(0, 8),
+            legalName: e.name,
+            jurisdiction: e.jurisdiction.slice(0, 2),
+            kycStatus:
+              e.kycStatus === "kyc_verified" ? "verified" : e.kycStatus,
+            kycExpiry: e.kycExpiry
+              ? new Date(e.kycExpiry * 1000).toISOString()
+              : "",
+            kycProvider: "On-chain",
+            kycVerifiedDate:
+              e.status === "kyc_verified" ? new Date().toISOString() : "",
+            currency: e.currency,
+            stablecoin: e.currency === "EUR" ? "EURC" : "USDC",
+            balance: e.balance,
+            virtualOffset: 0,
+            effectivePosition: e.balance,
+            poolId:
+              e.poolMembership !== "11111111111111111111111111111111"
+                ? "pool-alpha"
+                : "",
+            parentCompany: "On-chain entity",
+            complianceOfficer: "On-chain",
+            mandateLimits: {
+              maxSingleTransfer: 250000,
+              maxDailyAggregate: 1000000,
+              dailyUsed: 0,
+              dayResetTimestamp: Date.now(),
+            },
+            createdAt: new Date().toISOString(),
+            lastVerified:
+              e.status === "kyc_verified" ? new Date().toISOString() : "",
+            pdaAddress: e.publicKey,
+          }));
+        }
+      } catch {
+        // Blockchain fetch failed, return empty
+      }
+    }
     return [...this.entities];
   }
 
@@ -952,6 +995,28 @@ class NexusService {
   // --- Pool ---
 
   async getPool(): Promise<Pool> {
+    if (!this.demoMode) {
+      try {
+        const stats = await nexusClient.getPoolStatistics();
+        return {
+          id: "pool-alpha",
+          name: "TechCorp Global Pool",
+          admin: "On-chain admin",
+          memberCount: stats.active_entities,
+          entityIds: [],
+          netPositionUsd: stats.total_pool_value,
+          totalVirtualOffsets: stats.total_offset,
+          sweepThreshold: 1000000000,
+          interestRateApr: 1.5,
+          nettingFrequency: "Daily 18:00 UTC",
+          lastNettingTimestamp: new Date().toISOString(),
+          totalOffsetsToday: stats.total_offset,
+          activeLoans: 0,
+        };
+      } catch {
+        // Fall through to demo data
+      }
+    }
     const pool = generatePool(this.entities);
     return { ...pool };
   }

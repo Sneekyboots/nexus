@@ -233,6 +233,16 @@ const RegisterEntity: React.FC = () => {
                   <option value="Onfido">Onfido</option>
                   <option value="Jumio">Jumio</option>
                 </select>
+                <div
+                  className="mono"
+                  style={{
+                    fontSize: 11,
+                    color: "var(--text-muted)",
+                    marginTop: 6,
+                  }}
+                >
+                  KYC Provider connects to L1 Entity Registry on-chain
+                </div>
               </div>
               <div className="form-group">
                 <label>Compliance Officer Wallet</label>
