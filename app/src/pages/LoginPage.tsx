@@ -157,14 +157,48 @@ const LoginPage: React.FC = () => {
               <div>
                 <div className="login-hero-title">NEXUS</div>
                 <div className="login-hero-sub">
-                  Cross-Border Stablecoin Treasury
+                  Notional Corporate Cash Pooling
                 </div>
               </div>
             </div>
 
             <div className="login-hero-tagline">
-              Institutional treasury settlement on Solana —<br />
-              <strong>minutes, not days.</strong>
+              Rebuild corporate cash pooling with stablecoins —<br />
+              <strong>no tokens move until you need them to.</strong>
+            </div>
+
+            {/* Core value prop */}
+            <div className="login-hero-features">
+              <div className="login-hero-feature">
+                <span className="feature-num">01</span>
+                <span className="feature-text">
+                  Pool stablecoin balances across subsidiaries globally
+                </span>
+              </div>
+              <div className="login-hero-feature">
+                <span className="feature-num">02</span>
+                <span className="feature-text">
+                  Net surpluses against deficits — no tokens move
+                </span>
+              </div>
+              <div className="login-hero-feature">
+                <span className="feature-num">03</span>
+                <span className="feature-text">
+                  Convert currencies automatically via live SIX FX rates
+                </span>
+              </div>
+              <div className="login-hero-feature">
+                <span className="feature-num">04</span>
+                <span className="feature-text">
+                  Enforce KYC · KYT · AML · Travel Rule at token level
+                </span>
+              </div>
+              <div className="login-hero-feature">
+                <span className="feature-num">05</span>
+                <span className="feature-text">
+                  Settle physically via on-chain stablecoin sweep when needed
+                </span>
+              </div>
             </div>
 
             {/* Stats row */}
@@ -174,6 +208,10 @@ const LoginPage: React.FC = () => {
                 <span className="login-hero-stat-label">on-chain layers</span>
               </div>
               <div className="login-hero-stat">
+                <span className="login-hero-stat-val">7</span>
+                <span className="login-hero-stat-label">netting steps</span>
+              </div>
+              <div className="login-hero-stat">
                 <span className="login-hero-stat-val">6</span>
                 <span className="login-hero-stat-label">compliance gates</span>
               </div>
@@ -181,14 +219,11 @@ const LoginPage: React.FC = () => {
                 <span className="login-hero-stat-val">&lt;5s</span>
                 <span className="login-hero-stat-label">settlement</span>
               </div>
-              <div className="login-hero-stat">
-                <span className="login-hero-stat-val">25</span>
-                <span className="login-hero-stat-label">tests passing</span>
-              </div>
             </div>
 
             {/* Feature pills */}
             <div className="login-hero-pills">
+              <span className="login-hero-pill">Notional Pooling</span>
               <span className="login-hero-pill">Chainalysis KYT</span>
               <span className="login-hero-pill">SIX Financial FX</span>
               <span className="login-hero-pill">Entra B2C</span>
@@ -197,7 +232,7 @@ const LoginPage: React.FC = () => {
             </div>
 
             <div className="login-hero-network mono">
-              ● Solana Devnet · 5 programs deployed · Live SIX rates on-chain
+              ● Solana Devnet · 5 programs deployed · Live entity on-chain
             </div>
 
             {/* AMINA attribution */}
