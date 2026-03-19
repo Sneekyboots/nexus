@@ -6,25 +6,25 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-entity-registry = "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh"
-pooling-engine = "Cot9BDy1Aos6fga3D7ZcaYmzdXxqAJ4jHFGMHDdbq8Sz"
-compliance-hook = "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS"
-fx-netting = "2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7"
-sweep-trigger = "4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq"
+entity-registry = "HGng9ZUzYAZjXZRiBK4SZMBvGQr4AQ5HQdvFrewjoYvH"
+pooling-engine = "CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk"
+compliance-hook = "8pkK2b3z3snCMhPezxhBmzgrfTN3LoLqiseFxinCZzpM"
+fx-netting = "4qmYB7nEG4rebpXhaffnH5LvemGcxGVvN5LGjg4a78ej"
+sweep-trigger = "2p4tp4WxiaD3jNaBeVGJB9gwaBsfm7kSeLfeeVKz5DSk"
 
 [programs.localnet]
-entity-registry = "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh"
-pooling-engine = "Cot9BDy1Aos6fga3D7ZcaYmzdXxqAJ4jHFGMHDdbq8Sz"
-compliance-hook = "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS"
-fx-netting = "2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7"
-sweep-trigger = "4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq"
+entity-registry = "J4CSWfakHC2Ta7k2BTszksmgQLZU3cJAKpVDNgCgwXwq"
+pooling-engine = "C9nSWxVhNk71FcshhkpQ8b3Ro4hqFP1Y9XLEKqfzJjeF"
+compliance-hook = "jmkdf4hD8WyYR4XBuzFKoFJeLXLzwpQS7Tr7fFz6R2t"
+fx-netting = "9UbcgtEHCN558aC2fmcTuiC7P9X8nMp31i9xeiymuiC3"
+sweep-trigger = "A1duxrShkRCTVatLiNptFNC9rsKNM9chQnCysq6r9hDN"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
+cluster = "http://127.0.0.1:8899"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 'tests/**/*.ts'"

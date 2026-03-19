@@ -6,7 +6,7 @@ pub mod state;
 
 use instructions::*;
 
-declare_id!("6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh");
+declare_id!("J4CSWfakHC2Ta7k2BTszksmgQLZU3cJAKpVDNgCgwXwq");
 
 #[program]
 pub mod entity_registry {

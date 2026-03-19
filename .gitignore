@@ -35,6 +35,7 @@ devnet-*.json
 # Do not add any files from these directories
 sixapi/
 docs/six-files/
+docs/stablehacks2026yoursixdataaccesscredentials/
 services/six-oracle/certs/
 services/six-oracle/.env
 

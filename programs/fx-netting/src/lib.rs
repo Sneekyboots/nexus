@@ -7,7 +7,7 @@ pub mod state;
 use errors::*;
 use instructions::*;
 
-declare_id!("2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7");
+declare_id!("9UbcgtEHCN558aC2fmcTuiC7P9X8nMp31i9xeiymuiC3");
 
 #[program]
 pub mod fx_netting {

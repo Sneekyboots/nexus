@@ -6,11 +6,12 @@
  * Endpoint: /listings/marketData/intradaySnapshot
  * Scheme: VALOR_BC
  *
- * Forex Calculated Rates — BC = 149 (NOT 148)
- * EUR/USD : 946681_149
- * CHF/USD : 275164_149
- * GBP/USD : 275017_149
- * CHF/EUR : 968880_149  (derive AED/USD, SGD/USD from these)
+ * Forex Spot Rates — BC = 148 (confirmed live; NOT 149)
+ * EUR/USD : 946681_148
+ * CHF/USD : 275164_148
+ * GBP/USD : 275017_148
+ * SGD/USD : 610497_148
+ * USD/AED : 275159_148  → invert to get AED/USD
  *
  * Runs an HTTP server on :7070 so the Vite frontend can call
  *   GET http://localhost:7070/rates
@@ -41,10 +42,11 @@ interface PairConfig {
 }
 
 const PAIRS: PairConfig[] = [
-  { pair: "EUR/USD", valorBc: "946681_149" },
-  { pair: "GBP/USD", valorBc: "275017_149" },
-  { pair: "CHF/USD", valorBc: "275164_149" },
-  { pair: "CHF/EUR", valorBc: "968880_149" },
+  { pair: "EUR/USD", valorBc: "946681_148" },
+  { pair: "GBP/USD", valorBc: "275017_148" },
+  { pair: "CHF/USD", valorBc: "275164_148" },
+  { pair: "SGD/USD", valorBc: "610497_148" },
+  { pair: "USD/AED", valorBc: "275159_148" }, // inverted to AED/USD on output
 ];
 
 // Fixed-peg approximations for pairs SIX doesn't carry

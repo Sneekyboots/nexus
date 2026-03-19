@@ -7,7 +7,7 @@ pub struct InitOracle<'info> {
     pub payer: Signer<'info>,
 
     #[account(
-        init,
+        init_if_needed,
         payer = payer,
         space = 8 + 32 + 400 + 8 + 1,
         seeds = [b"six_oracle"],

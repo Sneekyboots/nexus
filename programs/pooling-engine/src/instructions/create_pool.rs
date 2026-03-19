@@ -11,7 +11,7 @@ pub struct CreatePool<'info> {
     #[account(
         init,
         payer = pool_admin,
-        space = 8 + 32 + 32 + 2 + 200 + 16 + 8 + 1 + 8 + 8 + 1,
+        space = 8 + 32 + 32 + 2 + 210 + 16 + 8 + 1 + 8 + 8 + 1,
         seeds = [b"pool", pool_id.as_ref()],
         bump
     )]

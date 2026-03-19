@@ -11,25 +11,107 @@ import { useAuth } from "../hooks/useAuth";
 import type { UserRole } from "../types";
 import { ROLE_LABELS, ROLE_DESCRIPTIONS } from "../types";
 
-const ROLE_ICONS: Record<UserRole, string> = {
-  amina_admin: "B",
-  corporate_treasury: "T",
-  subsidiary_manager: "S",
-  compliance_officer: "C",
+// SVG icons for each role — inline, no deps
+const RoleIcon: React.FC<{ role: UserRole }> = ({ role }) => {
+  if (role === "amina_admin")
+    return (
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+        <path d="M17 3l1.5 1.5L20 3" />
+      </svg>
+    );
+  if (role === "corporate_treasury")
+    return (
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="2" y="7" width="20" height="14" rx="2" />
+        <path d="M16 7V5a2 2 0 0 0-4 0v2" />
+        <path d="M12 12v4" />
+        <path d="M8 12v4" />
+        <path d="M16 12v4" />
+      </svg>
+    );
+  if (role === "subsidiary_manager")
+    return (
+      <svg
+        width="28"
+        height="28"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="9" cy="7" r="3" />
+        <path d="M3 20c0-3 2.7-5 6-5s6 2 6 5" />
+        <circle cx="18" cy="10" r="2" />
+        <path d="M15 20c0-2 1.3-3.5 3-3.5s3 1.5 3 3.5" />
+      </svg>
+    );
+  // compliance_officer
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" />
+    </svg>
+  );
 };
 
-const ROLE_COLORS: Record<UserRole, string> = {
-  amina_admin: "#1a237e",
-  corporate_treasury: "#1b5e20",
-  subsidiary_manager: "#4a148c",
-  compliance_officer: "#b71c1c",
-};
-
-const ROLE_ACCENT: Record<UserRole, string> = {
-  amina_admin: "#e8eaf6",
-  corporate_treasury: "#e8f5e9",
-  subsidiary_manager: "#f3e5f5",
-  compliance_officer: "#fce4ec",
+const ROLE_CONFIG: Record<
+  UserRole,
+  { color: string; bg: string; border: string; badge: string }
+> = {
+  amina_admin: {
+    color: "#7c3aed",
+    bg: "#faf5ff",
+    border: "#ddd6fe",
+    badge: "ADMIN",
+  },
+  corporate_treasury: {
+    color: "#0369a1",
+    bg: "#f0f9ff",
+    border: "#bae6fd",
+    badge: "TREASURY",
+  },
+  subsidiary_manager: {
+    color: "#047857",
+    bg: "#f0fdf4",
+    border: "#bbf7d0",
+    badge: "FINANCE",
+  },
+  compliance_officer: {
+    color: "#b45309",
+    bg: "#fffbeb",
+    border: "#fde68a",
+    badge: "COMPLIANCE",
+  },
 };
 
 function deriveEntraSubjectId(walletAddress: string): string {
@@ -69,15 +151,23 @@ const LoginPage: React.FC = () => {
         {/* ── LEFT: hero panel ── */}
         <div className="login-hero">
           <div className="login-hero-inner">
-            <div className="login-hero-title">NEXUS</div>
-            <div className="login-hero-sub">
-              Cross-Border Stablecoin Treasury
+            {/* Logo + wordmark */}
+            <div className="login-hero-brand">
+              <div className="login-hero-logo-mark">N</div>
+              <div>
+                <div className="login-hero-title">NEXUS</div>
+                <div className="login-hero-sub">
+                  Cross-Border Stablecoin Treasury
+                </div>
+              </div>
             </div>
+
             <div className="login-hero-tagline">
-              Institutional treasury settlement
-              <br />
-              on Solana — in minutes, not days.
+              Institutional treasury settlement on Solana —<br />
+              <strong>minutes, not days.</strong>
             </div>
+
+            {/* Stats row */}
             <div className="login-hero-stats">
               <div className="login-hero-stat">
                 <span className="login-hero-stat-val">5</span>
@@ -91,9 +181,31 @@ const LoginPage: React.FC = () => {
                 <span className="login-hero-stat-val">&lt;5s</span>
                 <span className="login-hero-stat-label">settlement</span>
               </div>
+              <div className="login-hero-stat">
+                <span className="login-hero-stat-val">25</span>
+                <span className="login-hero-stat-label">tests passing</span>
+              </div>
             </div>
+
+            {/* Feature pills */}
+            <div className="login-hero-pills">
+              <span className="login-hero-pill">Chainalysis KYT</span>
+              <span className="login-hero-pill">SIX Financial FX</span>
+              <span className="login-hero-pill">Entra B2C</span>
+              <span className="login-hero-pill">Travel Rule</span>
+              <span className="login-hero-pill">Token-2022</span>
+            </div>
+
             <div className="login-hero-network mono">
-              Solana Devnet · 58/58 tests passing
+              ● Solana Devnet · 5 programs deployed · Live SIX rates on-chain
+            </div>
+
+            {/* AMINA attribution */}
+            <div className="login-hero-amina">
+              <div className="login-hero-amina-logo">AMINA</div>
+              <div className="login-hero-amina-text">
+                Built for AMINA Bank · StableHacks 2026 · Track 2
+              </div>
             </div>
           </div>
         </div>
@@ -101,15 +213,32 @@ const LoginPage: React.FC = () => {
         {/* ── RIGHT: auth panel ── */}
         <div className="login-auth">
           <div className="login-auth-inner">
-            <div className="login-auth-logo">NEXUS</div>
-            <div className="login-auth-desc">
-              Powered by AMINA Bank · Regulated Swiss Crypto Infrastructure
+            <div className="login-auth-header">
+              <div className="login-auth-logo">NEXUS</div>
+              <div className="login-auth-desc">
+                Powered by AMINA Bank · Regulated Swiss Crypto Infrastructure
+              </div>
             </div>
 
             {!connected ? (
               /* Step 1 — connect wallet */
               <div className="login-connect-box">
-                <div className="login-connect-icon">[W]</div>
+                <div className="login-connect-icon">
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#8b5cf6"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="2" y="6" width="20" height="14" rx="2" />
+                    <path d="M16 12h.01" />
+                    <path d="M2 10h20" />
+                  </svg>
+                </div>
                 <h2 className="login-connect-heading">Connect Your Wallet</h2>
                 <p className="login-connect-desc">
                   Connect a Solana wallet to authenticate via the Microsoft
@@ -124,6 +253,45 @@ const LoginPage: React.FC = () => {
                 </button>
                 <div className="login-connect-hint mono">
                   Running on Solana Devnet
+                </div>
+
+                {/* Quick demo access */}
+                <div className="login-demo-divider">
+                  <span>or jump straight in</span>
+                </div>
+                <div className="login-demo-roles">
+                  {roles.map((role) => {
+                    const cfg = ROLE_CONFIG[role];
+                    return (
+                      <button
+                        key={role}
+                        className="login-demo-role-btn"
+                        style={{
+                          borderColor: cfg.border,
+                          color: cfg.color,
+                          background: cfg.bg,
+                        }}
+                        onClick={() => {
+                          login(role);
+                          navigate("/");
+                        }}
+                      >
+                        <span
+                          className="login-demo-role-badge"
+                          style={{ background: cfg.color }}
+                        >
+                          {cfg.badge}
+                        </span>
+                        <span>{ROLE_LABELS[role]}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <div
+                  className="login-connect-hint mono"
+                  style={{ marginTop: 0 }}
+                >
+                  Demo mode · no wallet needed
                 </div>
               </div>
             ) : (
@@ -181,33 +349,53 @@ const LoginPage: React.FC = () => {
                 {/* Role selection */}
                 <p className="login-role-prompt">Select your role to enter:</p>
                 <div className="login-role-grid">
-                  {roles.map((role) => (
-                    <button
-                      key={role}
-                      className="login-role-card"
-                      style={{
-                        borderColor: ROLE_COLORS[role],
-                        background: ROLE_ACCENT[role],
-                      }}
-                      onClick={() => {
-                        login(role);
-                        navigate("/");
-                      }}
-                    >
-                      <span
-                        className="login-role-icon"
-                        style={{ background: ROLE_COLORS[role] }}
+                  {roles.map((role) => {
+                    const cfg = ROLE_CONFIG[role];
+                    return (
+                      <button
+                        key={role}
+                        className="login-role-card"
+                        style={{ borderColor: cfg.border, background: cfg.bg }}
+                        onClick={() => {
+                          login(role);
+                          navigate("/");
+                        }}
                       >
-                        [{ROLE_ICONS[role]}]
-                      </span>
-                      <span className="login-role-name">
-                        {ROLE_LABELS[role]}
-                      </span>
-                      <span className="login-role-desc">
-                        {ROLE_DESCRIPTIONS[role]}
-                      </span>
-                    </button>
-                  ))}
+                        <div className="login-role-card-top">
+                          <span
+                            className="login-role-icon"
+                            style={{
+                              color: cfg.color,
+                              background: `${cfg.color}18`,
+                            }}
+                          >
+                            <RoleIcon role={role} />
+                          </span>
+                          <span
+                            className="login-role-badge"
+                            style={{ background: cfg.color }}
+                          >
+                            {cfg.badge}
+                          </span>
+                        </div>
+                        <span
+                          className="login-role-name"
+                          style={{ color: cfg.color }}
+                        >
+                          {ROLE_LABELS[role]}
+                        </span>
+                        <span className="login-role-desc">
+                          {ROLE_DESCRIPTIONS[role]}
+                        </span>
+                        <span
+                          className="login-role-enter"
+                          style={{ color: cfg.color }}
+                        >
+                          Enter →
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </>
             )}

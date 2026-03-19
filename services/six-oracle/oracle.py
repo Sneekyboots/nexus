@@ -12,18 +12,14 @@ Auth   : mTLS — place your SIX-issued certificate files in certs/ before runni
          Contact SIX Group to obtain credentials for your team.
 
 Endpoint: GET https://api.six-group.com/web/v2/listings/marketData/intradaySnapshot
-Scheme  : VALOR_BC  |  BC code: 149 (Forex Calculated Rates)
+Scheme  : VALOR_BC  |  BC code: 148 (Forex Spot Rates — confirmed live)
 
-FX pairs with real SIX VALORs:
-  EUR/USD  946681_149
-  GBP/USD  275017_149
-  CHF/USD  275164_149
-  CHF/EUR  968880_149
-
-Fixed-peg fallback (SIX does not carry these):
-  AED/USD  0.2723  (USD peg)
-  SGD/USD  0.7481
-  HKD/USD  0.1282  (USD peg)
+FX pairs with real SIX VALORs (BC=148):
+  EUR/USD  946681_148
+  GBP/USD  275017_148
+  CHF/USD  275164_148
+  SGD/USD  610497_148
+  USD/AED  275159_148  → inverted to get AED/USD
 
 Usage:
   python3 oracle.py [--port 7070] [--once]
@@ -56,28 +52,22 @@ CERT_PASSWORD = os.environ.get("SIX_CERT_PASSWORD") or None
 SIX_BASE_URL = "https://api.six-group.com/web/v2"
 INTRADAY_ENDPOINT = f"{SIX_BASE_URL}/listings/marketData/intradaySnapshot"
 
-# VALOR_BC identifiers for each pair (BC=149 Forex Calculated Rates)
+# VALOR_BC identifiers for each pair (BC=148 Forex Spot Rates — confirmed live)
 SIX_VALORS = {
-    "EUR/USD": "946681_149",
-    "GBP/USD": "275017_149",
-    "CHF/USD": "275164_149",
-    "CHF/EUR": "968880_149",
-}
-
-# Fixed-peg / estimated rates for pairs SIX doesn't carry
-FIXED_PEGS = {
-    "AED/USD": {"rate": 0.2723, "bid": 0.2722, "ask": 0.2724, "change24h": 0.0},
-    "SGD/USD": {"rate": 0.7481, "bid": 0.7479, "ask": 0.7483, "change24h": -0.03},
-    "HKD/USD": {"rate": 0.1282, "bid": 0.1281, "ask": 0.1283, "change24h": 0.01},
+    "EUR/USD": "946681_148",
+    "GBP/USD": "275017_148",
+    "CHF/USD": "275164_148",
+    "SGD/USD": "610497_148",
+    "USD/AED": "275159_148",   # SIX quotes USD/AED; we invert to get AED/USD
 }
 
 # Seed rates used as final fallback when SIX is unreachable
 SEED_RATES = {
-    "EUR/USD": {"rate": 1.0847, "bid": 1.0845, "ask": 1.0849, "change24h": 0.12},
-    "GBP/USD": {"rate": 1.2651, "bid": 1.2649, "ask": 1.2653, "change24h": -0.08},
-    "CHF/USD": {"rate": 1.1203, "bid": 1.1200, "ask": 1.1206, "change24h": 0.05},
-    "CHF/EUR": {"rate": 1.0326, "bid": 1.0324, "ask": 1.0328, "change24h": 0.03},
-    **FIXED_PEGS,
+    "EUR/USD": {"rate": 1.147345, "bid": 1.147145, "ask": 1.147545, "change24h": 0.12},
+    "GBP/USD": {"rate": 1.327785, "bid": 1.327585, "ask": 1.327985, "change24h": -0.08},
+    "CHF/USD": {"rate": 1.262315, "bid": 1.262115, "ask": 1.262515, "change24h": 0.05},
+    "SGD/USD": {"rate": 0.7797,   "bid": 0.7795,   "ask": 0.7799,   "change24h": -0.03},
+    "AED/USD": {"rate": 0.272220, "bid": 0.272120, "ask": 0.272320, "change24h": 0.0},
 }
 
 CACHE_TTL_SECONDS = 30          # re-fetch from SIX every 30 s
@@ -104,8 +94,7 @@ def fetch_six_rate(valor: str, ssl_ctx: ssl.SSLContext) -> dict | None:
     """
     Fetch intraday snapshot for a single VALOR_BC identifier.
     Returns raw JSON or None on error.
-    SIX query param is `ids=`, not `valor=`.
-    Example: .../intradaySnapshot?scheme=VALOR_BC&ids=946681_149
+    Example: .../intradaySnapshot?scheme=VALOR_BC&ids=946681_148
     """
     url = f"{INTRADAY_ENDPOINT}?scheme=VALOR_BC&ids={valor}&preferredLanguage=EN"
     req = urllib.request.Request(url, headers={
@@ -125,7 +114,7 @@ def fetch_six_rate(valor: str, ssl_ctx: ssl.SSLContext) -> dict | None:
 
 def extract_rate(data: dict | None) -> dict | None:
     """
-    Parse the SIX intradaySnapshot response.
+    Parse the SIX intradaySnapshot response (BC=148 shape).
     Real shape:
       {
         "data": {
@@ -133,9 +122,9 @@ def extract_rate(data: dict | None) -> dict | None:
             "lookupStatus": "FOUND",
             "marketData": {
               "intradaySnapshot": {
-                "last":    {"value": 1.154135, ...},
-                "bestBid": {"value": 1.153935, ...},
-                "bestAsk": {"value": 1.154335, ...},
+                "mid":     {"value": 1.147345, ...},
+                "bestBid": {"value": 1.147145, ...},
+                "bestAsk": {"value": 1.147545, ...},
                 "percentageChangeLast": {"value": 0.363555, ...}
               }
             }
@@ -150,7 +139,9 @@ def extract_rate(data: dict | None) -> dict | None:
         if listing.get("lookupStatus") != "FOUND":
             return None
         snap = listing["marketData"]["intradaySnapshot"]
-        rate = float(snap["last"]["value"])
+        # BC=148 uses "mid" as the primary price field
+        mid_obj = snap.get("mid") or snap.get("last") or {}
+        rate = float(mid_obj.get("value", 0))
         bid  = float(snap.get("bestBid", {}).get("value", rate - 0.0002))
         ask  = float(snap.get("bestAsk", {}).get("value", rate + 0.0002))
         chg  = float(snap.get("percentageChangeLast", {}).get("value", 0) or 0)
@@ -179,27 +170,39 @@ def build_rates() -> list[dict]:
     ssl_ctx = build_ssl_context()
     results = []
 
-    # SIX-sourced pairs
     for pair, valor in SIX_VALORS.items():
         raw  = fetch_six_rate(valor, ssl_ctx)
         data = extract_rate(raw)
+
         if data:
-            print(f"[SIX] {pair} = {data['rate']} (live)")
+            rate = data["rate"]
+            bid  = data["bid"]
+            ask  = data["ask"]
+
+            # SIX quotes USD/AED — invert to get AED/USD
+            output_pair = pair
+            if pair == "USD/AED":
+                output_pair = "AED/USD"
+                rate = round(1.0 / rate, 6) if rate else 0
+                bid, ask = round(1.0 / ask, 6), round(1.0 / bid, 6)
+
+            print(f"[SIX] {output_pair} = {rate} (live via {valor})")
             results.append({
-                "pair": pair,
-                "rate": data["rate"],
-                "bid":  data["bid"],
-                "ask":  data["ask"],
+                "pair": output_pair,
+                "rate": rate,
+                "bid":  bid,
+                "ask":  ask,
                 "change24h": data["change24h"],
                 "lastUpdated": now,
                 "stale": False,
                 "source": "SIX Financial",
             })
         else:
-            seed = SEED_RATES.get(pair, {"rate": 1.0, "bid": 1.0, "ask": 1.0, "change24h": 0})
-            print(f"[SIX] {pair} — SIX unavailable, using seed {seed['rate']}")
+            output_pair = "AED/USD" if pair == "USD/AED" else pair
+            seed = SEED_RATES.get(output_pair, {"rate": 1.0, "bid": 1.0, "ask": 1.0, "change24h": 0})
+            print(f"[SIX] {output_pair} — SIX unavailable, using seed {seed['rate']}")
             results.append({
-                "pair": pair,
+                "pair": output_pair,
                 "rate": seed["rate"],
                 "bid":  seed["bid"],
                 "ask":  seed["ask"],
@@ -208,19 +211,6 @@ def build_rates() -> list[dict]:
                 "stale": True,
                 "source": "SIX Financial (fallback)",
             })
-
-    # Fixed-peg pairs
-    for pair, peg in FIXED_PEGS.items():
-        results.append({
-            "pair": pair,
-            "rate": peg["rate"],
-            "bid":  peg["bid"],
-            "ask":  peg["ask"],
-            "change24h": peg["change24h"],
-            "lastUpdated": now,
-            "stale": False,
-            "source": "SIX Financial (peg)",
-        })
 
     return results
 
