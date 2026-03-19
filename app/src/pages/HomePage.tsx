@@ -235,10 +235,10 @@ const AminaAdminDashboard: React.FC = () => {
   const suspended = entities.filter((e) => e.kycStatus === "suspended").length;
   const activeLoans = loans.filter((l) => l.status === "active");
   const blockedEvents = complianceEvents.filter(
-    (e) => e.type === "blocked"
+    (e) => e.type === "blocked",
   ).length;
   const pendingKyt = kytAlerts.filter(
-    (a) => a.status === "pending_review"
+    (a) => a.status === "pending_review",
   ).length;
 
   const guideSteps: GuideStep[] = [
@@ -813,8 +813,8 @@ const SubsidiaryDashboard: React.FC = () => {
         Math.round(
           (myEntity.mandateLimits.dailyUsed /
             myEntity.mandateLimits.maxDailyAggregate) *
-            100
-        )
+            100,
+        ),
       )
     : 0;
 
@@ -1062,7 +1062,7 @@ const ComplianceDashboard: React.FC = () => {
   const blocked = complianceEvents.filter((e) => e.type === "blocked").length;
   const warnings = complianceEvents.filter((e) => e.type === "warning").length;
   const pendingKyt = kytAlerts.filter(
-    (a) => a.status === "pending_review"
+    (a) => a.status === "pending_review",
   ).length;
   const escalated = kytAlerts.filter((a) => a.status === "escalated").length;
 

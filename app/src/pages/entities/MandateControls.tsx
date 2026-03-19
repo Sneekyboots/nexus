@@ -96,7 +96,7 @@ const MandateControls: React.FC = () => {
                     ? Math.round(
                         (e.mandateLimits.dailyUsed /
                           e.mandateLimits.maxDailyAggregate) *
-                          100
+                          100,
                       )
                     : 0;
                 const isEditing = editing === e.id;
@@ -149,8 +149,8 @@ const MandateControls: React.FC = () => {
                           pct > 80
                             ? "text-red"
                             : pct > 50
-                            ? "text-orange"
-                            : "text-green"
+                              ? "text-orange"
+                              : "text-green"
                         }
                       >
                         {pct}%

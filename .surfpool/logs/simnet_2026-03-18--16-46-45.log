@@ -1,0 +1,197 @@
+[2026-03-18--16-46-45 INFO actix_server::builder] starting 5 workers
+[2026-03-18--16-46-45 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2026-03-18--16-46-45 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2026-03-18--16-46-50 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2026-03-18--17-15-07 INFO actix_web::middleware::logger] 127.0.0.1 "GET / HTTP/1.1" 200 32389 "-" "curl/8.5.0" 0.022715
+[2026-03-18--17-24-34 INFO actix_web::middleware::logger] 127.0.0.1 "GET / HTTP/1.1" 200 6734 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.078980
+[2026-03-18--17-24-34 INFO actix_web::middleware::logger] 127.0.0.1 "GET / HTTP/1.1" 200 6734 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.011489
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /assets/txtx.png HTTP/1.1" 200 4197 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002664
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/webpack-3e4e71dfd9e3c4e1.js HTTP/1.1" 200 4680 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.001471
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /assets/txtx.png HTTP/1.1" 200 4197 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000291
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/css/b882b236833a8b2c.css HTTP/1.1" 200 24912 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.051323
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/c16f53c3-d20dab724af58680.js HTTP/1.1" 200 2698 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000912
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5964-bac2686a39d63815.js HTTP/1.1" 200 44320 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.016511
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/main-app-3e881fb742a87abf.js HTTP/1.1" 200 219 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.005918
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/webpack-3e4e71dfd9e3c4e1.js HTTP/1.1" 200 4680 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.003480
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4bd1b696-cc729d47eba2cee4.js HTTP/1.1" 200 55434 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.078066
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/main-app-3e881fb742a87abf.js HTTP/1.1" 200 219 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000367
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5964-bac2686a39d63815.js HTTP/1.1" 200 44320 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.147890
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4bd1b696-cc729d47eba2cee4.js HTTP/1.1" 200 55434 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.188090
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5870-03e2cad4338cc722.js HTTP/1.1" 200 27741 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.179032
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1708-95ebc3a93bba3f4c.js HTTP/1.1" 200 39418 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.144568
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/css/b882b236833a8b2c.css HTTP/1.1" 200 24912 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.141629
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/3191-8baaa656bd7a5b91.js HTTP/1.1" 200 6972 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.010145
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9364-dd34101838507c9f.js HTTP/1.1" 200 3147 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000644
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/c16f53c3-d20dab724af58680.js HTTP/1.1" 200 2698 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.015908
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4688-fe3d1cc60e0589c8.js HTTP/1.1" 200 10753 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002231
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4688-fe3d1cc60e0589c8.js HTTP/1.1" 200 10753 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.104672
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/layout-2c634b6d50f058e1.js HTTP/1.1" 200 6713 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002536
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4134-18351f2dad14e83e.js HTTP/1.1" 200 8465 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.014498
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/3191-8baaa656bd7a5b91.js HTTP/1.1" 200 6972 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.008361
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5870-03e2cad4338cc722.js HTTP/1.1" 200 27741 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.080358
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9364-dd34101838507c9f.js HTTP/1.1" 200 3147 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.008276
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/3a91511d-ad50767f2a2e62d8.js HTTP/1.1" 200 14474 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.058168
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/2604-8da7953088eba1e3.js HTTP/1.1" 200 101901 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.021971
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1708-95ebc3a93bba3f4c.js HTTP/1.1" 200 39418 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.099364
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/layout-2c634b6d50f058e1.js HTTP/1.1" 200 6713 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.003077
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/page-98745aefd2b0f4af.js HTTP/1.1" 200 26018 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.005859
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4134-18351f2dad14e83e.js HTTP/1.1" 200 8465 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.003485
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/page-98745aefd2b0f4af.js HTTP/1.1" 200 26018 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.008955
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/3a91511d-ad50767f2a2e62d8.js HTTP/1.1" 200 14474 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.023090
+[2026-03-18--17-24-36 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/2604-8da7953088eba1e3.js HTTP/1.1" 200 101901 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.020215
+[2026-03-18--17-24-39 INFO actix_web::middleware::logger] 127.0.0.1 "GET /config HTTP/1.1" 200 160 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.007294
+[2026-03-18--17-24-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51236.
+[2026-03-18--17-24-39 INFO actix_web::middleware::logger] 127.0.0.1 "GET /config HTTP/1.1" 200 160 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000251
+[2026-03-18--17-24-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:51248.
+[2026-03-18--17-24-40 INFO actix_web::middleware::logger] 127.0.0.1 "GET /favicon.ico HTTP/1.1" 200 1748 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000318
+[2026-03-18--17-24-40 INFO actix_web::middleware::logger] 127.0.0.1 "GET /subgraphs.txt?_rsc=3lb4g HTTP/1.1" 200 1663 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.001376
+[2026-03-18--17-24-40 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/subgraphs/page-c6ba1cc5f0748823.js HTTP/1.1" 200 1436 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.001279
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/070bff88.dfcbf0eb75c98471.js HTTP/1.1" 200 23966 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.006564
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/487.2e42732faa8edcbb.js HTTP/1.1" 200 5720 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.009881
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/9303.8ae7a0263c48f102.js HTTP/1.1" 200 2330 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002273
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/8352.fcdff9406ed72a96.js HTTP/1.1" 200 6525 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.013550
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/css/04515991b586b724.css HTTP/1.1" 200 12455 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.008690
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/2426.89a19e416deae673.js HTTP/1.1" 200 57027 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.018071
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/css/498c41fdbd3b3640.css HTTP/1.1" 200 11605 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002966
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/8190.96388d61276f7214.js HTTP/1.1" 200 8945 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.007046
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/8128.bb0ceba7afc655fb.js HTTP/1.1" 200 4091 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.005169
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1623.e9859b35d0adf680.js HTTP/1.1" 200 32693 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.013371
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/css/47343651ebcb0448.css HTTP/1.1" 200 669 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.001936
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/css/29e2305f00343443.css HTTP/1.1" 200 349771 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.022608
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/3875.7a778381fbae0db8.js HTTP/1.1" 200 9227 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.011768
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5528.044fff9015623e7e.js HTTP/1.1" 200 23707 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.007377
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/6114.fa28d0dbd5288e3c.js HTTP/1.1" 200 2117 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000541
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4618.12f29605e793ef1b.js HTTP/1.1" 200 917649 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.074285
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/3716.4cbabb262c62ac5e.js HTTP/1.1" 200 2440 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000416
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5071.c3a644476ef15cc2.js HTTP/1.1" 200 1101 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000658
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/6142.64671fe3d68589fd.js HTTP/1.1" 200 11900 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002639
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "POST /workspace/v1/graphql HTTP/1.1" 200 1615 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.059663
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/18.de23cf8a2f362865.js HTTP/1.1" 200 2619 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000530
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/cb469c9f.40ea1554900bdda8.js HTTP/1.1" 200 37513 "http://127.0.0.1:18488/_next/static/chunks/18.de23cf8a2f362865.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.006414
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/7637.53e4abe74bcd0313.js HTTP/1.1" 200 2586 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000791
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1623.e9859b35d0adf680.js HTTP/1.1" 200 32693 "http://127.0.0.1:18488/_next/static/chunks/18.de23cf8a2f362865.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.004452
+[2026-03-18--17-24-57 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1623.e9859b35d0adf680.js HTTP/1.1" 200 32693 "http://127.0.0.1:18488/_next/static/chunks/7637.53e4abe74bcd0313.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.004170
+[2026-03-18--17-24-58 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4990.271992de00c22b85.js HTTP/1.1" 200 60012 "http://127.0.0.1:18488/_next/static/chunks/18.de23cf8a2f362865.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.005579
+[2026-03-18--17-24-58 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4990.271992de00c22b85.js HTTP/1.1" 200 60012 "http://127.0.0.1:18488/_next/static/chunks/7637.53e4abe74bcd0313.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.005071
+[2026-03-18--17-24-58 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5387.2ecb57e8a3ef981c.js HTTP/1.1" 200 2725 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000502
+[2026-03-18--17-24-58 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1623.e9859b35d0adf680.js HTTP/1.1" 200 32693 "http://127.0.0.1:18488/_next/static/chunks/5387.2ecb57e8a3ef981c.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.003605
+[2026-03-18--17-24-58 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4990.271992de00c22b85.js HTTP/1.1" 200 60012 "http://127.0.0.1:18488/_next/static/chunks/5387.2ecb57e8a3ef981c.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.007165
+[2026-03-18--17-24-58 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5528.044fff9015623e7e.js HTTP/1.1" 200 23707 "http://127.0.0.1:18488/_next/static/chunks/5387.2ecb57e8a3ef981c.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002804
+[2026-03-18--17-24-58 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5083.d5e53186add8ff60.js HTTP/1.1" 200 41053 "http://127.0.0.1:18488/_next/static/chunks/5387.2ecb57e8a3ef981c.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.004021
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "POST /workspace/v1/graphql HTTP/1.1" 200 1615 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002646
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/18.de23cf8a2f362865.js HTTP/1.1" 200 2619 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.001047
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/cb469c9f.40ea1554900bdda8.js HTTP/1.1" 200 37513 "http://127.0.0.1:18488/_next/static/chunks/18.de23cf8a2f362865.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.004414
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/7637.53e4abe74bcd0313.js HTTP/1.1" 200 2586 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.000518
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1623.e9859b35d0adf680.js HTTP/1.1" 200 32693 "http://127.0.0.1:18488/_next/static/chunks/18.de23cf8a2f362865.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.004827
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1623.e9859b35d0adf680.js HTTP/1.1" 200 32693 "http://127.0.0.1:18488/_next/static/chunks/7637.53e4abe74bcd0313.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.008573
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4990.271992de00c22b85.js HTTP/1.1" 200 60012 "http://127.0.0.1:18488/_next/static/chunks/18.de23cf8a2f362865.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.010277
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4990.271992de00c22b85.js HTTP/1.1" 200 60012 "http://127.0.0.1:18488/_next/static/chunks/7637.53e4abe74bcd0313.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.008834
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5387.2ecb57e8a3ef981c.js HTTP/1.1" 200 2725 "http://127.0.0.1:18488/subgraphs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.001336
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/1623.e9859b35d0adf680.js HTTP/1.1" 200 32693 "http://127.0.0.1:18488/_next/static/chunks/5387.2ecb57e8a3ef981c.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.006077
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/4990.271992de00c22b85.js HTTP/1.1" 200 60012 "http://127.0.0.1:18488/_next/static/chunks/5387.2ecb57e8a3ef981c.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.008701
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5528.044fff9015623e7e.js HTTP/1.1" 200 23707 "http://127.0.0.1:18488/_next/static/chunks/5387.2ecb57e8a3ef981c.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002577
+[2026-03-18--17-25-12 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/5083.d5e53186add8ff60.js HTTP/1.1" 200 41053 "http://127.0.0.1:18488/_next/static/chunks/5387.2ecb57e8a3ef981c.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.009030
+[2026-03-18--17-33-30 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:59632.
+[2026-03-18--17-33-30 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:59642.
+[2026-03-18--17-35-33 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36626.
+[2026-03-18--17-35-34 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36636.
+[2026-03-18--18-01-00 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39768.
+[2026-03-18--18-01-00 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39782.
+[2026-03-19--03-33-46 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42668.
+[2026-03-19--03-33-46 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42680.
+[2026-03-19--03-35-19 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49460.
+[2026-03-19--03-35-19 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49462.
+[2026-03-19--03-35-19 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49466.
+[2026-03-19--03-35-19 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49476.
+[2026-03-19--03-35-19 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49482.
+[2026-03-19--03-36-18 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:48120.
+[2026-03-19--03-36-18 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:48136.
+[2026-03-19--03-36-18 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:48148.
+[2026-03-19--03-36-18 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:48158.
+[2026-03-19--03-36-18 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:48170.
+[2026-03-19--03-39-30 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38606.
+[2026-03-19--03-39-30 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38616.
+[2026-03-19--03-39-30 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38628.
+[2026-03-19--03-39-30 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38630.
+[2026-03-19--03-39-30 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38644.
+[2026-03-19--03-40-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54968.
+[2026-03-19--03-40-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54984.
+[2026-03-19--03-40-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54996.
+[2026-03-19--03-40-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55002.
+[2026-03-19--03-40-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55018.
+[2026-03-19--03-42-46 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39780.
+[2026-03-19--03-42-46 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39796.
+[2026-03-19--03-42-47 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39804.
+[2026-03-19--03-42-47 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39818.
+[2026-03-19--03-42-47 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39834.
+[2026-03-19--03-43-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39166.
+[2026-03-19--03-43-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39180.
+[2026-03-19--03-43-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39196.
+[2026-03-19--03-43-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39200.
+[2026-03-19--03-43-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39202.
+[2026-03-19--03-43-53 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58800.
+[2026-03-19--03-44-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42740.
+[2026-03-19--03-44-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42752.
+[2026-03-19--03-44-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42768.
+[2026-03-19--03-44-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42782.
+[2026-03-19--03-44-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42796.
+[2026-03-19--03-44-41 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42812.
+[2026-03-19--03-50-35 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55112.
+[2026-03-19--03-50-35 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55118.
+[2026-03-19--03-50-35 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55130.
+[2026-03-19--03-50-35 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55134.
+[2026-03-19--03-50-35 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55144.
+[2026-03-19--03-50-37 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55154.
+[2026-03-19--03-50-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55170.
+[2026-03-19--03-50-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55180.
+[2026-03-19--03-50-40 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55188.
+[2026-03-19--03-50-40 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:55198.
+[2026-03-19--03-50-42 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:40416.
+[2026-03-19--03-50-42 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:40420.
+[2026-03-19--03-53-31 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54258.
+[2026-03-19--03-53-31 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54264.
+[2026-03-19--03-55-53 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:52798.
+[2026-03-19--03-55-53 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:52812.
+[2026-03-19--03-55-53 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:52826.
+[2026-03-19--03-55-53 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:52830.
+[2026-03-19--03-55-53 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:52844.
+[2026-03-19--03-56-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36530.
+[2026-03-19--03-56-04 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36544.
+[2026-03-19--03-56-06 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36556.
+[2026-03-19--03-56-07 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36566.
+[2026-03-19--03-56-08 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36580.
+[2026-03-19--03-56-09 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36592.
+[2026-03-19--04-13-47 INFO actix_web::middleware::logger] 127.0.0.1 "GET /subgraphs.txt?_rsc=3lb4g HTTP/1.1" 200 1663 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.068830
+[2026-03-19--04-13-47 INFO actix_web::middleware::logger] 127.0.0.1 "GET /_next/static/chunks/app/subgraphs/page-c6ba1cc5f0748823.js HTTP/1.1" 200 1436 "http://127.0.0.1:18488/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 OPR/128.0.0.0" 0.002052
+[2026-03-19--04-27-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38416.
+[2026-03-19--04-27-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38422.
+[2026-03-19--04-27-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38438.
+[2026-03-19--04-27-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38452.
+[2026-03-19--04-27-45 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38464.
+[2026-03-19--04-27-50 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38470.
+[2026-03-19--04-27-52 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:38486.
+[2026-03-19--04-27-54 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:53990.
+[2026-03-19--04-27-55 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:53996.
+[2026-03-19--04-27-55 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54002.
+[2026-03-19--04-27-55 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54008.
+[2026-03-19--04-27-56 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54014.
+[2026-03-19--04-27-57 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54022.
+[2026-03-19--04-27-58 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:54024.
+[2026-03-19--04-32-58 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:49032.
+[2026-03-19--04-34-16 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:39120.
+[2026-03-19--04-42-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36434.
+[2026-03-19--04-42-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36438.
+[2026-03-19--04-42-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36446.
+[2026-03-19--04-42-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36452.
+[2026-03-19--04-42-03 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36456.
+[2026-03-19--04-42-07 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36468.
+[2026-03-19--04-42-08 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36476.
+[2026-03-19--04-42-09 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36478.
+[2026-03-19--04-42-09 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36494.
+[2026-03-19--04-42-10 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58026.
+[2026-03-19--04-42-11 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58040.
+[2026-03-19--04-42-12 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58046.
+[2026-03-19--04-50-56 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:56854.
+[2026-03-19--04-50-56 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:56864.
+[2026-03-19--05-21-48 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57112.
+[2026-03-19--05-21-48 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:57124.

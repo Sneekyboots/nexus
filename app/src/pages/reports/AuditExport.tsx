@@ -40,7 +40,7 @@ const AuditExport: React.FC = () => {
         nettingCyclesRun: nettingHistory.length,
         totalOffsetValue: nettingHistory.reduce(
           (s, c) => s + c.totalOffsetUsd,
-          0
+          0,
         ),
         totalTransfers: transfers.length,
         blockedTransfers: transfers.filter((t) => t.status === "blocked")

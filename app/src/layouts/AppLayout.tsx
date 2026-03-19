@@ -70,7 +70,7 @@ const AppLayout: React.FC = () => {
 
   // Start with all groups open
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
-    new Set(NAV_ITEMS.filter((n) => n.children).map((n) => n.path))
+    new Set(NAV_ITEMS.filter((n) => n.children).map((n) => n.path)),
   );
 
   const toggleGroup = (path: string) => {

@@ -1,0 +1,8 @@
+[2026-03-19--04-35-42 DEBUG reqwest::connect] starting new connection: https://api.devnet.solana.com/
+[2026-03-19--04-35-42 DEBUG hyper_util::client::legacy::connect::http] connecting to 74.63.203.93:443
+[2026-03-19--04-35-42 DEBUG hyper_util::client::legacy::connect::http] connected to 74.63.203.93:443
+[2026-03-19--04-35-42 DEBUG hyper_util::client::legacy::pool] pooling idle connection for ("https", api.devnet.solana.com)
+[2026-03-19--04-35-42 DEBUG hyper_util::client::legacy::pool] reuse idle connection for ("https", api.devnet.solana.com)
+[2026-03-19--04-35-43 DEBUG hyper_util::client::legacy::pool] pooling idle connection for ("https", api.devnet.solana.com)
+[2026-03-19--04-35-43 DEBUG hyper_util::client::legacy::pool] reuse idle connection for ("https", api.devnet.solana.com)
+[2026-03-19--04-35-43 DEBUG hyper_util::client::legacy::pool] pooling idle connection for ("https", api.devnet.solana.com)

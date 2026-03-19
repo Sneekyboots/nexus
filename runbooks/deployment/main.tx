@@ -1,0 +1,48 @@
+################################################################
+# Manage nexus deployment through Crypto Infrastructure as Code
+################################################################
+
+addon "svm" {
+    rpc_api_url = input.rpc_api_url
+    network_id = input.network_id
+}
+
+action "deploy_compliance_hook" "svm::deploy_program" {
+    description = "Deploy compliance-hook program"
+    program = svm::get_program_from_anchor_project("compliance_hook") 
+    authority = signer.authority
+    payer = signer.payer
+    // instant_surfnet_deployment = true
+}
+
+action "deploy_entity_registry" "svm::deploy_program" {
+    description = "Deploy entity-registry program"
+    program = svm::get_program_from_anchor_project("entity_registry") 
+    authority = signer.authority
+    payer = signer.payer
+    // instant_surfnet_deployment = true
+}
+
+action "deploy_fx_netting" "svm::deploy_program" {
+    description = "Deploy fx-netting program"
+    program = svm::get_program_from_anchor_project("fx_netting") 
+    authority = signer.authority
+    payer = signer.payer
+    // instant_surfnet_deployment = true
+}
+
+action "deploy_pooling_engine" "svm::deploy_program" {
+    description = "Deploy pooling-engine program"
+    program = svm::get_program_from_anchor_project("pooling_engine") 
+    authority = signer.authority
+    payer = signer.payer
+    // instant_surfnet_deployment = true
+}
+
+action "deploy_sweep_trigger" "svm::deploy_program" {
+    description = "Deploy sweep-trigger program"
+    program = svm::get_program_from_anchor_project("sweep_trigger") 
+    authority = signer.authority
+    payer = signer.payer
+    // instant_surfnet_deployment = true
+}

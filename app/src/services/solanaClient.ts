@@ -3,11 +3,11 @@ import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 // ── Program IDs (from declare_id! in each program's src/lib.rs) ──────────────
 const PROGRAM_IDS = {
   ENTITY_REGISTRY: new PublicKey(
-    "4eb3xfVvFtKnzDYrcaMjjZ5MESpmfyyfXVgUR2kkGjPa"
+    "4eb3xfVvFtKnzDYrcaMjjZ5MESpmfyyfXVgUR2kkGjPa",
   ),
   POOLING_ENGINE: new PublicKey("67LiTobujmghnHLR812SUUD4juuA37j7ENsSMaZGjNCb"),
   COMPLIANCE_HOOK: new PublicKey(
-    "FMjNbWedkgYovqpqHS2PojwFeVma2zVAup32j9VGVbpo"
+    "FMjNbWedkgYovqpqHS2PojwFeVma2zVAup32j9VGVbpo",
   ),
   FX_NETTING: new PublicKey("6EU43gqjMV4WRjwwGYaxBAHcMUxUPTKUoK5wkBbb1Ayy"),
   SWEEP_TRIGGER: new PublicKey("81CJwxHEpWiY8j9c8qfLoru3edWKF2AjVZ3cUrHYU6CZ"),
@@ -116,7 +116,7 @@ interface RawEntityRecord {
 
 function parseEntityRecord(
   pubkey: PublicKey,
-  data: Buffer
+  data: Buffer,
 ): RawEntityRecord | null {
   try {
     // Skip 8-byte discriminator
@@ -311,7 +311,7 @@ export class NexusDevnetClient {
             // Minimum size check (discriminator + fixed fields floor ~200 bytes)
             { dataSize: undefined as unknown as number }, // skip dataSize filter — use memcmp on disc below
           ].filter((f) => f.dataSize !== undefined),
-        }
+        },
       )) as unknown as Array<{ pubkey: PublicKey; account: { data: Buffer } }>;
     } catch {
       return [];
@@ -322,7 +322,7 @@ export class NexusDevnetClient {
     try {
       const posAccounts = (await this.connection.getProgramAccounts(
         this.programIds.POOLING_ENGINE,
-        { encoding: "base64" }
+        { encoding: "base64" },
       )) as unknown as Array<{ pubkey: PublicKey; account: { data: Buffer } }>;
 
       for (const { account } of posAccounts) {
@@ -385,7 +385,7 @@ export class NexusDevnetClient {
     try {
       rawAccounts = (await this.connection.getProgramAccounts(
         this.programIds.POOLING_ENGINE,
-        { encoding: "base64" }
+        { encoding: "base64" },
       )) as unknown as Array<{ pubkey: PublicKey; account: { data: Buffer } }>;
     } catch {
       return [];
@@ -448,7 +448,7 @@ export class NexusDevnetClient {
     const active = entities.filter((e) => e.status === "kyc_verified");
     const totalPool = active.reduce(
       (sum, e) => sum + Math.max(e.balance, 0),
-      0
+      0,
     );
 
     // Sum offset amounts from on-chain OffsetEvent PDAs
@@ -481,7 +481,7 @@ export class NexusDevnetClient {
       // Fetch all EntityPosition PDAs for the pool to include as remaining_accounts
       const poolAccounts = (await this.connection.getProgramAccounts(
         this.programIds.POOLING_ENGINE,
-        { encoding: "base64" }
+        { encoding: "base64" },
       )) as unknown as Array<{ pubkey: PublicKey; account: { data: Buffer } }>;
 
       // We can't sign here (no wallet key in this client) — return the list of

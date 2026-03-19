@@ -28,7 +28,7 @@ const RunCycle: React.FC = () => {
       name,
       status: "pending",
       details: [],
-    }))
+    })),
   );
   const [result, setResult] = useState<NettingCycle | null>(null);
 
@@ -55,7 +55,7 @@ const RunCycle: React.FC = () => {
         name,
         status: "pending",
         details: [],
-      }))
+      })),
     );
 
     // Animate through steps
@@ -66,9 +66,9 @@ const RunCycle: React.FC = () => {
           idx === i
             ? { ...s, status: "running", details: stepDetails[i] }
             : idx < i
-            ? { ...s, status: "completed" }
-            : s
-        )
+              ? { ...s, status: "completed" }
+              : s,
+        ),
       );
 
       // Variable delay per step for realism
@@ -83,8 +83,8 @@ const RunCycle: React.FC = () => {
                 status: "completed",
                 durationMs: delays[i],
               }
-            : s
-        )
+            : s,
+        ),
       );
     }
 
@@ -127,8 +127,8 @@ const RunCycle: React.FC = () => {
                   {s.status === "completed"
                     ? "x"
                     : s.status === "running"
-                    ? "~"
-                    : s.step}
+                      ? "~"
+                      : s.step}
                 </div>
                 <div className="step-body">
                   <div className="step-name">

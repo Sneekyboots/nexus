@@ -44,15 +44,15 @@ export interface NexusContextValue extends NexusState {
   verifyEntityKyc: (entityId: string) => Promise<Entity | undefined>;
   suspendEntity: (
     entityId: string,
-    reason: string
+    reason: string,
   ) => Promise<Entity | undefined>;
   addEntityToPool: (
     entityId: string,
-    poolId: string
+    poolId: string,
   ) => Promise<Entity | undefined>;
   updateMandateLimits: (
     entityId: string,
-    limits: Partial<Entity["mandateLimits"]>
+    limits: Partial<Entity["mandateLimits"]>,
   ) => Promise<Entity | undefined>;
   runNettingCycle: (poolId: string) => Promise<NettingCycle>;
   initiateTransfer: (data: {
@@ -64,7 +64,7 @@ export interface NexusContextValue extends NexusState {
   }) => Promise<Transfer>;
   updateKytAlertStatus: (
     alertId: string,
-    status: KytAlert["status"]
+    status: KytAlert["status"],
   ) => Promise<KytAlert | undefined>;
 }
 
@@ -94,13 +94,13 @@ export const NexusContext = createContext<NexusContextValue>({
   ...INITIAL_STATE,
   toggleDemoMode: () => {},
   refresh: async () => {},
-  registerEntity: async () => ({} as Entity),
+  registerEntity: async () => ({}) as Entity,
   verifyEntityKyc: async () => undefined,
   suspendEntity: async () => undefined,
   addEntityToPool: async () => undefined,
   updateMandateLimits: async () => undefined,
-  runNettingCycle: async () => ({} as NettingCycle),
-  initiateTransfer: async () => ({} as Transfer),
+  runNettingCycle: async () => ({}) as NettingCycle,
+  initiateTransfer: async () => ({}) as Transfer,
   updateKytAlertStatus: async () => undefined,
 });
 
@@ -208,7 +208,7 @@ export const NexusProvider: React.FC<{ children: React.ReactNode }> = ({
       setState((s) => ({ ...s, entities, complianceEvents }));
       return entity;
     },
-    []
+    [],
   );
 
   const addEntityToPool = useCallback(
@@ -222,7 +222,7 @@ export const NexusProvider: React.FC<{ children: React.ReactNode }> = ({
       setState((s) => ({ ...s, entities, pool, complianceEvents }));
       return entity;
     },
-    []
+    [],
   );
 
   const updateMandateLimits = useCallback(
@@ -235,7 +235,7 @@ export const NexusProvider: React.FC<{ children: React.ReactNode }> = ({
       setState((s) => ({ ...s, entities, complianceEvents }));
       return entity;
     },
-    []
+    [],
   );
 
   const runNettingCycle = useCallback(async (poolId: string) => {
@@ -283,7 +283,7 @@ export const NexusProvider: React.FC<{ children: React.ReactNode }> = ({
       }));
       return transfer;
     },
-    []
+    [],
   );
 
   const updateKytAlertStatus = useCallback(
@@ -293,7 +293,7 @@ export const NexusProvider: React.FC<{ children: React.ReactNode }> = ({
       setState((s) => ({ ...s, kytAlerts }));
       return alert;
     },
-    []
+    [],
   );
 
   return (

@@ -17,11 +17,11 @@ import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 // Devnet program addresses — from declare_id! in each program's src/lib.rs
 const PROGRAM_IDS = {
   ENTITY_REGISTRY: new PublicKey(
-    "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh"
+    "6fEr9VsnyCUdCPMHY7XYV6SFsw7td48aN9biM1UowzGh",
   ),
   POOLING_ENGINE: new PublicKey("Cot9BDy1Aos6fga3D7ZcaYmzdXxqAJ4jHFGMHDdbq8Sz"),
   COMPLIANCE_HOOK: new PublicKey(
-    "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS"
+    "5rogVdJwxrCGBVPEKV42aeKxwpnW4ESQbccpMbN2BPNS",
   ),
   FX_NETTING: new PublicKey("2RfkQCsFUjtzX1PavSHF2ZgCQj9Ua1Q72pLAzd3KfnZ7"),
   SWEEP_TRIGGER: new PublicKey("4EbB5Ahei4nhAkfrqyjr7ZE3VPyBhi4pbMRyrpyRbEQq"),
@@ -34,7 +34,10 @@ const DEVNET_RPC = "https://api.devnet.solana.com";
  * Manages KYC verification, entity registration, and mandate limits
  */
 export class EntityRegistryClient {
-  constructor(private connection: Connection, private programId: PublicKey) {}
+  constructor(
+    private connection: Connection,
+    private programId: PublicKey,
+  ) {}
 
   /**
    * Get all registered entities
@@ -69,7 +72,7 @@ export class EntityRegistryClient {
    */
   async registerEntity(
     entityData: any,
-    payer: PublicKey
+    payer: PublicKey,
   ): Promise<string | null> {
     try {
       // In production, this would construct and send register_entity instruction
@@ -89,7 +92,10 @@ export class EntityRegistryClient {
  * Implements the 7-step netting algorithm (THE MOAT)
  */
 export class PoolingEngineClient {
-  constructor(private connection: Connection, private programId: PublicKey) {}
+  constructor(
+    private connection: Connection,
+    private programId: PublicKey,
+  ) {}
 
   /**
    * The 7-Step Netting Algorithm
@@ -197,7 +203,10 @@ export class PoolingEngineClient {
  * Enforces 6-gate compliance checks on all transfers
  */
 export class ComplianceHookClient {
-  constructor(private connection: Connection, private programId: PublicKey) {}
+  constructor(
+    private connection: Connection,
+    private programId: PublicKey,
+  ) {}
 
   /**
    * The 6 Compliance Gates
@@ -259,7 +268,10 @@ export class FXNettingClient {
     CHF: 1.08,
   };
 
-  constructor(private connection: Connection, private programId: PublicKey) {}
+  constructor(
+    private connection: Connection,
+    private programId: PublicKey,
+  ) {}
 
   /**
    * Update FX rates from SIX API
@@ -302,7 +314,7 @@ export class FXNettingClient {
       entity: string;
       amount: number;
       currency: string;
-    }>
+    }>,
   ): Promise<
     Array<{
       entity: string;
@@ -325,7 +337,10 @@ export class FXNettingClient {
  * Manages intercompany loan settlement with 90-day terms and 1.5% interest
  */
 export class SweepTriggerClient {
-  constructor(private connection: Connection, private programId: PublicKey) {}
+  constructor(
+    private connection: Connection,
+    private programId: PublicKey,
+  ) {}
 
   /**
    * Create a sweep loan for settlement
@@ -333,7 +348,7 @@ export class SweepTriggerClient {
   async createSweepLoan(
     debtorEntity: string,
     creditorEntity: string,
-    amount: number
+    amount: number,
   ): Promise<{
     loan_id: string;
     debtor: string;
@@ -398,23 +413,23 @@ export class NexusDemoClient {
     this.connection = new Connection(DEVNET_RPC, "confirmed");
     this.entityRegistry = new EntityRegistryClient(
       this.connection,
-      PROGRAM_IDS.ENTITY_REGISTRY
+      PROGRAM_IDS.ENTITY_REGISTRY,
     );
     this.poolingEngine = new PoolingEngineClient(
       this.connection,
-      PROGRAM_IDS.POOLING_ENGINE
+      PROGRAM_IDS.POOLING_ENGINE,
     );
     this.complianceHook = new ComplianceHookClient(
       this.connection,
-      PROGRAM_IDS.COMPLIANCE_HOOK
+      PROGRAM_IDS.COMPLIANCE_HOOK,
     );
     this.fxNetting = new FXNettingClient(
       this.connection,
-      PROGRAM_IDS.FX_NETTING
+      PROGRAM_IDS.FX_NETTING,
     );
     this.sweepTrigger = new SweepTriggerClient(
       this.connection,
-      PROGRAM_IDS.SWEEP_TRIGGER
+      PROGRAM_IDS.SWEEP_TRIGGER,
     );
   }
 
@@ -427,13 +442,13 @@ export class NexusDemoClient {
       "\n" +
         "═══════════════════════════════════════════════════════════════\n" +
         "  NEXUS Protocol - Complete End-to-End CPI Chain Execution\n" +
-        "═══════════════════════════════════════════════════════════════\n"
+        "═══════════════════════════════════════════════════════════════\n",
     );
 
     try {
       // Step 1: Entity Registry - Verify all entities
       console.log(
-        "\n[STEP 1] Entity Registry - Verifying KYC for all entities"
+        "\n[STEP 1] Entity Registry - Verifying KYC for all entities",
       );
       const entities = await this.entityRegistry.getEntities();
       for (const entity of entities) {
@@ -441,18 +456,18 @@ export class NexusDemoClient {
         console.log(
           `  ✓ ${entity.name} (${entity.id}): KYC ${
             kyc_verified ? "✓ Verified" : "✗ Failed"
-          }`
+          }`,
         );
       }
 
       // Step 2: Pooling Engine - Run 7-step netting algorithm
       console.log(
-        "\n[STEP 2] Pooling Engine - Running 7-step netting algorithm"
+        "\n[STEP 2] Pooling Engine - Running 7-step netting algorithm",
       );
       const nettingResult = await this.poolingEngine.run7StepNettingAlgorithm();
       console.log(`  ✓ Netting algorithm complete`);
       console.log(
-        `    - Offset matches: ${nettingResult.step4_matches.matches.length}`
+        `    - Offset matches: ${nettingResult.step4_matches.matches.length}`,
       );
       console.log(`    - Interest accrued: $${nettingResult.step5_interest}`);
 
@@ -474,13 +489,13 @@ export class NexusDemoClient {
           { entity: "de-001", amount: -400000, currency: "EUR" },
         ]);
       console.log(
-        `  ✓ Converted ${multiCurrencyResult.length} positions to USD`
+        `  ✓ Converted ${multiCurrencyResult.length} positions to USD`,
       );
       multiCurrencyResult.forEach((pos) => {
         console.log(
           `    - ${pos.entity}: $${pos.normalized_amount.toFixed(2)} (from ${
             pos.original_currency
-          })`
+          })`,
         );
       });
 
@@ -489,7 +504,7 @@ export class NexusDemoClient {
       const loan = await this.sweepTrigger.createSweepLoan(
         "ae-001",
         "sg-001",
-        300000
+        300000,
       );
       console.log(`  ✓ Loan created: ${loan.loan_id}`);
       console.log(`    - Principal: $${loan.principal}`);
@@ -498,7 +513,7 @@ export class NexusDemoClient {
       console.log(
         `    - Interest accrual: $${this.sweepTrigger
           .calculateInterest(loan.principal, loan.term_days)
-          .toFixed(2)}`
+          .toFixed(2)}`,
       );
 
       console.log(
@@ -506,7 +521,7 @@ export class NexusDemoClient {
           "═══════════════════════════════════════════════════════════════\n" +
           "  ✅ Complete flow executed successfully!\n" +
           "  All 5 programs work together via CPI chain\n" +
-          "═══════════════════════════════════════════════════════════════\n"
+          "═══════════════════════════════════════════════════════════════\n",
       );
     } catch (error) {
       console.error("❌ Flow execution failed:", error);
@@ -524,7 +539,7 @@ export class NexusDemoClient {
     console.log("Layer 1 - Entity Registry");
     console.log(`  Program: ${PROGRAM_IDS.ENTITY_REGISTRY.toString()}`);
     console.log(
-      "  Function: KYC verification, mandate limits, entity lifecycle\n"
+      "  Function: KYC verification, mandate limits, entity lifecycle\n",
     );
 
     console.log("Layer 2 - Pooling Engine (THE MOAT)");
@@ -538,13 +553,13 @@ export class NexusDemoClient {
     console.log("Layer 4 - FX Netting");
     console.log(`  Program: ${PROGRAM_IDS.FX_NETTING.toString()}`);
     console.log(
-      "  Function: Multi-currency netting (USD, EUR, GBP, SGD, AED, CHF)\n"
+      "  Function: Multi-currency netting (USD, EUR, GBP, SGD, AED, CHF)\n",
     );
 
     console.log("Layer 5 - Sweep Trigger");
     console.log(`  Program: ${PROGRAM_IDS.SWEEP_TRIGGER.toString()}`);
     console.log(
-      "  Function: Intercompany loan settlement (90-day terms, 1.5% interest)\n"
+      "  Function: Intercompany loan settlement (90-day terms, 1.5% interest)\n",
     );
 
     console.log("═".repeat(70) + "\n");

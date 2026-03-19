@@ -117,7 +117,7 @@ const ROLE_CONFIG: Record<
 function deriveEntraSubjectId(walletAddress: string): string {
   const a = walletAddress;
   return `amina|${a.slice(0, 6)}-${a.slice(6, 10)}-${a.slice(
-    -8
+    -8,
   )}`.toLowerCase();
 }
 

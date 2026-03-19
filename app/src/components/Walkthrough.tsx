@@ -655,8 +655,8 @@ const Walkthrough: React.FC = () => {
                 i === currentStep
                   ? " active"
                   : i < currentStep
-                  ? " completed"
-                  : ""
+                    ? " completed"
+                    : ""
               }`}
             />
           ))}

@@ -21,7 +21,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 const Root: React.FC = () => {
   const wallets = useMemo(
     () => [new PhantomWalletAdapter(), new SolflareWalletAdapter()],
-    []
+    [],
   );
 
   return (
@@ -44,5 +44,5 @@ const Root: React.FC = () => {
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Root />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

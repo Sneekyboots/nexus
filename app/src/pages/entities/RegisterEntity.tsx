@@ -42,10 +42,10 @@ const RegisterEntity: React.FC = () => {
     step === 0
       ? form.legalName.trim().length > 0
       : step === 1
-      ? form.jurisdiction && form.currency
-      : step === 2
-      ? form.kycProvider
-      : form.maxSingleTransfer > 0 && form.maxDailyAggregate > 0;
+        ? form.jurisdiction && form.currency
+        : step === 2
+          ? form.kycProvider
+          : form.maxSingleTransfer > 0 && form.maxDailyAggregate > 0;
 
   const handleSubmit = async () => {
     setSubmitting(true);
@@ -120,15 +120,15 @@ const RegisterEntity: React.FC = () => {
                       i < step
                         ? "var(--accent-green)"
                         : i === step
-                        ? "var(--highlight-strong)"
-                        : "var(--bg)",
+                          ? "var(--highlight-strong)"
+                          : "var(--bg)",
                     color: i < step ? "white" : "var(--text)",
                     borderColor:
                       i < step
                         ? "var(--accent-green)"
                         : i === step
-                        ? "var(--border)"
-                        : "var(--border-light)",
+                          ? "var(--border)"
+                          : "var(--border-light)",
                   }}
                 >
                   {i < step ? "x" : i + 1}

@@ -26,7 +26,7 @@ const InitiateTransfer: React.FC = () => {
     (e) =>
       e.kycStatus === "verified" ||
       e.kycStatus === "suspended" ||
-      e.kycStatus === "pending"
+      e.kycStatus === "pending",
   );
 
   const set = (field: string, value: any) =>
