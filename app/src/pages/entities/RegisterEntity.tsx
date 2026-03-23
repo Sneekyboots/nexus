@@ -90,6 +90,12 @@ const RegisterEntity: React.FC = () => {
           generatedAt: new Date(zkProof.generatedAt).toISOString(),
         });
       }
+      console.log("Registering entity with data:", {
+        legalName: form.legalName,
+        jurisdiction: form.jurisdiction,
+        currency: form.currency,
+        stablecoin: form.stablecoin,
+      });
       const entity = await registerEntity({
         legalName: form.legalName,
         parentCompany: form.parentCompany,
@@ -106,9 +112,19 @@ const RegisterEntity: React.FC = () => {
           dayResetTimestamp: Date.now(),
         },
       });
+      console.log("Entity registered successfully:", {
+        id: entity.id,
+        legalName: entity.legalName,
+        jurisdiction: entity.jurisdiction,
+      });
       if (form.addToPool) {
+        console.log("Adding entity to pool:", {
+          entityId: entity.id,
+          poolId: "pool-alpha",
+        });
         await addEntityToPool(entity.id, "pool-alpha");
       }
+      console.log("Navigating to /entities");
       navigate("/entities");
     } catch (err) {
       setError(`Registration failed: ${String(err)}`);
