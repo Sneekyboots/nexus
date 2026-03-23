@@ -30,6 +30,7 @@ const RegisterEntity: React.FC = () => {
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [zkProof, setZkProof] = useState<ZKProof | null>(null);
   const [generatingZK, setGeneratingZK] = useState(false);
   const [zkError, setZkError] = useState<string | null>(null);
@@ -81,6 +82,7 @@ const RegisterEntity: React.FC = () => {
   const handleSubmit = async () => {
     setSubmitting(true);
     setError(null);
+    setSuccess(null);
     try {
       if (zkProof) {
         console.log("ZK Proof for registration:", {
@@ -124,10 +126,15 @@ const RegisterEntity: React.FC = () => {
         });
         await addEntityToPool(entity.id, "pool-alpha");
       }
+      setSuccess(
+        `Entity "${form.legalName}" (${entity.id}) registered successfully!`
+      );
       console.log("Navigating to /entities");
-      navigate("/entities");
+      setTimeout(() => navigate("/entities"), 1500);
     } catch (err) {
-      setError(`Registration failed: ${String(err)}`);
+      const errorMsg = String(err);
+      console.error("Registration error:", errorMsg);
+      setError(`Registration failed: ${errorMsg}`);
     } finally {
       setSubmitting(false);
     }
@@ -151,6 +158,16 @@ const RegisterEntity: React.FC = () => {
           >
             <div className="text-red mono" style={{ fontSize: 13 }}>
               [!] {error}
+            </div>
+          </div>
+        )}
+        {success && (
+          <div
+            className="sketch-card"
+            style={{ borderColor: "var(--accent-green)", marginBottom: 16 }}
+          >
+            <div className="text-green mono" style={{ fontSize: 13 }}>
+              [x] {success}
             </div>
           </div>
         )}
