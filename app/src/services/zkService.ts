@@ -43,8 +43,11 @@ export async function generateZKProof(
   try {
     const documentHash = await hashDocument(doc);
 
-    // Use simulated proof directly - zkey files not available in demo
-    // This simulates what the ZK proof would look like
+    // DEMO MODE: Using pre-generated simulated proof instead of groth16.fullProve()
+    // The .zkey (proving key) files are not included in the demo distribution.
+    // In production, this would call: groth16.fullProve(inputs, wasmURL, zkeyURL)
+    // For now, we simulate a valid Groth16 proof to allow the demo to proceed.
+    // The proof is cryptographically structured but not verified on-chain.
     const timestamp = Date.now();
     const simulatedProof = {
       a: [

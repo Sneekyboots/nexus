@@ -255,35 +255,6 @@ const AppLayout: React.FC = () => {
           </div>
 
           <div className="header-wallet-info">
-            {/* Demo / Live toggle */}
-            <div
-              className="demo-mode-toggle"
-              title={
-                isDemoMode
-                  ? "Switch to Live Mode — start with empty state"
-                  : "Switch to Demo Mode — view sample data"
-              }
-            >
-              <span
-                className={`demo-toggle-label ${!isDemoMode ? "active" : ""}`}
-              >
-                LIVE
-              </span>
-              <button
-                className={`demo-toggle-track ${isDemoMode ? "demo" : "live"}`}
-                onClick={toggleDemoMode}
-                type="button"
-                aria-label="Toggle demo/live mode"
-              >
-                <span className="demo-toggle-thumb" />
-              </button>
-              <span
-                className={`demo-toggle-label ${isDemoMode ? "active" : ""}`}
-              >
-                DEMO
-              </span>
-            </div>
-
             {truncatedWallet && (
               <span className="header-wallet-badge">
                 <span className="wallet-connected-dot" />
@@ -302,18 +273,6 @@ const AppLayout: React.FC = () => {
             )}
           </div>
         </div>
-
-        {/* Demo mode banner */}
-        {isDemoMode && (
-          <div className="demo-mode-banner">
-            <span className="mono">[DEMO]</span> Showing sample data — 6
-            entities, 2 loans, 8 compliance events.{" "}
-            <button className="demo-banner-link" onClick={toggleDemoMode}>
-              Switch to LIVE MODE
-            </button>{" "}
-            to start fresh.
-          </div>
-        )}
 
         <Outlet />
       </div>
