@@ -826,7 +826,7 @@ class NexusService {
   // --- Entities ---
 
   async getEntities(): Promise<Entity[]> {
-    // LIVE MODE: Only return real on-chain data, never fake
+    // LIVE MODE: Fetch from blockchain, but fall back to local entities
     if (!this.demoMode) {
       try {
         const onChainEntities = await nexusClient.getEntities();
@@ -866,11 +866,19 @@ class NexusService {
             pdaAddress: e.publicKey,
           }));
         }
-        // No entities on-chain - return empty, don't fall back to demo data
-        return [];
-      } catch {
-        // Blockchain fetch failed - return empty in live mode
-        return [];
+        // No blockchain entities - return locally registered entities instead
+        console.log(
+          "No on-chain entities found, returning local entities:",
+          this.liveEntities.length
+        );
+        return [...this.liveEntities];
+      } catch (err) {
+        // Blockchain fetch failed - return local entities as fallback
+        console.log(
+          "Blockchain fetch failed, using local entities:",
+          this.liveEntities.length
+        );
+        return [...this.liveEntities];
       }
     }
     // DEMO MODE: Return demo data
