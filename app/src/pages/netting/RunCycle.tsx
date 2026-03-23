@@ -28,7 +28,7 @@ const RunCycle: React.FC = () => {
       name,
       status: "pending",
       details: [],
-    })),
+    }))
   );
   const [result, setResult] = useState<NettingCycle | null>(null);
 
@@ -55,7 +55,7 @@ const RunCycle: React.FC = () => {
         name,
         status: "pending",
         details: [],
-      })),
+      }))
     );
 
     // Animate through steps
@@ -66,9 +66,9 @@ const RunCycle: React.FC = () => {
           idx === i
             ? { ...s, status: "running", details: stepDetails[i] }
             : idx < i
-              ? { ...s, status: "completed" }
-              : s,
-        ),
+            ? { ...s, status: "completed" }
+            : s
+        )
       );
 
       // Variable delay per step for realism
@@ -83,8 +83,8 @@ const RunCycle: React.FC = () => {
                 status: "completed",
                 durationMs: delays[i],
               }
-            : s,
-        ),
+            : s
+        )
       );
     }
 
@@ -106,6 +106,21 @@ const RunCycle: React.FC = () => {
       </div>
 
       <div className="page-body">
+        {!pool && (
+          <div
+            className="sketch-card"
+            style={{ borderColor: "var(--accent-red)", marginBottom: 16 }}
+          >
+            <div className="text-red mono" style={{ fontSize: 13 }}>
+              [!] Pool not configured. Go to{" "}
+              <Link to="/pools" style={{ color: "var(--accent-red)" }}>
+                Pool Overview
+              </Link>{" "}
+              to set up the pool first.
+            </div>
+          </div>
+        )}
+
         <div className="sketch-card" style={{ maxWidth: 700 }}>
           <h3>7-Step Netting Algorithm (THE MOAT)</h3>
           <div
@@ -127,8 +142,8 @@ const RunCycle: React.FC = () => {
                   {s.status === "completed"
                     ? "x"
                     : s.status === "running"
-                      ? "~"
-                      : s.step}
+                    ? "~"
+                    : s.step}
                 </div>
                 <div className="step-body">
                   <div className="step-name">
@@ -158,10 +173,13 @@ const RunCycle: React.FC = () => {
             <button
               className="sketch-btn primary"
               disabled={running || !pool}
+              title={!pool ? "Pool must be configured first" : ""}
               onClick={handleRun}
             >
               {running
                 ? `Running step ${currentStep + 1}/7...`
+                : !pool
+                ? "[!] Pool Not Configured"
                 : "[x] Run Netting Cycle"}
             </button>
           </div>

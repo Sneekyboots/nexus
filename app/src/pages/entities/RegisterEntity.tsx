@@ -424,6 +424,21 @@ const RegisterEntity: React.FC = () => {
             </>
           )}
 
+          {error && (
+            <div
+              className="sketch-card"
+              style={{
+                borderColor: "var(--accent-red)",
+                marginBottom: 16,
+                marginTop: 16,
+              }}
+            >
+              <div className="text-red mono" style={{ fontSize: 13 }}>
+                [!] {error}
+              </div>
+            </div>
+          )}
+
           <div className="flex-between" style={{ marginTop: 20 }}>
             <button
               className="sketch-btn"
@@ -432,23 +447,35 @@ const RegisterEntity: React.FC = () => {
             >
               &lt;-- Back
             </button>
-            {step < STEPS.length - 1 ? (
-              <button
-                className="sketch-btn primary"
-                disabled={!canNext}
-                onClick={() => setStep((s) => s + 1)}
-              >
-                Next --&gt;
-              </button>
-            ) : (
-              <button
-                className="sketch-btn primary"
-                disabled={!canNext || submitting}
-                onClick={handleSubmit}
-              >
-                {submitting ? "Registering..." : "[x] Register Entity"}
-              </button>
-            )}
+            <div className="flex gap-8">
+              {!canNext && step < STEPS.length && (
+                <span className="text-orange mono" style={{ fontSize: 12 }}>
+                  {step === 0 && "→ Enter company legal name"}
+                  {step === 1 && "→ Select jurisdiction & currency"}
+                  {step === 2 && "→ Enter document number"}
+                  {step === 3 && "→ Set mandate limits"}
+                </span>
+              )}
+              {step < STEPS.length - 1 ? (
+                <button
+                  className="sketch-btn primary"
+                  disabled={!canNext}
+                  title={!canNext ? "Complete required fields to continue" : ""}
+                  onClick={() => setStep((s) => s + 1)}
+                >
+                  Next --&gt;
+                </button>
+              ) : (
+                <button
+                  className="sketch-btn primary"
+                  disabled={!canNext || submitting}
+                  title={!canNext ? "Complete all fields to register" : ""}
+                  onClick={handleSubmit}
+                >
+                  {submitting ? "Registering..." : "[x] Register Entity"}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -26,7 +26,7 @@ const InitiateTransfer: React.FC = () => {
     (e) =>
       e.kycStatus === "verified" ||
       e.kycStatus === "suspended" ||
-      e.kycStatus === "pending",
+      e.kycStatus === "pending"
   );
 
   const set = (field: string, value: any) =>
@@ -134,20 +134,46 @@ const InitiateTransfer: React.FC = () => {
               />
             </div>
 
-            <button
-              className="sketch-btn primary"
-              disabled={
-                submitting ||
+            <div className="flex gap-8" style={{ alignItems: "flex-end" }}>
+              <button
+                className="sketch-btn primary"
+                disabled={
+                  submitting ||
+                  !form.fromEntityId ||
+                  !form.toEntityId ||
+                  form.amount <= 0 ||
+                  form.fromEntityId === form.toEntityId
+                }
+                title={
+                  form.fromEntityId === form.toEntityId
+                    ? "Sender and receiver must be different"
+                    : !form.fromEntityId || !form.toEntityId
+                    ? "Select both sender and receiver"
+                    : form.amount <= 0
+                    ? "Enter amount greater than 0"
+                    : ""
+                }
+                onClick={handleSubmit}
+              >
+                {submitting
+                  ? "Processing 6-gate compliance..."
+                  : "[x] Submit Transfer"}
+              </button>
+              {(form.fromEntityId === form.toEntityId ||
                 !form.fromEntityId ||
                 !form.toEntityId ||
-                form.amount <= 0
-              }
-              onClick={handleSubmit}
-            >
-              {submitting
-                ? "Processing 6-gate compliance..."
-                : "[x] Submit Transfer"}
-            </button>
+                form.amount <= 0) && (
+                <span className="text-orange mono" style={{ fontSize: 12 }}>
+                  {form.fromEntityId === form.toEntityId
+                    ? "→ Sender must differ from receiver"
+                    : !form.fromEntityId || !form.toEntityId
+                    ? "→ Select both sender and receiver"
+                    : form.amount <= 0
+                    ? "→ Amount must be greater than 0"
+                    : ""}
+                </span>
+              )}
+            </div>
 
             {/* Sender info */}
             {form.fromEntityId && (
