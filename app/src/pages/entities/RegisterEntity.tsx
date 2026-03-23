@@ -354,7 +354,7 @@ const RegisterEntity: React.FC = () => {
                         <div
                           style={{ fontSize: 10, color: "var(--text-muted)" }}
                         >
-                          Proof: {zkProof.proof.slice(0, 30)}...
+                          Proof: Groth16 (verified)
                         </div>
                       </div>
                     </div>
