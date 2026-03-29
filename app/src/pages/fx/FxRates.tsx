@@ -25,13 +25,13 @@ const FxRates: React.FC = () => {
           <Link to="/">NEXUS</Link> / FX Rates
         </div>
         <div className="flex-between">
-          <h2>[$] FX Rates (SIX Financial)</h2>
+          <h2>FX Rates (SIX Financial)</h2>
           <div className="flex gap-8">
-            <button className="sketch-btn small" onClick={() => refresh()}>
+            <button className="btn small" onClick={() => refresh()}>
               Refresh Now
             </button>
             <button
-              className={`sketch-btn small ${autoRefresh ? "primary" : ""}`}
+              className={`btn small ${autoRefresh ? "primary" : ""}`}
               onClick={() => setAutoRefresh(!autoRefresh)}
             >
               {autoRefresh ? "Auto: ON (5s)" : "Auto: OFF"}
@@ -41,9 +41,9 @@ const FxRates: React.FC = () => {
       </div>
 
       <div className="page-body">
-        <div className="sketch-card">
+        <div className="card">
           <h3>Currency Pairs</h3>
-          <table className="sketch-table">
+          <table className="table">
             <thead>
               <tr>
                 <th>Pair</th>
@@ -82,7 +82,7 @@ const FxRates: React.FC = () => {
                     {r.change24h.toFixed(2)}%
                   </td>
                   <td>{r.source}</td>
-                  <td className="mono" style={{ fontSize: 11 }}>
+                  <td className="mono text-xs">
                     {new Date(r.lastUpdated).toLocaleTimeString()}
                   </td>
                   <td>
@@ -96,20 +96,13 @@ const FxRates: React.FC = () => {
           </table>
         </div>
 
-        {/* On-chain proof panel */}
-        <div className="sketch-card">
+        <div className="card">
           <h3>On-Chain Proof — Solana Devnet</h3>
-          <p
-            style={{
-              fontSize: 13,
-              color: "var(--text-muted)",
-              marginBottom: 16,
-            }}
-          >
+          <p className="text-sm text-muted mb-16">
             These are real transactions on Solana Devnet. Click any link to
             verify independently.
           </p>
-          <table className="sketch-table">
+          <table className="table">
             <thead>
               <tr>
                 <th>What</th>
@@ -120,7 +113,7 @@ const FxRates: React.FC = () => {
             <tbody>
               <tr>
                 <td>SIX Oracle PDA</td>
-                <td className="mono" style={{ fontSize: 11 }}>
+                <td className="mono text-xs">
                   EjfuHxMXdqijV2KE4DjHPawgTJJv6W4ZyeczeWfE47Dd
                 </td>
                 <td>
@@ -128,7 +121,7 @@ const FxRates: React.FC = () => {
                     href="https://explorer.solana.com/address/EjfuHxMXdqijV2KE4DjHPawgTJJv6W4ZyeczeWfE47Dd?cluster=devnet"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="sketch-btn small"
+                    className="btn small"
                   >
                     View on Explorer ↗
                   </a>
@@ -136,7 +129,7 @@ const FxRates: React.FC = () => {
               </tr>
               <tr>
                 <td>Oracle initialized</td>
-                <td className="mono" style={{ fontSize: 10 }}>
+                <td className="mono text-xs">
                   3m94gXTJDyaWkrnERdeHU2CZBstSdax7Lb6SRPGw3fR5…
                 </td>
                 <td>
@@ -144,7 +137,7 @@ const FxRates: React.FC = () => {
                     href="https://explorer.solana.com/tx/3m94gXTJDyaWkrnERdeHU2CZBstSdax7Lb6SRPGw3fR57zgNyTWZsncrpRXRB93prtRkoE27Xsu8neG2RyjLpDjC?cluster=devnet"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="sketch-btn small"
+                    className="btn small"
                   >
                     View on Explorer ↗
                   </a>
@@ -152,7 +145,7 @@ const FxRates: React.FC = () => {
               </tr>
               <tr>
                 <td>First live SIX push</td>
-                <td className="mono" style={{ fontSize: 10 }}>
+                <td className="mono text-xs">
                   3sR4LogysZSaKd23gU4WZNaX8vGSSXUvrHcrnEDrfeAN…
                 </td>
                 <td>
@@ -160,7 +153,7 @@ const FxRates: React.FC = () => {
                     href="https://explorer.solana.com/tx/3sR4LogysZSaKd23gU4WZNaX8vGSSXUvrHcrnEDrfeANmEzwBqzAYR1iUmNNMkMwRfmguRYq77KWrRn84JKvPKSW?cluster=devnet"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="sketch-btn small"
+                    className="btn small"
                   >
                     View on Explorer ↗
                   </a>
@@ -168,7 +161,7 @@ const FxRates: React.FC = () => {
               </tr>
               <tr>
                 <td>Pooling Engine program</td>
-                <td className="mono" style={{ fontSize: 11 }}>
+                <td className="mono text-xs">
                   CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk
                 </td>
                 <td>
@@ -176,7 +169,7 @@ const FxRates: React.FC = () => {
                     href="https://explorer.solana.com/address/CrZx1Hu4FzSyzWyErTfXxp6SjvdVMqHczKhS4JZT3Uyk?cluster=devnet"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="sketch-btn small"
+                    className="btn small"
                   >
                     View on Explorer ↗
                   </a>
@@ -184,10 +177,7 @@ const FxRates: React.FC = () => {
               </tr>
             </tbody>
           </table>
-          <div
-            className="mono"
-            style={{ fontSize: 11, marginTop: 12, color: "var(--text-muted)" }}
-          >
+          <div className="mono text-xs text-muted mt-12">
             Deployed March 19 2026 · Authority:
             A7eV2cdTrH56ktXH3ZaSk4kbsF2aguHvggeszcAUXc5o · BC=148 Forex Spot
             Rates

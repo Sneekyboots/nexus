@@ -25,9 +25,7 @@ const PoolOverview: React.FC = () => {
         <div className="breadcrumb">
           <Link to="/">NEXUS</Link> / Pools / Pool Overview
         </div>
-        <h2>
-          {"{}"} Pool Overview: {pool.name}
-        </h2>
+        <h2>Pool Overview: {pool.name}</h2>
       </div>
 
       <div className="page-body">
@@ -64,9 +62,9 @@ const PoolOverview: React.FC = () => {
         </div>
 
         <div className="grid grid-2">
-          <div className="sketch-card">
+          <div className="card">
             <h3>Pool Configuration</h3>
-            <table className="sketch-table">
+            <table className="table">
               <tbody>
                 <tr>
                   <td>Pool ID</td>
@@ -110,9 +108,9 @@ const PoolOverview: React.FC = () => {
             </table>
           </div>
 
-          <div className="sketch-card">
+          <div className="card">
             <h3>Pool Members</h3>
-            <table className="sketch-table">
+            <table className="table">
               <thead>
                 <tr>
                   <th></th>
@@ -153,11 +151,10 @@ const PoolOverview: React.FC = () => {
               </tbody>
             </table>
 
-            {/* Non-pool entities */}
             {entities.filter((e) => !pool.entityIds.includes(e.id)).length >
               0 && (
               <>
-                <h4 style={{ marginTop: 16 }}>Not in Pool</h4>
+                <h4 className="mt-16">Not in Pool</h4>
                 {entities
                   .filter((e) => !pool.entityIds.includes(e.id))
                   .map((e) => (
@@ -180,12 +177,12 @@ const PoolOverview: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex gap-16" style={{ marginTop: 8 }}>
-          <Link to="/netting" className="sketch-btn primary">
-            [&lt;&gt;] Run Netting Cycle
+        <div className="flex gap-16 mt-8">
+          <Link to="/netting" className="btn primary">
+            Run Netting Cycle
           </Link>
-          <Link to="/netting/history" className="sketch-btn">
-            [H] View Cycle History
+          <Link to="/netting/history" className="btn">
+            View Cycle History
           </Link>
         </div>
       </div>

@@ -4,7 +4,7 @@
    with a distinct role badge and colour.
    ============================================================ */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useNexus } from "../hooks/useNexus";
@@ -67,10 +67,27 @@ const AppLayout: React.FC = () => {
   const { role, displayName, walletAddress, logout } = useAuth();
   const { solanaStatus, layerStatus, isDemoMode, toggleDemoMode } = useNexus();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") === "dark";
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDarkMode]);
 
   // Start with all groups open
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
-    new Set(NAV_ITEMS.filter((n) => n.children).map((n) => n.path)),
+    new Set(NAV_ITEMS.filter((n) => n.children).map((n) => n.path))
   );
 
   const toggleGroup = (path: string) => {
@@ -154,7 +171,26 @@ const AppLayout: React.FC = () => {
       {/* ------------------------------------------------------------------ */}
       {/* Sidebar                                                              */}
       {/* ------------------------------------------------------------------ */}
-      <aside className="sidebar">
+      <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+        {/* Mobile menu close */}
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setSidebarOpen(false)}
+          style={{
+            position: "absolute",
+            top: 12,
+            right: 12,
+            background: "none",
+            border: "none",
+            color: "white",
+            fontSize: 20,
+            cursor: "pointer",
+            display: "none",
+          }}
+        >
+          ✕
+        </button>
+
         {/* Logo */}
         <div className="sidebar-logo">
           <h1>NEXUS</h1>
@@ -200,11 +236,7 @@ const AppLayout: React.FC = () => {
               )}
             </div>
           )}
-          <button
-            className="sketch-btn small"
-            style={{ marginTop: 8, width: "100%" }}
-            onClick={handleLogout}
-          >
+          <button className="btn small" onClick={handleLogout}>
             Switch Role / Logout
           </button>
         </div>
@@ -218,7 +250,7 @@ const AppLayout: React.FC = () => {
               </span>
             ))}
           </div>
-          <div style={{ marginTop: 8, fontSize: 11 }}>
+          <div className="mt-8 text-xs">
             <span
               style={{
                 display: "inline-block",
@@ -239,20 +271,38 @@ const AppLayout: React.FC = () => {
       {/* Main content                                                         */}
       {/* ------------------------------------------------------------------ */}
       <div className="main-content">
-        {/* Header bar */}
         <div className="header-bar">
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div className="flex items-center gap-4">
+            <button
+              className="mobile-menu-btn btn small"
+              onClick={() => setSidebarOpen(true)}
+              style={{ padding: "6px 10px" }}
+            >
+              ☰
+            </button>
             <span
               className={`status-dot ${
                 solanaStatus?.connected ? "connected" : "disconnected"
               }`}
             />
-            <span style={{ fontSize: 13 }}>
+            <span className="text-sm">
               {solanaStatus?.network || "Connecting..."}
             </span>
           </div>
 
           <div className="header-wallet-info">
+            {/* Dark mode toggle */}
+            <button
+              className="btn small"
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              title={
+                isDarkMode ? "Switch to light mode" : "Switch to dark mode"
+              }
+              style={{ padding: "6px 10px" }}
+            >
+              {isDarkMode ? "☀️" : "🌙"}
+            </button>
+
             {/* Demo / Live toggle */}
             <div
               className="demo-mode-toggle"

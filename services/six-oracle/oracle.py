@@ -28,6 +28,7 @@ Usage:
   --once   Fetch once, print JSON, exit (useful for testing / curl smoke-test)
 """
 
+from __future__ import annotations
 import os
 import ssl
 import json
@@ -38,6 +39,7 @@ import urllib.error
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 from datetime import datetime, timezone
+from typing import Optional, List, Dict
 
 # ---------------------------------------------------------------------------
 # Config

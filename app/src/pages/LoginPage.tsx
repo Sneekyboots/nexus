@@ -43,7 +43,7 @@ const ROLE_CONFIG: Record<
 function deriveEntraSubjectId(walletAddress: string): string {
   const a = walletAddress;
   return `amina|${a.slice(0, 6)}-${a.slice(6, 10)}-${a.slice(
-    -8,
+    -8
   )}`.toLowerCase();
 }
 
@@ -219,7 +219,7 @@ const LoginPage: React.FC = () => {
                   Authenticate via Microsoft Entra B2C with your Solana wallet.
                 </p>
                 <button
-                  className="sketch-btn primary login-connect-btn"
+                  className="btn primary login-connect-btn"
                   onClick={() => setVisible(true)}
                 >
                   Connect Wallet →
@@ -260,15 +260,12 @@ const LoginPage: React.FC = () => {
               </div>
             ) : (
               <>
-                <div
-                  className="wallet-connected-bar"
-                  style={{ marginBottom: 16 }}
-                >
+                <div className="wallet-connected-bar mb-16">
                   <span className="wallet-connected-dot" />
                   <span className="mono">{truncatedAddress}</span>
                   <span className="wallet-connected-label">Connected</span>
                   <button
-                    className="sketch-btn small wallet-disconnect-btn"
+                    className="btn small wallet-disconnect-btn"
                     onClick={() => disconnect().catch(() => {})}
                   >
                     Disconnect

@@ -32,7 +32,7 @@ const LiveEventFeed: React.FC = () => {
         <div className="breadcrumb">
           <Link to="/">NEXUS</Link> / Compliance / Live Event Feed
         </div>
-        <h2>() Live Compliance Feed</h2>
+        <h2>Live Compliance Feed</h2>
         <div className="kyt-provider-badge">
           <span className="kyt-provider-dot" />
           L3 Compliance Hook · KYT via <strong>Chainalysis</strong> · 6-gate
@@ -45,9 +45,7 @@ const LiveEventFeed: React.FC = () => {
           {FILTERS.map((f) => (
             <button
               key={f.value}
-              className={`sketch-btn small ${
-                filter === f.value ? "primary" : ""
-              }`}
+              className={`btn small ${filter === f.value ? "primary" : ""}`}
               onClick={() => setFilter(f.value)}
             >
               {f.label}{" "}
@@ -60,7 +58,7 @@ const LiveEventFeed: React.FC = () => {
           ))}
         </div>
 
-        <div className="sketch-card">
+        <div className="card">
           <h3>Events ({filtered.length})</h3>
 
           {filtered.length === 0 ? (
@@ -76,9 +74,8 @@ const LiveEventFeed: React.FC = () => {
                   </div>
                   <div className="event-detail">{evt.detail}</div>
 
-                  {/* Show gate results if present */}
                   {evt.gateResults && evt.gateResults.length > 0 && (
-                    <div style={{ marginTop: 8 }}>
+                    <div className="mt-8">
                       <ul className="gate-list">
                         {evt.gateResults.map((g, i) => (
                           <li key={i} className="gate-item">
@@ -87,13 +84,10 @@ const LiveEventFeed: React.FC = () => {
                                 g.passed ? "pass" : "fail"
                               }`}
                             >
-                              {g.passed ? "[x]" : "[ ]"}
+                              {g.passed ? "✓" : "✗"}
                             </span>
                             {g.gate}
-                            <span
-                              className="mono text-muted"
-                              style={{ fontSize: 11, marginLeft: "auto" }}
-                            >
+                            <span className="mono text-muted text-xs ml-auto">
                               {g.details}
                             </span>
                           </li>

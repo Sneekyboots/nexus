@@ -21,7 +21,7 @@ const KytAlerts: React.FC = () => {
         <div className="breadcrumb">
           <Link to="/">NEXUS</Link> / Compliance / KYT Alerts
         </div>
-        <h2>[!] KYT Alerts</h2>
+        <h2>KYT Alerts</h2>
         <div className="kyt-provider-badge">
           <span className="kyt-provider-dot" />
           KYT powered by <strong>Chainalysis</strong> · every transaction
@@ -57,12 +57,12 @@ const KytAlerts: React.FC = () => {
           </div>
         </div>
 
-        <div className="sketch-card">
+        <div className="card">
           <h3>Active Alerts</h3>
           {kytAlerts.length === 0 ? (
             <div className="empty-state">No KYT alerts.</div>
           ) : (
-            <table className="sketch-table">
+            <table className="table">
               <thead>
                 <tr>
                   <th>Alert</th>
@@ -85,7 +85,9 @@ const KytAlerts: React.FC = () => {
                     <td>
                       <strong>{a.issue}</strong>
                     </td>
-                    <td style={{ maxWidth: 250, fontSize: 13 }}>{a.detail}</td>
+                    <td className="text-sm" style={{ maxWidth: 250 }}>
+                      {a.detail}
+                    </td>
                     <td className="mono">
                       <span className="text-red">
                         {typeof a.currentValue === "number" &&
@@ -109,7 +111,7 @@ const KytAlerts: React.FC = () => {
                           {a.status === "pending_review" && (
                             <>
                               <button
-                                className="sketch-btn small"
+                                className="btn small"
                                 onClick={() =>
                                   updateKytAlertStatus(a.id, "approved")
                                 }
@@ -117,7 +119,7 @@ const KytAlerts: React.FC = () => {
                                 Approve
                               </button>
                               <button
-                                className="sketch-btn small danger"
+                                className="btn small danger"
                                 onClick={() =>
                                   updateKytAlertStatus(a.id, "escalated")
                                 }
@@ -128,7 +130,7 @@ const KytAlerts: React.FC = () => {
                           )}
                           {a.status === "escalated" && (
                             <button
-                              className="sketch-btn small"
+                              className="btn small"
                               onClick={() =>
                                 updateKytAlertStatus(a.id, "dismissed")
                               }

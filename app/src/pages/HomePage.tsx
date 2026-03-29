@@ -12,6 +12,15 @@ import { SOLANA_EXPLORER_URL, SOLANA_RPC_URL } from "../constants";
 import { JURISDICTION_FLAGS } from "../types";
 import type { UserRole } from "../types";
 
+const LoadingSkeleton: React.FC = () => (
+  <div className="card">
+    <div className="skeleton skeleton-text short" />
+    <div className="skeleton skeleton-text medium" />
+    <div className="skeleton skeleton-text" />
+    <div className="skeleton skeleton-box mt-12" />
+  </div>
+);
+
 // ---------------------------------------------------------------------------
 // Live On-Chain Transaction Feed
 // Fetches recent confirmed signatures for the pooling-engine program
@@ -64,49 +73,45 @@ const OnChainTxFeed: React.FC = () => {
   }, []);
 
   return (
-    <div className="sketch-card">
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: 12,
-        }}
-      >
-        <h3 style={{ margin: 0 }}>Live On-Chain Transactions</h3>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+    <div className="card">
+      <div className="flex-between mb-12">
+        <h3 className="mt-0 mb-0">Live On-Chain Transactions</h3>
+        <div className="flex items-center gap-4">
           {lastFetched && (
-            <span
-              className="mono"
-              style={{ fontSize: 10, color: "var(--text-muted)" }}
-            >
+            <span className="mono text-xs text-muted">
               updated {lastFetched.toLocaleTimeString()}
             </span>
           )}
-          <button
-            className="sketch-btn small"
-            onClick={fetchSigs}
-            disabled={fetching}
-          >
+          <button className="btn small" onClick={fetchSigs} disabled={fetching}>
             {fetching ? "…" : "Refresh"}
           </button>
         </div>
       </div>
-      <div
-        className="mono"
-        style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 10 }}
-      >
+      <div className="mono text-xs text-muted mb-8">
         Pooling Engine · {POOLING_ENGINE_ID.slice(0, 8)}… · Solana Devnet ·
         auto-refreshes every 15s
       </div>
       {sigs.length === 0 ? (
-        <div className="empty-state mono" style={{ fontSize: 12 }}>
-          {fetching
-            ? "Fetching from devnet…"
-            : "No confirmed transactions found yet."}
+        <div className="empty-state-cta">
+          <div className="empty-icon">📡</div>
+          <p>
+            {fetching
+              ? "Fetching from devnet…"
+              : "No transactions found on devnet yet."}
+          </p>
+          {!fetching && (
+            <div className="flex gap-8 justify-center">
+              <Link to="/netting/run" className="btn primary">
+                Run Netting Cycle
+              </Link>
+              <Link to="/transfers" className="btn">
+                Initiate Transfer
+              </Link>
+            </div>
+          )}
         </div>
       ) : (
-        <table className="sketch-table">
+        <table className="table">
           <thead>
             <tr>
               <th>#</th>
@@ -120,16 +125,12 @@ const OnChainTxFeed: React.FC = () => {
           <tbody>
             {sigs.map((s, i) => (
               <tr key={s.signature}>
-                <td className="mono text-muted" style={{ fontSize: 11 }}>
-                  {i + 1}
-                </td>
-                <td className="mono" style={{ fontSize: 10 }}>
+                <td className="mono text-muted text-xs">{i + 1}</td>
+                <td className="mono text-xs">
                   {s.signature.slice(0, 16)}…{s.signature.slice(-8)}
                 </td>
-                <td className="mono" style={{ fontSize: 11 }}>
-                  {s.slot.toLocaleString()}
-                </td>
-                <td className="mono" style={{ fontSize: 11 }}>
+                <td className="mono text-xs">{s.slot.toLocaleString()}</td>
+                <td className="mono text-xs">
                   {s.blockTime
                     ? new Date(s.blockTime * 1000).toLocaleTimeString()
                     : "—"}
@@ -144,7 +145,7 @@ const OnChainTxFeed: React.FC = () => {
                     href={`${SOLANA_EXPLORER_URL}/tx/${s.signature}?cluster=devnet`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: "var(--accent-blue)", fontSize: 12 }}
+                    className="text-blue text-xs"
                   >
                     ↗ Explorer
                   </a>
@@ -174,7 +175,7 @@ const ActionGuide: React.FC<{ steps: GuideStep[]; title: string }> = ({
   const [expanded, setExpanded] = useState<number | null>(0);
 
   return (
-    <div className="sketch-card guide-card">
+    <div className="card guide-card">
       <h3>{title}</h3>
       <div className="guide-steps">
         {steps.map((s) => (
@@ -189,17 +190,17 @@ const ActionGuide: React.FC<{ steps: GuideStep[]; title: string }> = ({
           >
             <div className="guide-step-header">
               <span className="guide-step-num mono">
-                {s.done ? "[x]" : `[${s.num}]`}
+                {s.done ? "✓" : s.num}
               </span>
               <span className="guide-step-label">{s.label}</span>
               <span className="guide-step-arrow mono">
-                {expanded === s.num - 1 ? "v" : ">"}
+                {expanded === s.num - 1 ? "▼" : "▶"}
               </span>
             </div>
             {expanded === s.num - 1 && (
               <div className="guide-step-body">
                 <p className="guide-step-desc">{s.desc}</p>
-                <Link to={s.to} className="sketch-btn primary guide-step-btn">
+                <Link to={s.to} className="btn primary guide-step-btn">
                   {s.cta} →
                 </Link>
               </div>
@@ -228,17 +229,26 @@ const AminaAdminDashboard: React.FC = () => {
     loading,
   } = useNexus();
 
-  if (loading) return <div className="loading-state">Loading dashboard...</div>;
+  if (loading)
+    return (
+      <div className="page-body">
+        <div className="stat-row">
+          {[1, 2, 3, 4].map((i) => (
+            <LoadingSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
 
   const verified = entities.filter((e) => e.kycStatus === "verified").length;
   const pending = entities.filter((e) => e.kycStatus === "pending").length;
   const suspended = entities.filter((e) => e.kycStatus === "suspended").length;
   const activeLoans = loans.filter((l) => l.status === "active");
   const blockedEvents = complianceEvents.filter(
-    (e) => e.type === "blocked",
+    (e) => e.type === "blocked"
   ).length;
   const pendingKyt = kytAlerts.filter(
-    (a) => a.status === "pending_review",
+    (a) => a.status === "pending_review"
   ).length;
 
   const guideSteps: GuideStep[] = [
@@ -306,7 +316,6 @@ const AminaAdminDashboard: React.FC = () => {
       </div>
 
       <div className="page-body">
-        {/* KPI row */}
         <div className="stat-row">
           <div className="stat-box">
             <div className="stat-label">Total Entities</div>
@@ -343,16 +352,14 @@ const AminaAdminDashboard: React.FC = () => {
         </div>
 
         <div className="grid grid-2">
-          {/* Step-by-step guide */}
           <ActionGuide
-            title="// Admin Workflow — Step by Step"
+            title="Admin Workflow — Step by Step"
             steps={guideSteps}
           />
 
-          {/* Layer status */}
-          <div className="sketch-card">
+          <div className="card">
             <h3>Solana Program Status</h3>
-            <table className="sketch-table">
+            <table className="table">
               <thead>
                 <tr>
                   <th>Layer</th>
@@ -371,7 +378,7 @@ const AminaAdminDashboard: React.FC = () => {
                         href={`${SOLANA_EXPLORER_URL}/address/${l.programId}?cluster=devnet`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        style={{ color: "var(--accent-blue)" }}
+                        className="text-blue"
                       >
                         {l.programId.slice(0, 8)}…
                       </a>
@@ -384,14 +391,10 @@ const AminaAdminDashboard: React.FC = () => {
               </tbody>
             </table>
 
-            <h4 style={{ marginTop: 20 }}>Live FX Rates (SIX)</h4>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            <h4>Live FX Rates (SIX)</h4>
+            <div className="flex flex-wrap gap-4">
               {fxRates.slice(0, 6).map((r) => (
-                <div
-                  key={r.pair}
-                  className="layer-pill"
-                  style={{ fontSize: 12 }}
-                >
+                <div key={r.pair} className="layer-pill">
                   {r.pair}: {r.rate.toFixed(4)}{" "}
                   <span
                     className={r.change24h >= 0 ? "text-green" : "text-red"}
@@ -403,9 +406,8 @@ const AminaAdminDashboard: React.FC = () => {
               ))}
             </div>
 
-            {/* On-chain proof */}
-            <h4 style={{ marginTop: 20 }}>On-Chain Proof</h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <h4 className="mt-16">On-Chain Proof</h4>
+            <div className="flex flex-col gap-2">
               {[
                 {
                   label: "SIX Oracle PDA",
@@ -425,24 +427,16 @@ const AminaAdminDashboard: React.FC = () => {
               ].map((item) => (
                 <div
                   key={item.addr}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    justifyContent: "space-between",
-                  }}
+                  className="flex items-center gap-4 justify-between"
                 >
-                  <span style={{ fontSize: 12, color: "var(--text-muted)" }}>
-                    {item.label}
-                  </span>
+                  <span className="text-xs text-muted">{item.label}</span>
                   <a
                     href={`${SOLANA_EXPLORER_URL}/${
                       item.type === "tx" ? "tx" : "address"
                     }/${item.addr}?cluster=devnet`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mono"
-                    style={{ fontSize: 10, color: "var(--accent-blue)" }}
+                    className="mono text-xs text-blue"
                   >
                     {item.addr.slice(0, 12)}… ↗
                   </a>
@@ -455,23 +449,18 @@ const AminaAdminDashboard: React.FC = () => {
         {/* Live on-chain transaction feed — only shown to AMINA admin */}
         <OnChainTxFeed />
 
-        {/* Recent events + entity table */}
         <div className="grid grid-2">
-          <div className="sketch-card">
+          <div className="card">
             <h3>Entity Registry</h3>
             {entities.length === 0 ? (
               <div className="empty-state">
                 No entities yet.{" "}
-                <Link
-                  to="/entities/register"
-                  className="sketch-btn primary"
-                  style={{ marginTop: 8, display: "inline-block" }}
-                >
+                <Link to="/entities/register" className="btn primary mt-8">
                   Register First Entity →
                 </Link>
               </div>
             ) : (
-              <table className="sketch-table">
+              <table className="table">
                 <thead>
                   <tr>
                     <th></th>
@@ -487,10 +476,7 @@ const AminaAdminDashboard: React.FC = () => {
                       <td>
                         {e.legalName}
                         <br />
-                        <span
-                          className="mono text-muted"
-                          style={{ fontSize: 11 }}
-                        >
+                        <span className="mono text-muted text-xs">
                           {e.jurisdiction}
                         </span>
                       </td>
@@ -513,7 +499,7 @@ const AminaAdminDashboard: React.FC = () => {
             )}
           </div>
 
-          <div className="sketch-card">
+          <div className="card">
             <h3>Recent Compliance Events</h3>
             {complianceEvents.slice(0, 5).map((evt) => (
               <div className="event-item" key={evt.id}>
@@ -527,11 +513,7 @@ const AminaAdminDashboard: React.FC = () => {
                 </div>
               </div>
             ))}
-            <Link
-              to="/compliance"
-              className="sketch-btn small"
-              style={{ marginTop: 12 }}
-            >
+            <Link to="/compliance" className="btn small mt-12">
               View All Events →
             </Link>
           </div>
@@ -549,7 +531,16 @@ const CorporateTreasuryDashboard: React.FC = () => {
   const { entities, pool, loans, fxRates, nettingHistory, loading } =
     useNexus();
 
-  if (loading) return <div className="loading-state">Loading dashboard...</div>;
+  if (loading)
+    return (
+      <div className="page-body">
+        <div className="stat-row">
+          {[1, 2, 3, 4].map((i) => (
+            <LoadingSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
 
   const activeLoans = loans.filter((l) => l.status === "active");
   const surplusEntities = entities.filter((e) => e.balance > 0);
@@ -659,25 +650,21 @@ const CorporateTreasuryDashboard: React.FC = () => {
 
         <div className="grid grid-2">
           <ActionGuide
-            title="// Treasury Workflow — Step by Step"
+            title="Treasury Workflow — Step by Step"
             steps={guideSteps}
           />
 
-          <div className="sketch-card">
+          <div className="card">
             <h3>Subsidiary Positions</h3>
             {entities.length === 0 ? (
               <div className="empty-state">
                 No subsidiaries registered yet.{" "}
-                <Link
-                  to="/entities/register"
-                  className="sketch-btn primary"
-                  style={{ marginTop: 8, display: "inline-block" }}
-                >
+                <Link to="/entities/register" className="btn primary mt-8">
                   Add First Subsidiary →
                 </Link>
               </div>
             ) : (
-              <table className="sketch-table">
+              <table className="table">
                 <thead>
                   <tr>
                     <th></th>
@@ -714,22 +701,15 @@ const CorporateTreasuryDashboard: React.FC = () => {
               </table>
             )}
 
-            <div
-              style={{
-                marginTop: 16,
-                display: "flex",
-                gap: 8,
-                flexWrap: "wrap",
-              }}
-            >
-              <Link to="/netting" className="sketch-btn primary">
-                [&lt;&gt;] Run Netting
+            <div className="flex flex-wrap gap-4 mt-16">
+              <Link to="/netting" className="btn primary">
+                Run Netting
               </Link>
-              <Link to="/transfers" className="sketch-btn">
-                [//] Transfer
+              <Link to="/transfers" className="btn">
+                Transfer
               </Link>
-              <Link to="/fx" className="sketch-btn">
-                [$] FX Rates
+              <Link to="/fx" className="btn">
+                FX Rates
               </Link>
             </div>
           </div>
@@ -737,11 +717,10 @@ const CorporateTreasuryDashboard: React.FC = () => {
 
         <OnChainTxFeed />
 
-        {/* Netting history snippet */}
         {nettingHistory.length > 0 && (
-          <div className="sketch-card">
+          <div className="card">
             <h3>Recent Netting Cycles</h3>
-            <table className="sketch-table">
+            <table className="table">
               <thead>
                 <tr>
                   <th>Cycle ID</th>
@@ -777,11 +756,7 @@ const CorporateTreasuryDashboard: React.FC = () => {
                 ))}
               </tbody>
             </table>
-            <Link
-              to="/netting/history"
-              className="sketch-btn small"
-              style={{ marginTop: 12 }}
-            >
+            <Link to="/netting/history" className="btn small mt-12">
               Full History →
             </Link>
           </div>
@@ -798,7 +773,16 @@ const CorporateTreasuryDashboard: React.FC = () => {
 const SubsidiaryDashboard: React.FC = () => {
   const { entities, complianceEvents, fxRates, loading } = useNexus();
 
-  if (loading) return <div className="loading-state">Loading dashboard...</div>;
+  if (loading)
+    return (
+      <div className="page-body">
+        <div className="stat-row">
+          {[1, 2, 3, 4].map((i) => (
+            <LoadingSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
 
   // In a real app this would filter to the logged-in entity.
   // For the demo, surface the first entity as "my entity".
@@ -813,8 +797,8 @@ const SubsidiaryDashboard: React.FC = () => {
         Math.round(
           (myEntity.mandateLimits.dailyUsed /
             myEntity.mandateLimits.maxDailyAggregate) *
-            100,
-        ),
+            100
+        )
       )
     : 0;
 
@@ -875,19 +859,18 @@ const SubsidiaryDashboard: React.FC = () => {
       <div className="page-body">
         {!myEntity ? (
           <div
-            className="sketch-card highlight"
-            style={{ textAlign: "center", padding: "40px 30px" }}
+            className="card highlight-card text-center"
+            style={{ padding: "32px 24px" }}
           >
             <h3>Your entity hasn't been registered yet.</h3>
-            <p style={{ color: "var(--text-muted)", marginBottom: 16 }}>
+            <p className="text-muted mt-8">
               Ask your Corporate Treasury Admin to register your subsidiary
               first.
             </p>
           </div>
         ) : (
           <>
-            {/* My entity card */}
-            <div className="sketch-card entity-spotlight">
+            <div className="card entity-spotlight">
               <div className="entity-spotlight-header">
                 <span className="entity-spotlight-flag">
                   {JURISDICTION_FLAGS[myEntity.jurisdiction] ?? ""}
@@ -901,15 +884,12 @@ const SubsidiaryDashboard: React.FC = () => {
                     {myEntity.stablecoin}
                   </div>
                 </div>
-                <span
-                  className={`badge ${myEntity.kycStatus}`}
-                  style={{ marginLeft: "auto" }}
-                >
+                <span className={`badge ${myEntity.kycStatus}`}>
                   {myEntity.kycStatus}
                 </span>
               </div>
 
-              <div className="stat-row" style={{ marginTop: 16 }}>
+              <div className="stat-row mt-16">
                 <div className="stat-box green">
                   <div className="stat-label">Balance</div>
                   <div
@@ -936,18 +916,15 @@ const SubsidiaryDashboard: React.FC = () => {
                 </div>
                 <div className="stat-box">
                   <div className="stat-label">Pool</div>
-                  <div className="stat-value" style={{ fontSize: 18 }}>
-                    {myEntity.poolId}
-                  </div>
+                  <div className="stat-value">{myEntity.poolId}</div>
                   <div className="stat-sub">
                     Virtual offset: ${myEntity.virtualOffset.toLocaleString()}
                   </div>
                 </div>
               </div>
 
-              {/* Mandate bar */}
-              <div style={{ marginTop: 12 }}>
-                <div className="mono" style={{ fontSize: 12, marginBottom: 4 }}>
+              <div className="mt-12">
+                <div className="mono text-xs mb-4">
                   Daily limit utilisation: {mandateUsedPct}%
                 </div>
                 <div className="mandate-bar-track">
@@ -967,36 +944,24 @@ const SubsidiaryDashboard: React.FC = () => {
 
             <div className="grid grid-2">
               <ActionGuide
-                title="// What You Can Do — Step by Step"
+                title="What You Can Do — Step by Step"
                 steps={guideSteps}
               />
 
               <div>
-                {/* Quick transfer CTA */}
-                <div className="sketch-card" style={{ marginBottom: 16 }}>
+                <div className="card mb-16">
                   <h3>Quick Transfer</h3>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-hand)",
-                      fontSize: 14,
-                      marginBottom: 12,
-                    }}
-                  >
+                  <p className="text-sm text-muted mb-12">
                     Send stablecoin from <strong>{myEntity.legalName}</strong>{" "}
                     to another entity in your pool. All 6 compliance gates run
                     automatically.
                   </p>
-                  <Link
-                    to="/transfers"
-                    className="sketch-btn primary"
-                    style={{ width: "100%", textAlign: "center" }}
-                  >
-                    [//] Initiate Transfer →
+                  <Link to="/transfers" className="btn primary">
+                    Initiate Transfer →
                   </Link>
                 </div>
 
-                {/* Recent events for this entity */}
-                <div className="sketch-card">
+                <div className="card">
                   <h3>My Compliance Events</h3>
                   {myEvents.length === 0 ? (
                     <div className="empty-state">No events yet.</div>
@@ -1014,11 +979,7 @@ const SubsidiaryDashboard: React.FC = () => {
                       </div>
                     ))
                   )}
-                  <Link
-                    to="/compliance"
-                    className="sketch-btn small"
-                    style={{ marginTop: 12 }}
-                  >
+                  <Link to="/compliance" className="btn small mt-12">
                     Full Event Feed →
                   </Link>
                 </div>
@@ -1027,12 +988,11 @@ const SubsidiaryDashboard: React.FC = () => {
           </>
         )}
 
-        {/* FX mini */}
-        <div className="sketch-card">
+        <div className="card">
           <h3>Live FX Rates (SIX)</h3>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+          <div className="flex flex-wrap gap-4">
             {fxRates.map((r) => (
-              <div key={r.pair} className="layer-pill" style={{ fontSize: 12 }}>
+              <div key={r.pair} className="layer-pill">
                 {r.pair}: {r.rate.toFixed(4)}{" "}
                 <span className={r.change24h >= 0 ? "text-green" : "text-red"}>
                   {r.change24h >= 0 ? "+" : ""}
@@ -1055,14 +1015,23 @@ const ComplianceDashboard: React.FC = () => {
   const { entities, complianceEvents, kytAlerts, layerStatus, loading } =
     useNexus();
 
-  if (loading) return <div className="loading-state">Loading dashboard...</div>;
+  if (loading)
+    return (
+      <div className="page-body">
+        <div className="stat-row">
+          {[1, 2, 3, 4].map((i) => (
+            <LoadingSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
 
   const pendingKyc = entities.filter((e) => e.kycStatus === "pending").length;
   const suspended = entities.filter((e) => e.kycStatus === "suspended").length;
   const blocked = complianceEvents.filter((e) => e.type === "blocked").length;
   const warnings = complianceEvents.filter((e) => e.type === "warning").length;
   const pendingKyt = kytAlerts.filter(
-    (a) => a.status === "pending_review",
+    (a) => a.status === "pending_review"
   ).length;
   const escalated = kytAlerts.filter((a) => a.status === "escalated").length;
 
@@ -1165,24 +1134,20 @@ const ComplianceDashboard: React.FC = () => {
 
         <div className="grid grid-2">
           <ActionGuide
-            title="// Compliance Workflow — Step by Step"
+            title="Compliance Workflow — Step by Step"
             steps={guideSteps}
           />
 
           <div>
-            {/* Entities needing action */}
-            <div className="sketch-card" style={{ marginBottom: 16 }}>
+            <div className="card mb-16">
               <h3>Entities Needing Action</h3>
               {entities.filter((e) => e.kycStatus !== "verified").length ===
               0 ? (
-                <div
-                  className="empty-state"
-                  style={{ color: "var(--accent-green)" }}
-                >
-                  [x] All entities verified — no action required.
+                <div className="empty-state text-green">
+                  All entities verified — no action required.
                 </div>
               ) : (
-                <table className="sketch-table">
+                <table className="table">
                   <thead>
                     <tr>
                       <th></th>
@@ -1202,12 +1167,20 @@ const ComplianceDashboard: React.FC = () => {
                             <span className={`badge ${e.kycStatus}`}>
                               {e.kycStatus}
                             </span>
+                            {e.kycProvider === "zk-onchain" && (
+                              <span
+                                className="badge ml-4"
+                                style={{
+                                  background: "var(--accent-purple)",
+                                  color: "white",
+                                }}
+                              >
+                                ZK
+                              </span>
+                            )}
                           </td>
                           <td>
-                            <Link
-                              to="/entities/kyc"
-                              className="sketch-btn small"
-                            >
+                            <Link to="/entities/kyc" className="btn small">
                               Review →
                             </Link>
                           </td>
@@ -1218,8 +1191,7 @@ const ComplianceDashboard: React.FC = () => {
               )}
             </div>
 
-            {/* L3 Compliance Hook status */}
-            <div className="sketch-card">
+            <div className="card">
               <h3>L3 Compliance Hook — Gate Results</h3>
               {[
                 "KYC Check",
@@ -1229,26 +1201,15 @@ const ComplianceDashboard: React.FC = () => {
                 "Daily Limit",
                 "Transfer Limit",
               ].map((gate, i) => (
-                <div
-                  key={gate}
-                  className="gate-item"
-                  style={{ padding: "6px 0" }}
-                >
-                  <span className="gate-check pass mono">[x]</span>
-                  <span
-                    style={{ fontFamily: "var(--font-hand)", fontSize: 14 }}
-                  >
-                    {gate}
-                  </span>
-                  <span
-                    className="mono text-muted"
-                    style={{ fontSize: 11, marginLeft: "auto" }}
-                  >
+                <div key={gate} className="gate-item">
+                  <span className="gate-check pass">✓</span>
+                  <span>{gate}</span>
+                  <span className="mono text-muted text-xs">
                     Gate {i + 1}/6 · active
                   </span>
                 </div>
               ))}
-              <div style={{ marginTop: 12 }}>
+              <div className="mt-12">
                 <span
                   className={`badge ${
                     layerStatus.find((l) => l.layer === 3)?.status ?? "live"
@@ -1261,8 +1222,7 @@ const ComplianceDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Recent compliance events */}
-        <div className="sketch-card">
+        <div className="card">
           <h3>Recent Compliance Events</h3>
           {complianceEvents.slice(0, 6).map((evt) => (
             <div className="event-item" key={evt.id}>
@@ -1279,11 +1239,7 @@ const ComplianceDashboard: React.FC = () => {
               </div>
             </div>
           ))}
-          <Link
-            to="/compliance"
-            className="sketch-btn small"
-            style={{ marginTop: 12 }}
-          >
+          <Link to="/compliance" className="btn small mt-12">
             View Full Feed →
           </Link>
         </div>

@@ -25,8 +25,8 @@ const AllEntities: React.FC = () => {
         <div className="flex-between">
           <h2>All Entities</h2>
           {canRegister && (
-            <Link to="/entities/register" className="sketch-btn primary">
-              [+] Register New Entity
+            <Link to="/entities/register" className="btn primary">
+              Register New Entity
             </Link>
           )}
         </div>
@@ -58,9 +58,9 @@ const AllEntities: React.FC = () => {
           </div>
         </div>
 
-        <div className="sketch-card">
+        <div className="card">
           <h3>Entity Registry</h3>
-          <table className="sketch-table">
+          <table className="table">
             <thead>
               <tr>
                 <th></th>
@@ -82,7 +82,7 @@ const AllEntities: React.FC = () => {
                   <td>{e.legalName}</td>
                   <td className="mono">
                     {e.jurisdiction}
-                    <span className="text-muted" style={{ fontSize: 11 }}>
+                    <span className="text-muted text-xs">
                       {" "}
                       {JURISDICTION_LABELS[e.jurisdiction]
                         ? `(${

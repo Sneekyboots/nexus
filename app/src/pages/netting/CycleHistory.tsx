@@ -19,7 +19,7 @@ const CycleHistory: React.FC = () => {
         <div className="breadcrumb">
           <Link to="/">NEXUS</Link> / Netting / Cycle History
         </div>
-        <h2>[H] Cycle History</h2>
+        <h2>Cycle History</h2>
       </div>
 
       <div className="page-body">
@@ -29,23 +29,12 @@ const CycleHistory: React.FC = () => {
           </div>
         ) : (
           nettingHistory.map((cycle) => (
-            <div className="sketch-card" key={cycle.id}>
+            <div className="card" key={cycle.id}>
               <div className="flex-between">
-                <h3
-                  style={{
-                    borderBottom: "none",
-                    paddingBottom: 0,
-                    marginBottom: 0,
-                  }}
-                >
-                  {cycle.id}
-                </h3>
+                <h3 className="no-border mb-0 pb-0">{cycle.id}</h3>
                 <span className="badge completed">completed</span>
               </div>
-              <div
-                className="mono text-muted"
-                style={{ fontSize: 12, marginBottom: 12 }}
-              >
+              <div className="mono text-muted text-sm mb-12">
                 {new Date(cycle.timestamp).toLocaleString()} | Pool:{" "}
                 {cycle.poolId} | Duration: {cycle.durationMs}ms
               </div>
@@ -56,25 +45,21 @@ const CycleHistory: React.FC = () => {
                   style={{ padding: "8px 12px", minWidth: "auto" }}
                 >
                   <div className="stat-label">Entities</div>
-                  <div className="stat-value" style={{ fontSize: 22 }}>
-                    {cycle.entityCount}
-                  </div>
+                  <div className="stat-value text-lg">{cycle.entityCount}</div>
                 </div>
                 <div
                   className="stat-box"
                   style={{ padding: "8px 12px", minWidth: "auto" }}
                 >
                   <div className="stat-label">Offsets</div>
-                  <div className="stat-value" style={{ fontSize: 22 }}>
-                    {cycle.offsetCount}
-                  </div>
+                  <div className="stat-value text-lg">{cycle.offsetCount}</div>
                 </div>
                 <div
                   className="stat-box green"
                   style={{ padding: "8px 12px", minWidth: "auto" }}
                 >
                   <div className="stat-label">Total Offset</div>
-                  <div className="stat-value" style={{ fontSize: 22 }}>
+                  <div className="stat-value text-lg">
                     ${cycle.totalOffsetUsd.toLocaleString()}
                   </div>
                 </div>
@@ -83,14 +68,14 @@ const CycleHistory: React.FC = () => {
                   style={{ padding: "8px 12px", minWidth: "auto" }}
                 >
                   <div className="stat-label">Interest</div>
-                  <div className="stat-value" style={{ fontSize: 22 }}>
+                  <div className="stat-value text-lg">
                     ${cycle.interestAccrued.toFixed(2)}
                   </div>
                 </div>
               </div>
 
               <button
-                className="sketch-btn small"
+                className="btn small mt-12"
                 onClick={() =>
                   setExpanded(expanded === cycle.id ? null : cycle.id)
                 }
@@ -99,7 +84,7 @@ const CycleHistory: React.FC = () => {
               </button>
 
               {expanded === cycle.id && (
-                <div style={{ marginTop: 16 }}>
+                <div className="mt-16">
                   <h4>7-Step Execution</h4>
                   <ol className="step-list">
                     {cycle.steps.map((s) => (
@@ -115,13 +100,7 @@ const CycleHistory: React.FC = () => {
                             ))}
                           </div>
                           {s.durationMs && (
-                            <div
-                              className="mono"
-                              style={{
-                                fontSize: 10,
-                                color: "var(--accent-green)",
-                              }}
-                            >
+                            <div className="mono text-xs text-green">
                               {s.durationMs}ms
                             </div>
                           )}
@@ -132,8 +111,8 @@ const CycleHistory: React.FC = () => {
 
                   {cycle.offsets.length > 0 && (
                     <>
-                      <h4 style={{ marginTop: 16 }}>Offset Matches</h4>
-                      <table className="sketch-table">
+                      <h4 className="mt-16">Offset Matches</h4>
+                      <table className="table">
                         <thead>
                           <tr>
                             <th>Surplus</th>
@@ -166,10 +145,7 @@ const CycleHistory: React.FC = () => {
                     </>
                   )}
 
-                  <div
-                    className="mono text-muted"
-                    style={{ fontSize: 11, marginTop: 12 }}
-                  >
+                  <div className="mono text-muted text-xs mt-12">
                     Tx: {cycle.transactionHash}
                   </div>
                 </div>

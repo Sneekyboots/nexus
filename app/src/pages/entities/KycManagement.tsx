@@ -50,18 +50,16 @@ const KycManagement: React.FC = () => {
           <Link to="/">NEXUS</Link> / <Link to="/entities">Entities</Link> / KYC
           Management
         </div>
-        <h2>[?] KYC Management</h2>
+        <h2>KYC Management</h2>
       </div>
 
       <div className="page-body">
         {error && (
           <div
-            className="sketch-card"
+            className="card"
             style={{ borderColor: "var(--accent-red)", marginBottom: 16 }}
           >
-            <div className="text-red mono" style={{ fontSize: 13 }}>
-              [!] {error}
-            </div>
+            <div className="text-red mono text-sm">{error}</div>
           </div>
         )}
         <div className="stat-row">
@@ -91,9 +89,9 @@ const KycManagement: React.FC = () => {
           </div>
         </div>
 
-        <div className="sketch-card">
+        <div className="card">
           <h3>Entity KYC Status</h3>
-          <table className="sketch-table">
+          <table className="table">
             <thead>
               <tr>
                 <th></th>
@@ -136,20 +134,20 @@ const KycManagement: React.FC = () => {
                         {(e.kycStatus === "pending" ||
                           e.kycStatus === "suspended") && (
                           <button
-                            className="sketch-btn small"
+                            className="btn small"
                             disabled={actionId === e.id}
                             onClick={() => handleVerify(e.id)}
                           >
-                            {actionId === e.id ? "..." : "[x] Verify"}
+                            {actionId === e.id ? "..." : "Verify"}
                           </button>
                         )}
                         {e.kycStatus === "verified" && (
                           <button
-                            className="sketch-btn small danger"
+                            className="btn small danger"
                             disabled={actionId === e.id}
                             onClick={() => handleSuspend(e.id)}
                           >
-                            {actionId === e.id ? "..." : "[!] Suspend"}
+                            {actionId === e.id ? "..." : "Suspend"}
                           </button>
                         )}
                       </div>
@@ -161,12 +159,8 @@ const KycManagement: React.FC = () => {
           </table>
         </div>
 
-        {/* Suspended entity details */}
         {entities.filter((e) => e.suspendedReason).length > 0 && (
-          <div
-            className="sketch-card"
-            style={{ borderColor: "var(--accent-red)" }}
-          >
+          <div className="card" style={{ borderColor: "var(--accent-red)" }}>
             <h3 className="text-red">Suspended Entity Details</h3>
             {entities
               .filter((e) => e.suspendedReason)
