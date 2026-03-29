@@ -1049,7 +1049,7 @@ class NexusService {
   // --- Pool ---
 
   async getPool(): Promise<Pool | null> {
-    // LIVE MODE: Only return real on-chain data, never fake
+    // LIVE MODE: Try to fetch from blockchain, fall back to generated pool from local entities
     if (!this.demoMode) {
       try {
         const stats = await nexusClient.getPoolStatistics();
@@ -1070,11 +1070,22 @@ class NexusService {
             activeLoans: 0,
           };
         }
-        // No pool data on-chain - return null, don't fall back to demo
-        return null;
-      } catch {
-        // Blockchain fetch failed - return null in live mode
-        return null;
+        // No on-chain pool data - generate pool from local entities instead of returning null
+        console.log(
+          "No on-chain pool data, generating pool from",
+          this.liveEntities.length,
+          "local entities"
+        );
+        const pool = generatePool(this.liveEntities);
+        return { ...pool };
+      } catch (err) {
+        // Blockchain fetch failed - generate pool from local entities
+        console.log(
+          "Blockchain pool fetch failed, generating pool from local entities:",
+          err
+        );
+        const pool = generatePool(this.liveEntities);
+        return { ...pool };
       }
     }
     // DEMO MODE: Return demo data
