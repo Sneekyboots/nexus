@@ -40,7 +40,7 @@ const RegisterEntity: React.FC = () => {
     jurisdiction: "CH",
     currency: "CHF",
     stablecoin: "USDC",
-    documentType: "passport",
+    documentType: "certificate_of_incorporation",
     documentNumber: "",
     companyRegNumber: "",
     addressCountry: "CH",
@@ -297,22 +297,25 @@ const RegisterEntity: React.FC = () => {
           {step === 2 && (
             <>
               <div className="form-group">
-                <label>Identity Document Type</label>
+                <label>Corporate Document Type</label>
                 <select
                   className="sketch-select"
                   value={form.documentType}
                   onChange={(e) => set("documentType", e.target.value)}
                 >
-                  <option value="passport">Passport</option>
-                  <option value="national_id">National ID</option>
-                  <option value="drivers_license">Driver's License</option>
+                  <option value="certificate_of_incorporation">
+                    Certificate of Incorporation
+                  </option>
+                  <option value="business_license">Business License</option>
+                  <option value="tax_id">Tax ID / EIN</option>
+                  <option value="bank_charter">Bank Charter</option>
                 </select>
               </div>
               <div className="form-group">
                 <label>Document Number</label>
                 <input
                   className="sketch-input"
-                  placeholder="e.g. AB1234567"
+                  placeholder="e.g. 12345678-9 or CH-123456"
                   value={form.documentNumber}
                   onChange={(e) => set("documentNumber", e.target.value)}
                 />
