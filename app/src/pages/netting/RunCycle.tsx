@@ -48,6 +48,7 @@ const RunCycle: React.FC = () => {
     setResult(null);
     setCurrentStep(-1);
 
+    // Reset steps
     setSteps(
       STEP_NAMES.map((name, i) => ({
         step: i + 1,
@@ -57,6 +58,7 @@ const RunCycle: React.FC = () => {
       }))
     );
 
+    // Animate through steps
     for (let i = 0; i < 7; i++) {
       setCurrentStep(i);
       setSteps((prev) =>
@@ -69,6 +71,7 @@ const RunCycle: React.FC = () => {
         )
       );
 
+      // Variable delay per step for realism
       const delays = [500, 400, 300, 900, 500, 1100, 1400];
       await new Promise((r) => setTimeout(r, delays[i]));
 
@@ -85,6 +88,7 @@ const RunCycle: React.FC = () => {
       );
     }
 
+    // Actually run the cycle in the service
     const cycle = await runNettingCycle(pool.id);
     setResult(cycle);
     setRunning(false);
@@ -98,13 +102,35 @@ const RunCycle: React.FC = () => {
         <div className="breadcrumb">
           <Link to="/">NEXUS</Link> / Netting / Run Cycle
         </div>
-        <h2>Run Netting Cycle</h2>
+        <h2>{"<>"} Run Netting Cycle</h2>
       </div>
 
       <div className="page-body">
-        <div className="card" style={{ maxWidth: 700 }}>
+        {!pool && (
+          <div
+            className="sketch-card"
+            style={{ borderColor: "var(--accent-red)", marginBottom: 16 }}
+          >
+            <div className="text-red mono" style={{ fontSize: 13 }}>
+              [!] Pool not configured. Go to{" "}
+              <Link to="/pools" style={{ color: "var(--accent-red)" }}>
+                Pool Overview
+              </Link>{" "}
+              to set up the pool first.
+            </div>
+          </div>
+        )}
+
+        <div className="sketch-card" style={{ maxWidth: 700 }}>
           <h3>7-Step Netting Algorithm (THE MOAT)</h3>
-          <div className="mono text-xs text-muted mb-12">
+          <div
+            className="mono"
+            style={{
+              fontSize: 11,
+              color: "var(--text-muted)",
+              marginBottom: 16,
+            }}
+          >
             Pool: {pool?.name || "—"} | Members: {pool?.memberCount || 0} |
             Interest: {pool?.interestRateApr || 0}% APR
           </div>
@@ -131,7 +157,10 @@ const RunCycle: React.FC = () => {
                     </div>
                   )}
                   {s.durationMs && (
-                    <div className="mono text-xs text-green">
+                    <div
+                      className="mono"
+                      style={{ fontSize: 10, color: "var(--accent-green)" }}
+                    >
                       completed in {s.durationMs}ms
                     </div>
                   )}
@@ -140,23 +169,30 @@ const RunCycle: React.FC = () => {
             ))}
           </ol>
 
-          <div className="mt-20">
+          <div style={{ marginTop: 20 }}>
             <button
-              className="btn primary"
+              className="sketch-btn primary"
               disabled={running || !pool}
+              title={!pool ? "Pool must be configured first" : ""}
               onClick={handleRun}
             >
               {running
                 ? `Running step ${currentStep + 1}/7...`
-                : "Run Netting Cycle"}
+                : !pool
+                ? "[!] Pool Not Configured"
+                : "[x] Run Netting Cycle"}
             </button>
           </div>
         </div>
 
+        {/* Result */}
         {result && (
-          <div className="card highlight mt-20" style={{ maxWidth: 700 }}>
+          <div
+            className="sketch-card highlight"
+            style={{ maxWidth: 700, marginTop: 20 }}
+          >
             <h3>Cycle Result</h3>
-            <table className="table">
+            <table className="sketch-table">
               <tbody>
                 <tr>
                   <td>Cycle ID</td>
@@ -186,14 +222,16 @@ const RunCycle: React.FC = () => {
                 </tr>
                 <tr>
                   <td>Transaction Hash</td>
-                  <td className="mono text-xs">
+                  <td className="mono" style={{ fontSize: 11 }}>
                     {result.transactionHash ? (
                       <a
                         href={`${SOLANA_EXPLORER_URL}/tx/${result.transactionHash}?cluster=devnet`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue"
-                        style={{ wordBreak: "break-all" }}
+                        style={{
+                          color: "var(--accent-blue)",
+                          wordBreak: "break-all",
+                        }}
                       >
                         {result.transactionHash.slice(0, 20)}…
                         {result.transactionHash.slice(-8)} ↗
@@ -208,8 +246,8 @@ const RunCycle: React.FC = () => {
 
             {result.offsets.length > 0 && (
               <>
-                <h4 className="mt-16">Offset Matches</h4>
-                <table className="table">
+                <h4 style={{ marginTop: 16 }}>Offset Matches</h4>
+                <table className="sketch-table">
                   <thead>
                     <tr>
                       <th>Surplus</th>

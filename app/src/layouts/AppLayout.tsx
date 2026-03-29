@@ -11,6 +11,8 @@ import { useNexus } from "../hooks/useNexus";
 import { NAV_ITEMS, SOLANA_EXPLORER_URL } from "../constants";
 import type { NavItem, UserRole } from "../types";
 import Walkthrough from "../components/Walkthrough";
+import DemoRunner from "../components/DemoRunner";
+import TestConsole from "../components/TestConsole";
 
 // ---------------------------------------------------------------------------
 // Role metadata — badge colour + short label + description shown in sidebar
@@ -351,23 +353,17 @@ const AppLayout: React.FC = () => {
           </div>
         </div>
 
-        {/* Demo mode banner */}
-        {isDemoMode && (
-          <div className="demo-mode-banner">
-            <span className="mono">[DEMO]</span> Showing sample data — 6
-            entities, 2 loans, 8 compliance events.{" "}
-            <button className="demo-banner-link" onClick={toggleDemoMode}>
-              Switch to LIVE MODE
-            </button>{" "}
-            to start fresh.
-          </div>
-        )}
-
         <Outlet />
       </div>
 
       {/* First-time walkthrough overlay */}
       <Walkthrough />
+
+      {/* Demo runner widget */}
+      <DemoRunner />
+
+      {/* Test console for manual testing */}
+      <TestConsole />
     </div>
   );
 };

@@ -191,11 +191,11 @@ function generateEntities(): Entity[] {
 
 function generatePool(entities: Entity[]): Pool {
   const members = entities.filter(
-    (e) => e.poolId === "pool-alpha" && e.kycStatus === "verified",
+    (e) => e.poolId === "pool-alpha" && e.kycStatus === "verified"
   );
   const totalOffsets = members.reduce(
     (s, e) => s + Math.abs(e.virtualOffset),
-    0,
+    0
   );
   return {
     id: "pool-alpha",
@@ -826,7 +826,7 @@ class NexusService {
   // --- Entities ---
 
   async getEntities(): Promise<Entity[]> {
-    // LIVE MODE: Only return real on-chain data, never fake
+    // LIVE MODE: Fetch from blockchain, but fall back to local entities
     if (!this.demoMode) {
       try {
         const onChainEntities = await nexusClient.getEntities();
@@ -866,11 +866,19 @@ class NexusService {
             pdaAddress: e.publicKey,
           }));
         }
-        // No entities on-chain - return empty, don't fall back to demo data
-        return [];
-      } catch {
-        // Blockchain fetch failed - return empty in live mode
-        return [];
+        // No blockchain entities - return locally registered entities instead
+        console.log(
+          "No on-chain entities found, returning local entities:",
+          this.liveEntities.length
+        );
+        return [...this.liveEntities];
+      } catch (err) {
+        // Blockchain fetch failed - return local entities as fallback
+        console.log(
+          "Blockchain fetch failed, using local entities:",
+          this.liveEntities.length
+        );
+        return [...this.liveEntities];
       }
     }
     // DEMO MODE: Return demo data
@@ -882,6 +890,11 @@ class NexusService {
   }
 
   async registerEntity(data: Partial<Entity>): Promise<Entity> {
+    console.log(
+      "nexusService.registerEntity called in",
+      this.demoMode ? "DEMO" : "LIVE",
+      "mode"
+    );
     const id =
       (data.jurisdiction || "XX").toLowerCase() +
       "-" +
@@ -908,7 +921,15 @@ class NexusService {
       },
       createdAt: new Date().toISOString(),
     };
+    console.log("Creating entity with ID:", entity.id);
     this.entities.push(entity);
+    console.log(
+      "Entity added to",
+      this.demoMode ? "demoEntities" : "liveEntities",
+      "array. Now",
+      this.entities.length,
+      "entities total"
+    );
     this.complianceEvents.unshift({
       id: `evt-${Date.now()}`,
       timestamp: new Date().toISOString(),
@@ -942,7 +963,7 @@ class NexusService {
 
   async suspendEntity(
     entityId: string,
-    reason: string,
+    reason: string
   ): Promise<Entity | undefined> {
     const entity = this.entities.find((e) => e.id === entityId);
     if (!entity) return undefined;
@@ -962,7 +983,7 @@ class NexusService {
 
   async addEntityToPool(
     entityId: string,
-    poolId: string,
+    poolId: string
   ): Promise<Entity | undefined> {
     const entity = this.entities.find((e) => e.id === entityId);
     if (!entity) return undefined;
@@ -981,7 +1002,7 @@ class NexusService {
 
   async updateMandateLimits(
     entityId: string,
-    limits: Partial<Entity["mandateLimits"]>,
+    limits: Partial<Entity["mandateLimits"]>
   ): Promise<Entity | undefined> {
     const entity = this.entities.find((e) => e.id === entityId);
     if (!entity) return undefined;
@@ -1041,7 +1062,7 @@ class NexusService {
       const res = await Promise.race<Response>([
         fetch("http://localhost:7070/rates"),
         new Promise<Response>((_, reject) =>
-          setTimeout(() => reject(new Error("oracle timeout")), 2000),
+          setTimeout(() => reject(new Error("oracle timeout")), 2000)
         ),
       ]);
       if (res.ok) {
@@ -1121,7 +1142,7 @@ class NexusService {
 
   async updateKytAlertStatus(
     alertId: string,
-    status: KytAlert["status"],
+    status: KytAlert["status"]
   ): Promise<KytAlert | undefined> {
     const alert = this.kytAlerts.find((a) => a.id === alertId);
     if (!alert) return undefined;
@@ -1142,7 +1163,7 @@ class NexusService {
       throw new Error("No pool found on-chain. Register entities first.");
     }
     const entities = this.entities.filter(
-      (e) => e.poolId === poolId && e.kycStatus === "verified",
+      (e) => e.poolId === poolId && e.kycStatus === "verified"
     );
 
     const surplus = entities.filter((e) => e.balance > 0);
@@ -1152,7 +1173,7 @@ class NexusService {
     for (let i = 0; i < Math.min(surplus.length, deficit.length); i++) {
       const offsetAmount = Math.min(
         surplus[i].balance,
-        Math.abs(deficit[i].balance),
+        Math.abs(deficit[i].balance)
       );
       offsets.push({
         id: `offset-new-${i}`,
@@ -1178,7 +1199,7 @@ class NexusService {
       (o) =>
         `Match: ${o.surplusEntity} ---> ${
           o.deficitEntity
-        } ($${o.netOffsetUsd.toLocaleString()})`,
+        } ($${o.netOffsetUsd.toLocaleString()})`
     );
 
     const steps: NettingStep[] = [
@@ -1244,7 +1265,7 @@ class NexusService {
 
     const totalDurationMs = steps.reduce(
       (s, st) => s + (st.durationMs || 0),
-      0,
+      0
     );
 
     // Create loans from offsets
@@ -1325,8 +1346,8 @@ class NexusService {
           from?.kycStatus !== "verified"
             ? `${data.fromEntityId} KYC: ${from?.kycStatus}`
             : to?.kycStatus !== "verified"
-              ? `${data.toEntityId} KYC: ${to?.kycStatus}`
-              : "Both entities verified",
+            ? `${data.toEntityId} KYC: ${to?.kycStatus}`
+            : "Both entities verified",
       },
       {
         gate: "KYT Check",
@@ -1380,7 +1401,7 @@ class NexusService {
       memo: data.memo,
       reference: `REF-2026-${String(this.transfers.length + 1).padStart(
         3,
-        "0",
+        "0"
       )}`,
       status: allPassed ? "completed" : "blocked",
       timestamp: new Date().toISOString(),
@@ -1438,7 +1459,7 @@ class NexusService {
         const key = Object.keys(deployment).find(
           (k) =>
             k.toLowerCase().replace(/_/g, "") ===
-            l.name.toLowerCase().replace(/\s/g, ""),
+            l.name.toLowerCase().replace(/\s/g, "")
         );
         const depInfo = key ? deployment[key] : undefined;
         return {
