@@ -15,6 +15,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { NexusProvider } from "./context/NexusContext";
 import App from "./App";
 import "./index.css";
+import "./styles/sketch.css";
 import "./styles/nexus.css";
 import "@solana/wallet-adapter-react-ui/styles.css";
 
