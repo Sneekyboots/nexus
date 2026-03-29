@@ -82,7 +82,7 @@ test_check "HomePage exists" "[ -f app/src/pages/HomePage.tsx ]"
 
 # 7. Styles
 echo -e "\n${YELLOW}🎨 Styling${NC}"
-test_check "index.css exists" "[ -f app/src/styles/index.css ]"
+test_check "index.css exists" "[ -f app/src/index.css ]"
 test_check "sketch.css exists" "[ -f app/src/styles/sketch.css ]"
 test_check "nexus.css exists" "[ -f app/src/styles/nexus.css ]"
 
