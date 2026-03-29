@@ -40,7 +40,7 @@ const AuditExport: React.FC = () => {
         nettingCyclesRun: nettingHistory.length,
         totalOffsetValue: nettingHistory.reduce(
           (s, c) => s + c.totalOffsetUsd,
-          0,
+          0
         ),
         totalTransfers: transfers.length,
         blockedTransfers: transfers.filter((t) => t.status === "blocked")
@@ -78,13 +78,13 @@ const AuditExport: React.FC = () => {
         <div className="breadcrumb">
           <Link to="/">NEXUS</Link> / Reports / Audit Export
         </div>
-        <h2>[=] Audit Export</h2>
+        <h2>Audit Export</h2>
       </div>
 
       <div className="page-body">
-        <div className="sketch-card" style={{ maxWidth: 700 }}>
+        <div className="card" style={{ maxWidth: 700 }}>
           <h3>Report Summary</h3>
-          <table className="sketch-table">
+          <table className="table">
             <tbody>
               <tr>
                 <td>Total Entities</td>
@@ -168,22 +168,13 @@ const AuditExport: React.FC = () => {
             </tbody>
           </table>
 
-          <div style={{ marginTop: 20 }}>
-            <button className="sketch-btn primary" onClick={handleExport}>
-              {exported
-                ? "[x] Downloaded!"
-                : "[=] Export Full Audit Report (JSON)"}
+          <div className="mt-20">
+            <button className="btn primary" onClick={handleExport}>
+              {exported ? "Downloaded!" : "Export Full Audit Report (JSON)"}
             </button>
           </div>
 
-          <div
-            className="mono"
-            style={{
-              fontSize: 11,
-              color: "var(--text-muted)",
-              marginTop: 16,
-            }}
-          >
+          <div className="mono text-xs text-muted mt-16">
             The exported report includes all entities, pool state, loans,
             netting history, transfers, compliance events, FX rates, and program
             deployment status. Suitable for regulatory review by FINMA / MiCA /
@@ -191,10 +182,9 @@ const AuditExport: React.FC = () => {
           </div>
         </div>
 
-        {/* Program deployment info for auditors */}
-        <div className="sketch-card" style={{ maxWidth: 700 }}>
+        <div className="card" style={{ maxWidth: 700 }}>
           <h3>Program Deployment (Solana Devnet)</h3>
-          <table className="sketch-table">
+          <table className="table">
             <thead>
               <tr>
                 <th>Layer</th>
@@ -208,9 +198,7 @@ const AuditExport: React.FC = () => {
                 <tr key={l.layer}>
                   <td className="mono">L{l.layer}</td>
                   <td>{l.name}</td>
-                  <td className="mono" style={{ fontSize: 11 }}>
-                    {l.programId}
-                  </td>
+                  <td className="mono text-xs">{l.programId}</td>
                   <td>
                     <span className={`badge ${l.status}`}>{l.status}</span>
                   </td>

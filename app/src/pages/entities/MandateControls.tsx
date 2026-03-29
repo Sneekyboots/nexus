@@ -50,34 +50,29 @@ const MandateControls: React.FC = () => {
           <Link to="/">NEXUS</Link> / <Link to="/entities">Entities</Link> /
           Mandate Controls
         </div>
-        <h2>[!] Mandate Controls</h2>
+        <h2>Mandate Controls</h2>
       </div>
 
       <div className="page-body">
         {error && (
           <div
-            className="sketch-card"
+            className="card"
             style={{ borderColor: "var(--accent-red)", marginBottom: 16 }}
           >
-            <div className="text-red mono" style={{ fontSize: 13 }}>
-              [!] {error}
-            </div>
+            <div className="text-red mono text-sm">{error}</div>
           </div>
         )}
-        <div className="sketch-card" style={{ marginBottom: 20 }}>
-          <div
-            className="mono"
-            style={{ fontSize: 12, color: "var(--text-muted)" }}
-          >
+        <div className="card mb-20">
+          <div className="mono text-sm text-muted">
             Mandate limits are enforced on-chain by the Compliance Hook program.
             Gate 5 checks daily aggregate limits. Gate 6 checks single transfer
             limits. Limits reset daily at 00:00 UTC.
           </div>
         </div>
 
-        <div className="sketch-card">
+        <div className="card">
           <h3>Entity Mandate Limits</h3>
-          <table className="sketch-table">
+          <table className="table">
             <thead>
               <tr>
                 <th>Entity</th>
@@ -96,7 +91,7 @@ const MandateControls: React.FC = () => {
                     ? Math.round(
                         (e.mandateLimits.dailyUsed /
                           e.mandateLimits.maxDailyAggregate) *
-                          100,
+                          100
                       )
                     : 0;
                 const isEditing = editing === e.id;
@@ -107,7 +102,7 @@ const MandateControls: React.FC = () => {
                     <td className="text-right mono">
                       {isEditing ? (
                         <input
-                          className="sketch-input"
+                          className="input"
                           type="number"
                           value={editValues.maxSingleTransfer}
                           onChange={(ev) =>
@@ -125,7 +120,7 @@ const MandateControls: React.FC = () => {
                     <td className="text-right mono">
                       {isEditing ? (
                         <input
-                          className="sketch-input"
+                          className="input"
                           type="number"
                           value={editValues.maxDailyAggregate}
                           onChange={(ev) =>
@@ -149,8 +144,8 @@ const MandateControls: React.FC = () => {
                           pct > 80
                             ? "text-red"
                             : pct > 50
-                              ? "text-orange"
-                              : "text-green"
+                            ? "text-orange"
+                            : "text-green"
                         }
                       >
                         {pct}%
@@ -160,14 +155,11 @@ const MandateControls: React.FC = () => {
                       <td>
                         {isEditing ? (
                           <div className="flex gap-8">
-                            <button
-                              className="sketch-btn small"
-                              onClick={saveEdit}
-                            >
-                              [x] Save
+                            <button className="btn small" onClick={saveEdit}>
+                              Save
                             </button>
                             <button
-                              className="sketch-btn small"
+                              className="btn small"
                               onClick={() => setEditing(null)}
                             >
                               Cancel
@@ -175,7 +167,7 @@ const MandateControls: React.FC = () => {
                           </div>
                         ) : (
                           <button
-                            className="sketch-btn small"
+                            className="btn small"
                             onClick={() => startEdit(e.id)}
                           >
                             Edit

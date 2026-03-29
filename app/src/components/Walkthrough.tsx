@@ -655,8 +655,8 @@ const Walkthrough: React.FC = () => {
                 i === currentStep
                   ? " active"
                   : i < currentStep
-                    ? " completed"
-                    : ""
+                  ? " completed"
+                  : ""
               }`}
             />
           ))}
@@ -669,20 +669,20 @@ const Walkthrough: React.FC = () => {
           <button className="walkthrough-skip" onClick={handleSkip}>
             Skip walkthrough
           </button>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div className="flex gap-4">
             {!isFirst && (
               <button
-                className="sketch-btn small walkthrough-nav-btn"
+                className="btn small walkthrough-nav-btn"
                 onClick={handlePrev}
               >
-                &lt;-- Back
+                Back
               </button>
             )}
             <button
-              className="sketch-btn primary walkthrough-nav-btn"
+              className="btn primary walkthrough-nav-btn"
               onClick={handleNext}
             >
-              {isLast ? "Start -->" : "Next -->"}
+              {isLast ? "Start" : "Next"}
             </button>
           </div>
         </div>

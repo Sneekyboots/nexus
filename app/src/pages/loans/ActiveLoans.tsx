@@ -29,7 +29,7 @@ const ActiveLoans: React.FC = () => {
         <div className="breadcrumb">
           <Link to="/">NEXUS</Link> / Loans / Active Loans
         </div>
-        <h2>[%] Active Loans</h2>
+        <h2>Active Loans</h2>
       </div>
 
       <div className="page-body">
@@ -56,9 +56,9 @@ const ActiveLoans: React.FC = () => {
           </div>
         </div>
 
-        <div className="sketch-card">
+        <div className="card">
           <h3>Intercompany Loans (90-day, 1.5% APR)</h3>
-          <table className="sketch-table">
+          <table className="table">
             <thead>
               <tr>
                 <th>Loan ID</th>
@@ -81,14 +81,14 @@ const ActiveLoans: React.FC = () => {
                   <td className="mono">{l.id}</td>
                   <td>
                     {getName(l.lenderEntityId)}
-                    <div className="mono text-muted" style={{ fontSize: 10 }}>
+                    <div className="mono text-muted text-xs">
                       {l.lenderEntityId}
                     </div>
                   </td>
                   <td className="arrow">---&gt;</td>
                   <td>
                     {getName(l.borrowerEntityId)}
-                    <div className="mono text-muted" style={{ fontSize: 10 }}>
+                    <div className="mono text-muted text-xs">
                       {l.borrowerEntityId}
                     </div>
                   </td>
@@ -104,7 +104,7 @@ const ActiveLoans: React.FC = () => {
                   <td className="text-right mono">
                     ${l.totalDue.toLocaleString()}
                   </td>
-                  <td className="mono" style={{ fontSize: 11 }}>
+                  <td className="mono text-xs">
                     {new Date(l.maturityDate).toLocaleDateString()}
                   </td>
                   <td>
@@ -116,11 +116,8 @@ const ActiveLoans: React.FC = () => {
           </table>
         </div>
 
-        <div className="sketch-card dashed">
-          <div
-            className="mono"
-            style={{ fontSize: 12, color: "var(--text-muted)" }}
-          >
+        <div className="card dashed">
+          <div className="mono text-sm text-muted">
             Intercompany loans are created automatically by the Sweep Trigger
             program (Layer 5) when netting cycles identify net deficit
             positions. All loans carry standard terms: 90-day maturity, 1.5%
@@ -128,7 +125,7 @@ const ActiveLoans: React.FC = () => {
             intermediary and record-keeper.
           </div>
           {loans[0]?.aminaRef && (
-            <div className="mono" style={{ fontSize: 11, marginTop: 8 }}>
+            <div className="mono text-xs mt-8">
               AMINA Reference: {loans[0].aminaRef}
             </div>
           )}
