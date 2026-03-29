@@ -11,8 +11,6 @@ import { useNexus } from "../hooks/useNexus";
 import { NAV_ITEMS, SOLANA_EXPLORER_URL } from "../constants";
 import type { NavItem, UserRole } from "../types";
 import Walkthrough from "../components/Walkthrough";
-import DemoRunner from "../components/DemoRunner";
-import TestConsole from "../components/TestConsole";
 
 // ---------------------------------------------------------------------------
 // Role metadata — badge colour + short label + description shown in sidebar
@@ -358,12 +356,6 @@ const AppLayout: React.FC = () => {
 
       {/* First-time walkthrough overlay */}
       <Walkthrough />
-
-      {/* Demo runner widget */}
-      <DemoRunner />
-
-      {/* Test console for manual testing */}
-      <TestConsole />
     </div>
   );
 };

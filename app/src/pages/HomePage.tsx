@@ -173,10 +173,32 @@ const ActionGuide: React.FC<{ steps: GuideStep[]; title: string }> = ({
   title,
 }) => {
   const [expanded, setExpanded] = useState<number | null>(0);
+  const completedSteps = steps.filter((s) => s.done).length;
+  const progressPercent = (completedSteps / steps.length) * 100;
 
   return (
     <div className="card guide-card">
-      <h3>{title}</h3>
+      <div className="guide-header">
+        <h3>{title}</h3>
+        <div className="guide-progress-badge">
+          {completedSteps}/{steps.length} completed
+        </div>
+      </div>
+
+      <div className="guide-progress-container">
+        <div className="guide-progress-bar">
+          <div
+            className="guide-progress-fill"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+        <div className="guide-progress-label">
+          {progressPercent === 100
+            ? "🎉 All steps completed!"
+            : `${Math.round(progressPercent)}% complete`}
+        </div>
+      </div>
+
       <div className="guide-steps">
         {steps.map((s) => (
           <div
@@ -193,6 +215,13 @@ const ActionGuide: React.FC<{ steps: GuideStep[]; title: string }> = ({
                 {s.done ? "✓" : s.num}
               </span>
               <span className="guide-step-label">{s.label}</span>
+              <span className="guide-step-status">
+                {s.done ? (
+                  <span className="badge done">completed</span>
+                ) : (
+                  <span className="badge pending">pending</span>
+                )}
+              </span>
               <span className="guide-step-arrow mono">
                 {expanded === s.num - 1 ? "▼" : "▶"}
               </span>
