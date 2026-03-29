@@ -17,6 +17,10 @@ test-ledger
 credentials/
 secrets/
 
+# Opencode & Deployment
+opencode.json
+opencode.*.json
+
 # Tenity API Certificates
 tenity-cert.pem
 tenity-key.pem
