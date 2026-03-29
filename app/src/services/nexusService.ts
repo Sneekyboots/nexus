@@ -826,11 +826,15 @@ class NexusService {
   // --- Entities ---
 
   async getEntities(): Promise<Entity[]> {
+    console.log("getEntities() called, demoMode:", this.demoMode);
     // LIVE MODE: Fetch from blockchain, but fall back to local entities
     if (!this.demoMode) {
       try {
+        console.log("LIVE MODE: Attempting to fetch from blockchain...");
         const onChainEntities = await nexusClient.getEntities();
+        console.log("On-chain entities received:", onChainEntities.length);
         if (onChainEntities.length > 0) {
+          console.log("Returning on-chain entities");
           return onChainEntities.map((e) => ({
             id: e.id.slice(0, 8),
             legalName: e.name,
@@ -871,17 +875,25 @@ class NexusService {
           "No on-chain entities found, returning local entities:",
           this.liveEntities.length
         );
+        console.log("liveEntities:", this.liveEntities);
         return [...this.liveEntities];
       } catch (err) {
         // Blockchain fetch failed - return local entities as fallback
         console.log(
           "Blockchain fetch failed, using local entities:",
-          this.liveEntities.length
+          this.liveEntities.length,
+          "Error:",
+          err
         );
+        console.log("liveEntities on error:", this.liveEntities);
         return [...this.liveEntities];
       }
     }
     // DEMO MODE: Return demo data
+    console.log(
+      "DEMO MODE: Returning demo entities:",
+      this.demoEntities.length
+    );
     return [...this.entities];
   }
 
@@ -895,6 +907,15 @@ class NexusService {
       this.demoMode ? "DEMO" : "LIVE",
       "mode"
     );
+    console.log(
+      "Current liveEntities count before registration:",
+      this.liveEntities.length
+    );
+    console.log(
+      "Current demoEntities count before registration:",
+      this.demoEntities.length
+    );
+
     const id =
       (data.jurisdiction || "XX").toLowerCase() +
       "-" +
@@ -930,6 +951,13 @@ class NexusService {
       this.entities.length,
       "entities total"
     );
+    console.log(
+      "After push - liveEntities:",
+      this.liveEntities.length,
+      "demoEntities:",
+      this.demoEntities.length
+    );
+    console.log("Entity object:", entity);
     this.complianceEvents.unshift({
       id: `evt-${Date.now()}`,
       timestamp: new Date().toISOString(),
