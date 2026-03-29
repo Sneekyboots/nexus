@@ -1,0 +1,12 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "createos": {
+      "type": "remote",
+      "url": "https://api-createos.nodeops.network/mcp",
+      "headers": {
+        "X-Api-Key": "PASTE_YOUR_CREATEOS_API_KEY_HERE"
+      }
+    }
+  }
+}
