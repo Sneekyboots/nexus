@@ -825,61 +825,99 @@ class NexusService {
 
   // --- Entities ---
 
-async getEntities(): Promise<Entity[]> {
+  async getEntities(): Promise<Entity[]> {
     console.log("getEntities() called, demoMode:", this.demoMode);
-    
+
     // LIVE MODE: Merge on-chain entities with locally registered ones (local has priority)
     if (!this.demoMode) {
       try {
-        console.log("LIVE MODE: Fetching from blockchain and merging with local entities...");
+        console.log(
+          "LIVE MODE: Fetching from blockchain and merging with local entities..."
+        );
         const onChainEntities = await nexusClient.getEntities();
         console.log("On-chain entities received:", onChainEntities.length);
-        
+
         // Map on-chain entities to internal format
-        const mappedOnChain = onChainEntities.map((e) => ({
-          id: e.id.slice(0, 8),
-          legalName: e.name,
-          jurisdiction: e.jurisdiction.slice(0, 2),
-          kycStatus: e.kycStatus === "kyc_verified" ? "verified" : e.kycStatus,
-          kycExpiry: e.kycExpiry ? new Date(e.kycExpiry * 1000).toISOString() : "",
-          kycProvider: "On-chain",
-          kycVerifiedDate: e.status === "kyc_verified" ? new Date().toISOString() : "",
-          currency: e.currency,
-          stablecoin: e.currency === "EUR" ? "EURC" : "USDC",
-          balance: e.balance,
-          virtualOffset: 0,
-          effectivePosition: e.balance,
-          poolId: e.poolMembership !== "11111111111111111111111111111111" ? "pool-alpha" : "",
-          parentCompany: "On-chain entity",
-          complianceOfficer: "On-chain",
-          mandateLimits: {
-            maxSingleTransfer: 250000,
-            maxDailyAggregate: 1000000,
-            dailyUsed: 0,
-            dayResetTimestamp: Date.now(),
-          },
-          createdAt: new Date().toISOString(),
-          lastVerified: e.status === "kyc_verified" ? new Date().toISOString() : "",
-          pdaAddress: e.publicKey,
-        }));
-        
+        const mappedOnChain = onChainEntities.map((e) => {
+          // Normalize kycStatus to valid KycStatus type
+          let kycStatus: "pending" | "verified" | "suspended" | "revoked" =
+            "pending";
+          if (e.kycStatus === "kyc_verified" || e.status === "kyc_verified") {
+            kycStatus = "verified";
+          } else if (e.kycStatus === "suspended") {
+            kycStatus = "suspended";
+          } else if (e.kycStatus === "revoked") {
+            kycStatus = "revoked";
+          }
+
+          return {
+            id: e.id.slice(0, 8),
+            legalName: e.name,
+            jurisdiction: e.jurisdiction.slice(0, 2),
+            kycStatus,
+            kycExpiry: e.kycExpiry
+              ? new Date(e.kycExpiry * 1000).toISOString()
+              : "",
+            kycProvider: "On-chain",
+            kycVerifiedDate:
+              e.status === "kyc_verified" ? new Date().toISOString() : "",
+            currency: e.currency,
+            stablecoin: e.currency === "EUR" ? "EURC" : "USDC",
+            balance: e.balance,
+            virtualOffset: 0,
+            effectivePosition: e.balance,
+            poolId:
+              e.poolMembership !== "11111111111111111111111111111111"
+                ? "pool-alpha"
+                : "",
+            parentCompany: "On-chain entity",
+            complianceOfficer: "On-chain",
+            mandateLimits: {
+              maxSingleTransfer: 250000,
+              maxDailyAggregate: 1000000,
+              dailyUsed: 0,
+              dayResetTimestamp: Date.now(),
+            },
+            createdAt: new Date().toISOString(),
+            lastVerified:
+              e.status === "kyc_verified" ? new Date().toISOString() : "",
+            pdaAddress: e.publicKey,
+          };
+        });
+
         // MERGE: Local entities first (highest priority), then on-chain entities not in local
         const localIds = new Set(this.liveEntities.map((e) => e.id));
         const merged = [
           ...this.liveEntities,
           ...mappedOnChain.filter((e) => !localIds.has(e.id)),
         ];
-        
-        console.log("Merged entities:", this.liveEntities.length, "local +", mappedOnChain.filter((e) => !localIds.has(e.id)).length, "new on-chain =", merged.length, "total");
+
+        console.log(
+          "Merged entities:",
+          this.liveEntities.length,
+          "local +",
+          mappedOnChain.filter((e) => !localIds.has(e.id)).length,
+          "new on-chain =",
+          merged.length,
+          "total"
+        );
         return merged;
       } catch (err) {
-        console.log("Blockchain fetch failed, using local entities:", this.liveEntities.length, "Error:", err);
+        console.log(
+          "Blockchain fetch failed, using local entities:",
+          this.liveEntities.length,
+          "Error:",
+          err
+        );
         return [...this.liveEntities];
       }
     }
-    
+
     // DEMO MODE: Return demo data
-    console.log("DEMO MODE: Returning demo entities:", this.demoEntities.length);
+    console.log(
+      "DEMO MODE: Returning demo entities:",
+      this.demoEntities.length
+    );
     return [...this.entities];
   }
 
