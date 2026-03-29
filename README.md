@@ -3,7 +3,7 @@
 > **Track 2:** Stablecoin-Based On-Chain Cash Pooling
 > Rebuild traditional corporate cash pooling (physical or notional) using stablecoins.
 
-**Status:** 5 programs live on Solana Devnet · Entity registered & KYC verified · Dashboard at `localhost:5173`
+https://github.com/user-attachments/assets/deaa06e0-3975-43c7-953f-11cbe952d378
 
 ---
 **Video**: https://youtu.be/dMC02RRD1nk
