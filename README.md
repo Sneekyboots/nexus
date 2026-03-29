@@ -6,7 +6,7 @@
 **Status:** 5 programs live on Solana Devnet · Entity registered & KYC verified · Dashboard at `localhost:5173`
 
 ---
-
+**Video**: https://youtu.be/dMC02RRD1nk
 ## The Track: Notional Corporate Cash Pooling with Stablecoins
 
 This project addresses **Track 2: Cross-Border Stablecoin Treasury** by implementing **notional corporate cash pooling** — a smarter way for multi-entity groups to manage global cash positions.
